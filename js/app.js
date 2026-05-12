@@ -122,8 +122,8 @@ function closeArticle() {
   history.pushState({}, '', window.location.pathname);
 }
 
-backBtn.addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
-footerBack.addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
+if (backBtn) backBtn.addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
+if (footerBack) footerBack.addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && articlePage.classList.contains('open')) closeArticle();
@@ -244,7 +244,9 @@ function initFilters() {
    LOAD MORE
 ═══════════════════════════════════════ */
 function initLoadMore() {
-  document.getElementById('load-more').addEventListener('click', function() {
+  var btn = document.getElementById('load-more');
+  if (!btn) return;
+  btn.addEventListener('click', function() {
     document.getElementById('grid-row-2').style.display = 'grid';
     this.style.display = 'none';
     document.querySelectorAll('#grid-row-2 .pc').forEach((el, i) => {
@@ -260,12 +262,15 @@ function initLoadMore() {
 /* ═══════════════════════════════════════
    VIEW ALL
 ═══════════════════════════════════════ */
-document.getElementById('view-all-btn').addEventListener('click', e => {
-  e.preventDefault();
-  document.getElementById('grid-row-2').style.display = 'grid';
-  document.getElementById('load-more').style.display = 'none';
-  document.getElementById('writing').scrollIntoView({ behavior: 'smooth' });
-});
+var viewAllBtn = document.getElementById('view-all-btn');
+if (viewAllBtn) {
+  viewAllBtn.addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('grid-row-2').style.display = 'grid';
+    document.getElementById('load-more').style.display = 'none';
+    document.getElementById('writing').scrollIntoView({ behavior: 'smooth' });
+  });
+}
 
 /* ═══════════════════════════════════════
    SMOOTH SCROLL FOR NAV
@@ -290,13 +295,15 @@ document.querySelectorAll('.h-chips .chip').forEach((chip, i) => {
    PARALLAX FOR HERO ON SCROLL
 ═══════════════════════════════════════ */
 const hero = document.getElementById('hero');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (y < window.innerHeight) {
-    hero.style.transform = `translateY(${y * 0.15}px)`;
-    hero.style.opacity = 1 - (y / (window.innerHeight * 1.2));
-  }
-}, { passive: true });
+if (hero) {
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      hero.style.transform = `translateY(${y * 0.15}px)`;
+      hero.style.opacity = 1 - (y / (window.innerHeight * 1.2));
+    }
+  }, { passive: true });
+}
 
 /* ═══════════════════════════════════════
    MOBILE BURGER MENU
@@ -319,10 +326,101 @@ if (burger && drawer) {
 }
 
 /* ═══════════════════════════════════════
+   PYTHON SYNTAX HIGHLIGHTING
+═══════════════════════════════════════ */
+function highlightPython(code) {
+  var tokens = [];
+  var placeholder = function(cls, text) {
+    var idx = tokens.length;
+    tokens.push('<span class="' + cls + '">' + text + '</span>');
+    return '\x00T' + idx + '\x00';
+  };
+
+  // Escape HTML first
+  var s = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Triple-quoted strings
+  s = s.replace(/"""[\s\S]*?"""|'''[\s\S]*?'''/g, function(m){ return placeholder('st', m); });
+  // Comments
+  s = s.replace(/#[^\n]*/g, function(m){ return placeholder('cm', m); });
+  // Decorators
+  s = s.replace(/@\w+/g, function(m){ return placeholder('dc', m); });
+  // f-strings and regular strings
+  s = s.replace(/f?"[^"]*"|f?'[^']*'/g, function(m){ return placeholder('st', m); });
+  // Keywords
+  s = s.replace(/\b(class|def|async|await|for|if|elif|else|return|import|from|with|as|yield|raise|try|except|finally|not|and|or|in|is|None|True|False|self|lambda|pass|break|continue)\b/g, function(m){ return placeholder('kw', m); });
+  // Numbers
+  s = s.replace(/\b(\d+\.?\d*)\b/g, function(m){ return placeholder('nr', m); });
+  // Restore tokens
+  s = s.replace(/\x00T(\d+)\x00/g, function(_, i){ return tokens[parseInt(i)]; });
+  return s;
+}
+
+/* ═══════════════════════════════════════
+   RENDER SHOWCASE SECTION
+═══════════════════════════════════════ */
+function renderShowcase() {
+  var container = document.getElementById('showcase-container');
+  if (!container || typeof SHOWCASE === 'undefined' || !SHOWCASE.length) return;
+
+  SHOWCASE.forEach(function(item, i) {
+    var div = document.createElement('div');
+    div.className = 'sc-item' + (i === 0 ? ' active' : '');
+    div.dataset.showcase = i;
+
+    div.innerHTML =
+      '<div class="sc-header">' +
+        '<div class="sc-header-text">' +
+          '<span class="sc-tag ' + item.tagClass + '">' + item.tag + '</span>' +
+          '<h3>' + item.title + '</h3>' +
+          '<p>' + item.description + '</p>' +
+        '</div>' +
+      '</div>' +
+      '<div class="sc-content">' +
+        '<div class="sc-diagram-wrap">' +
+          '<div class="sc-diagram-label">Architecture</div>' +
+          item.diagram +
+        '</div>' +
+        '<div class="sc-code-wrap">' +
+          '<div class="sc-code-header">' +
+            '<span class="sc-code-dot"></span><span class="sc-code-dot"></span><span class="sc-code-dot"></span>' +
+            '<span class="sc-code-lang">' + item.lang + '</span>' +
+          '</div>' +
+          '<pre class="sc-code-block"><code>' + highlightPython(item.code) + '</code></pre>' +
+        '</div>' +
+      '</div>';
+
+    container.appendChild(div);
+  });
+}
+
+function initShowcaseTabs() {
+  var tabs = document.querySelectorAll('.sc-tab');
+  var container = document.getElementById('showcase-container');
+  if (!tabs.length || !container) return;
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t){ t.classList.remove('on'); });
+      tab.classList.add('on');
+      var idx = parseInt(tab.dataset.sc);
+      container.querySelectorAll('.sc-item').forEach(function(item, i) {
+        if (i === idx) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+  });
+}
+
+/* ═══════════════════════════════════════
    INIT — Render content from content-data.js
 ═══════════════════════════════════════ */
 renderThinking();
 renderWritings();
+renderShowcase();
+initShowcaseTabs();
 initFilters();
 initLoadMore();
 

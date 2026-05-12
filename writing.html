@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — Alok Mishra</title>
+<meta name="description" content="Notes from the field — writing on AI systems, architecture, engineering leadership, and building at scale.">
+<meta name="author" content="Alok Mishra">
+<meta name="theme-color" content="#07070e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<canvas id="cvs"></canvas>
+<div class="grain"></div>
+
+<!-- ═══ ARTICLE PAGE (Full page view) ═══ -->
+<div id="article-page">
+  <a href="#" class="article-back" id="article-back-btn">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to writing
+  </a>
+  <div class="article-hero">
+    <div class="article-hero-img" id="article-hero-img"></div>
+    <div class="article-hero-overlay"></div>
+    <div class="article-hero-content">
+      <div class="article-meta">
+        <span class="article-tag" id="a-tag"></span>
+        <span class="article-date" id="a-date"></span>
+        <span class="article-rt" id="a-rt"></span>
+      </div>
+      <h1 class="article-title" id="a-title"></h1>
+    </div>
+  </div>
+  <div class="article-body-wrap">
+    <div class="article-body" id="a-body"></div>
+  </div>
+  <div class="article-footer">
+    <a href="#" class="article-footer-back" id="article-footer-back">← Back to all writing</a>
+  </div>
+</div>
+
+<!-- ═══ MAIN CONTENT WRAPPER ═══ -->
+<div class="main-content" id="main-content">
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a class="n-brand" href="index.html">
+    <span class="n-brand-pip"></span>
+    Alok Mishra
+  </a>
+  <ul class="n-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html" class="active">Writing</a></li>
+  </ul>
+  <button class="n-burger" id="nav-burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="n-drawer" id="nav-drawer">
+  <a href="index.html" class="nd-link">Home</a>
+  <a href="showcase.html" class="nd-link">Showcase</a>
+  <a href="thinking.html" class="nd-link">Thinking</a>
+  <a href="writing.html" class="nd-link active">Writing</a>
+</div>
+
+<!-- ═══ PAGE HEADER ═══ -->
+<section class="page-hero">
+  <div class="eyebrow rev">Writing</div>
+  <h1 class="sh rev d1">Notes from <span class="g">the field</span></h1>
+  <p class="page-lead rev d2">Long-form thinking on AI systems, architecture decisions, engineering leadership, and the craft of building software that endures.</p>
+</section>
+
+<!-- ═══ WRITING ═══ -->
+<section id="writing">
+  <div class="w-filters rev d3">
+    <button class="wf on" data-filter="all">All</button>
+    <button class="wf" data-filter="AI Systems">AI Systems</button>
+    <button class="wf" data-filter="Architecture">Architecture</button>
+    <button class="wf" data-filter="Reflection">Reflection</button>
+    <button class="wf" data-filter="Leadership">Leadership</button>
+  </div>
+
+  <div class="w-feat" id="feat-row"></div>
+  <div class="w-grid" id="grid-row-1"></div>
+  <div class="w-grid2" id="grid-row-2" style="display:none"></div>
+
+  <div style="margin-top:2rem;text-align:center">
+    <button class="wf" id="load-more" style="padding:0.6rem 2rem">Load more writing</button>
+  </div>
+</section>
+
+<footer>
+  <small>© 2026 Alok Mishra. Crafted with intention.</small>
+  <ul class="f-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
+  </ul>
+</footer>
+
+</div><!-- /main-content -->
+
+<script src="js/content-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

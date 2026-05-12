@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Showcase — Alok Mishra</title>
+<meta name="description" content="Architecture diagrams and production code patterns from work in agentic AI, RAG pipelines, and intelligent systems.">
+<meta name="author" content="Alok Mishra">
+<meta name="theme-color" content="#07070e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<canvas id="cvs"></canvas>
+<div class="grain"></div>
+
+<div class="main-content" id="main-content">
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a class="n-brand" href="index.html">
+    <span class="n-brand-pip"></span>
+    Alok Mishra
+  </a>
+  <ul class="n-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="showcase.html" class="active">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
+  </ul>
+  <button class="n-burger" id="nav-burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="n-drawer" id="nav-drawer">
+  <a href="index.html" class="nd-link">Home</a>
+  <a href="showcase.html" class="nd-link active">Showcase</a>
+  <a href="thinking.html" class="nd-link">Thinking</a>
+  <a href="writing.html" class="nd-link">Writing</a>
+</div>
+
+<!-- ═══ PAGE HEADER ═══ -->
+<section class="page-hero">
+  <div class="eyebrow rev">Engineering in Practice</div>
+  <h1 class="sh rev d1">Real <span class="g">coding work</span></h1>
+  <p class="page-lead rev d2">Architecture diagrams and production code patterns from my work in agentic AI, RAG pipelines, and intelligent systems infrastructure.</p>
+</section>
+
+<!-- ═══ SHOWCASE ═══ -->
+<section id="showcase">
+  <div class="sc-tabs rev d3">
+    <button class="sc-tab on" data-sc="0">Agent Orchestrator</button>
+    <button class="sc-tab" data-sc="1">RAG Pipeline</button>
+    <button class="sc-tab" data-sc="2">Agent Evaluation</button>
+    <button class="sc-tab" data-sc="3">Tool-Use Agent</button>
+  </div>
+  <div class="sc-container" id="showcase-container"></div>
+</section>
+
+<footer>
+  <small>© 2026 Alok Mishra. Crafted with intention.</small>
+  <ul class="f-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
+  </ul>
+</footer>
+
+</div><!-- /main-content -->
+
+<script src="js/content-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

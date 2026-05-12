@@ -25,32 +25,6 @@
 <canvas id="cvs"></canvas>
 <div class="grain"></div>
 
-<!-- ═══ ARTICLE PAGE (Full page view) ═══ -->
-<div id="article-page">
-  <a href="#" class="article-back" id="article-back-btn">
-    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to writing
-  </a>
-  <div class="article-hero">
-    <div class="article-hero-img" id="article-hero-img"></div>
-    <div class="article-hero-overlay"></div>
-    <div class="article-hero-content">
-      <div class="article-meta">
-        <span class="article-tag" id="a-tag"></span>
-        <span class="article-date" id="a-date"></span>
-        <span class="article-rt" id="a-rt"></span>
-      </div>
-      <h1 class="article-title" id="a-title"></h1>
-    </div>
-  </div>
-  <div class="article-body-wrap">
-    <div class="article-body" id="a-body"></div>
-  </div>
-  <div class="article-footer">
-    <a href="#" class="article-footer-back" id="article-footer-back">← Back to all writing</a>
-  </div>
-</div>
-
 <!-- ═══ MAIN CONTENT WRAPPER ═══ -->
 <div class="main-content" id="main-content">
 
@@ -64,8 +38,9 @@
     <li><a href="#about">About</a></li>
     <li><a href="#philosophy">Philosophy</a></li>
     <li><a href="#domains">Domains</a></li>
-    <li><a href="#thinking">Thinking</a></li>
-    <li><a href="#writing">Writing</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
     <li><a href="#connect">Connect</a></li>
   </ul>
   <button class="n-burger" id="nav-burger" aria-label="Menu">
@@ -78,8 +53,9 @@
   <a href="#about" class="nd-link">About</a>
   <a href="#philosophy" class="nd-link">Philosophy</a>
   <a href="#domains" class="nd-link">Domains</a>
-  <a href="#thinking" class="nd-link">Thinking</a>
-  <a href="#writing" class="nd-link">Writing</a>
+  <a href="showcase.html" class="nd-link">Showcase</a>
+  <a href="thinking.html" class="nd-link">Thinking</a>
+  <a href="writing.html" class="nd-link">Writing</a>
   <a href="#connect" class="nd-link">Connect</a>
 </div>
 
@@ -229,56 +205,29 @@
   </div>
 </section>
 
-<!-- ═══ THINKING ═══ -->
-<section id="thinking" class="alt">
-  <div class="eyebrow rev">Current Inquiry</div>
-  <h2 class="sh rev d1">What I am <span class="g">thinking about</span></h2>
-  <div class="inner">
-    <div class="t-sidebar rev d2" id="thinking-sidebar">
-      <p class="t-sb-label">Areas of Focus</p>
-      <!-- Populated dynamically from content/thinking/*.json -->
-    </div>
-    <div class="t-cards rev d3" id="thinking-cards">
-      <!-- Populated dynamically from content/thinking/*.json -->
-    </div>
-  </div>
-</section>
-
-<!-- ═══ WRITING ═══ -->
-<section id="writing">
-  <div class="w-hd">
-    <div>
-      <div class="eyebrow rev">Writing</div>
-      <h2 class="sh rev d1">Notes from <span class="g">the field</span></h2>
-    </div>
-    <a class="w-all rev d2" href="#" id="view-all-btn">All posts →</a>
-  </div>
-
-  <div class="w-filters rev d3">
-    <button class="wf on" data-filter="all">All</button>
-    <button class="wf" data-filter="AI Systems">AI Systems</button>
-    <button class="wf" data-filter="Architecture">Architecture</button>
-    <button class="wf" data-filter="Reflection">Reflection</button>
-    <button class="wf" data-filter="Leadership">Leadership</button>
-  </div>
-
-  <!-- Featured row -->
-  <div class="w-feat" id="feat-row">
-    <!-- Populated dynamically from content/writings/*.json -->
-  </div>
-
-  <!-- Second row -->
-  <div class="w-grid" id="grid-row-1">
-    <!-- Populated dynamically -->
-  </div>
-
-  <!-- Third row - initially hidden -->
-  <div class="w-grid2" id="grid-row-2" style="display:none">
-    <!-- Populated dynamically -->
-  </div>
-
-  <div style="margin-top:2rem;text-align:center">
-    <button class="wf" id="load-more" style="padding:0.6rem 2rem">Load more writing</button>
+<!-- ═══ EXPLORE ═══ -->
+<section id="explore" class="alt">
+  <div class="eyebrow rev">Explore</div>
+  <h2 class="sh rev d1">Go <span class="g">deeper</span></h2>
+  <div class="explore-grid rev d2">
+    <a href="showcase.html" class="explore-card">
+      <span class="explore-icon">◈</span>
+      <h3>Showcase</h3>
+      <p>Architecture diagrams and production code patterns from my work in agentic AI, RAG pipelines, and intelligent systems.</p>
+      <span class="explore-arr">View showcase →</span>
+    </a>
+    <a href="thinking.html" class="explore-card">
+      <span class="explore-icon">⬡</span>
+      <h3>Thinking</h3>
+      <p>Current areas of inquiry — the questions and ideas I'm exploring at the intersection of architecture, AI, and systems design.</p>
+      <span class="explore-arr">Read thinking →</span>
+    </a>
+    <a href="writing.html" class="explore-card">
+      <span class="explore-icon">▣</span>
+      <h3>Writing</h3>
+      <p>Long-form notes from the field on AI systems, architecture decisions, engineering leadership, and the craft of building well.</p>
+      <span class="explore-arr">Read writing →</span>
+    </a>
   </div>
 </section>
 
@@ -307,9 +256,9 @@
     <li><a href="#about">About</a></li>
     <li><a href="#philosophy">Philosophy</a></li>
     <li><a href="#domains">Domains</a></li>
-    <li><a href="#thinking">Thinking</a></li>
-    <li><a href="#writing">Writing</a></li>
-    <li><a href="#connect">Connect</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
   </ul>
 </footer>
 

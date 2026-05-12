@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thinking — Alok Mishra</title>
+<meta name="description" content="Current areas of inquiry — architecture, AI trust, observability, and the questions shaping how I build.">
+<meta name="author" content="Alok Mishra">
+<meta name="theme-color" content="#07070e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<canvas id="cvs"></canvas>
+<div class="grain"></div>
+
+<div class="main-content" id="main-content">
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a class="n-brand" href="index.html">
+    <span class="n-brand-pip"></span>
+    Alok Mishra
+  </a>
+  <ul class="n-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html" class="active">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
+  </ul>
+  <button class="n-burger" id="nav-burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="n-drawer" id="nav-drawer">
+  <a href="index.html" class="nd-link">Home</a>
+  <a href="showcase.html" class="nd-link">Showcase</a>
+  <a href="thinking.html" class="nd-link active">Thinking</a>
+  <a href="writing.html" class="nd-link">Writing</a>
+</div>
+
+<!-- ═══ PAGE HEADER ═══ -->
+<section class="page-hero">
+  <div class="eyebrow rev">Current Inquiry</div>
+  <h1 class="sh rev d1">What I am <span class="g">thinking about</span></h1>
+  <p class="page-lead rev d2">The questions and ideas I'm currently exploring — at the intersection of architecture, AI systems, and the craft of building software.</p>
+</section>
+
+<!-- ═══ THINKING ═══ -->
+<section id="thinking">
+  <div class="inner">
+    <div class="t-sidebar rev d2" id="thinking-sidebar">
+      <p class="t-sb-label">Areas of Focus</p>
+    </div>
+    <div class="t-cards rev d3" id="thinking-cards"></div>
+  </div>
+</section>
+
+<footer>
+  <small>© 2026 Alok Mishra. Crafted with intention.</small>
+  <ul class="f-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="showcase.html">Showcase</a></li>
+    <li><a href="thinking.html">Thinking</a></li>
+    <li><a href="writing.html">Writing</a></li>
+  </ul>
+</footer>
+
+</div><!-- /main-content -->
+
+<script src="js/content-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
