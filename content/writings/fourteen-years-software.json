@@ -1,0 +1,11 @@
+{
+  "title": "Close to two decades in software: what I wish I had understood earlier",
+  "category": "Reflection",
+  "date": "2025-09-22",
+  "dateDisplay": "Sep 22, 2025",
+  "readTime": "11 min read",
+  "cover": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1400&h=600&fit=crop",
+  "coverThumb": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=300&fit=crop",
+  "excerpt": "A reflection on compounding mistakes, compounding judgment, and what it actually means to be good at this work.",
+  "body": "<p>Most of what I know about software I learned by getting things wrong. What follows is not a list of regrets — the mistakes were how I built judgment — but an honest account of what I would have wanted to understand earlier.</p><h3>The compounding effect of small decisions</h3><p>Early in my career I thought the consequential decisions were the architectural ones: which database, which messaging system, how to decompose services. I now think the more consequential decisions are the small ones made daily by every engineer on the team. Naming, error handling, test coverage, documentation, code review culture. These compound. A team that consistently makes good small decisions for two years builds something qualitatively different from a team that makes good big decisions but mediocre small ones.</p><h3>Communication is not a soft skill</h3><p>The clearest line I can draw between engineers who have a large impact and those who have a modest one is communication. Not just writing and speaking clearly — though that matters — but the ability to understand what someone else actually needs, to articulate tradeoffs in terms that land for different audiences, and to build the shared understanding that allows a team to move quickly and safely. This is as much a technical skill as database design.</p><h3>Mentorship compounds faster than anything else</h3><p>The highest-leverage thing I have done in my career is invest in people. Every engineer whose judgment I helped develop has gone on to influence dozens or hundreds of other engineers. The compounding on that investment makes any technical work I have done look modest by comparison. I wish I had understood this earlier and started earlier.</p>"
+}

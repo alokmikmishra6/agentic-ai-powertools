@@ -1,0 +1,11 @@
+{
+  "title": "Why I stopped calling it technical debt and started calling it design drift",
+  "category": "Architecture",
+  "date": "2026-04-28",
+  "dateDisplay": "Apr 28, 2026",
+  "readTime": "5 min read",
+  "cover": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1400&h=600&fit=crop",
+  "coverThumb": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
+  "excerpt": "The framing of debt implies intention to repay. Most of what we call tech debt is entropy.",
+  "body": "<p>The framing of debt implies intention. You borrowed something with a plan to repay it. Most of what we label technical debt was never a deliberate borrowing — it was a series of decisions made under incomplete information that, in aggregate, pushed the system away from an architecture that would have served it better.</p><h3>Drift is a more accurate mental model</h3><p>Design drift describes what actually happens. A system starts with a coherent conceptual model. Over time, requirements change. New engineers join. Shortcuts accumulate. The system drifts from its original design intent — not because anyone was irresponsible, but because systems and organisations are both complex adaptive systems, and drift is what complex adaptive systems do.</p><p>Why does the framing matter? Because the response to drift is different from the response to debt. Debt has a repayment metaphor — you write off a sprint, pay it down, move on. Drift requires something more continuous: a sustained commitment to understanding the current conceptual model of the system and actively steering it back toward coherence.</p><h3>What I do instead</h3><p>I run periodic architecture alignment sessions — not to audit blame, but to ask: what is this system trying to be, and how far has it drifted from that? Sometimes the answer is that the original design intent was wrong and the drift is actually progress. More often, the drift reveals accumulated assumptions that nobody would endorse if you surfaced them explicitly.</p><p>The goal is not a perfect system. The goal is a system whose architects can articulate its model and whose code reflects that model closely enough to be maintained by people who join next year.</p>"
+}

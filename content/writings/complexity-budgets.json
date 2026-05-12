@@ -1,0 +1,11 @@
+{
+  "title": "Complexity budgets: treating cognitive load as a first-class constraint",
+  "category": "Architecture",
+  "date": "2026-03-03",
+  "dateDisplay": "Mar 3, 2026",
+  "readTime": "7 min read",
+  "cover": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1400&h=600&fit=crop",
+  "coverThumb": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=300&fit=crop",
+  "excerpt": "Every architectural decision spends from a finite budget of complexity a team can hold in mind.",
+  "body": "<p>Every architectural decision has a cognitive cost. It introduces concepts that engineers must hold in mind, patterns they must follow, abstractions they must understand. A well-designed system manages this cost deliberately. Most systems do not.</p><h3>The budget metaphor</h3><p>I find it useful to think of a team's cognitive capacity as a finite budget. Every piece of the system spends from that budget — every service boundary, every abstraction layer, every configuration surface, every exception to a rule. When the budget is exceeded, the system becomes hard to reason about. Bugs increase. Onboarding time grows. Engineers make changes confidently that they should not make confidently.</p><p>The key insight is that this budget is not just technical — it is organisational. A complexity that a small expert team can manage becomes unmanageable when the team doubles and institutional knowledge is diluted. Architecture must be designed for the team that will maintain it, not just the team that built it.</p><h3>Where complexity budgets are most often overspent</h3><p>In my experience, the three areas where complexity budgets are most frequently blown are: distributed transaction management (which tends to spawn progressively more elaborate consistency schemes), configuration surfaces (which grow without pruning until no single engineer understands all the interactions), and error handling (which accretes special cases until the exceptional paths are more complex than the happy path).</p><p>The discipline I apply is regular complexity audits — not to eliminate all complexity, but to ensure that every unit of complexity is earning its place. Complexity that buys you performance, flexibility, or safety is worth the budget. Complexity that exists because nobody wanted to refactor it is not.</p>"
+}
