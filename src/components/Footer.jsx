@@ -1,0 +1,18 @@
+import { Link } from 'react-router-dom'
+
+export default function Footer() {
+  return (
+    <footer className="footer-wrap">
+      <div className="footer">
+        <small>© 2026 Alok Mishra. Crafted with intention.</small>
+        <ul className="footer-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#philosophy">Philosophy</a></li>
+          <li><Link to="/showcase">Showcase</Link></li>
+          <li><Link to="/thinking">Thinking</Link></li>
+          <li><Link to="/writing">Writing</Link></li>
+        </ul>
+      </div>
+    </footer>
+  )
+}
