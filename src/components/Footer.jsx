@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="footer-wrap">
       <div className="footer">
-        <small>© 2026 Alok Mishra. Crafted with intention.</small>
+        <small>© 2026 Alok Mishra. All rights reserved.</small>
         <ul className="footer-links">
           <li><a href="#about">About</a></li>
           <li><a href="#philosophy">Philosophy</a></li>
