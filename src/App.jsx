@@ -6,6 +6,9 @@ import Home from './pages/Home'
 import Writing, { ArticlePage } from './pages/Writing'
 import Showcase from './pages/Showcase'
 import Thinking from './pages/Thinking'
+import ScrollProgress from './components/ScrollProgress'
+import ParallaxOverlays from './components/ParallaxOverlays'
+import SmoothScroll from './components/SmoothScroll'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -17,10 +20,12 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <>
+    <SmoothScroll>
+      <ParallaxOverlays />
+      <ScrollProgress />
       <ScrollToTop />
       <Nav />
-      <main>
+      <main style={{ position: 'relative', zIndex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/writing" element={<Writing />} />
@@ -30,6 +35,6 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
-    </>
+    </SmoothScroll>
   )
 }

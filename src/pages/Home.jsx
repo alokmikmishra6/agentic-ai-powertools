@@ -1,11 +1,8 @@
-import { Suspense, lazy, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Reveal, StaggerContainer, StaggerItem } from '../components/ScrollReveal'
+import { Reveal, ScaleReveal, SlideIn, FloatIn, ScrollScale, StaggerContainer, StaggerItem, Parallax, TextMarquee, TextRevealByWord } from '../components/ScrollReveal'
 import GlassCard from '../components/GlassCard'
 import { DOMAINS, PILLARS, ARTICLES, SHOWCASE } from '../data/content'
-
-const HeroScene = lazy(() => import('../scenes/HeroScene'))
-const PhilosophyScene = lazy(() => import('../scenes/PhilosophyScene'))
 
 const TWO_WEEKS = 14 * 24 * 60 * 60 * 1000
 const hasNewContent = (items, dateField = 'date') =>
@@ -28,47 +25,45 @@ export default function Home() {
     <>
       {/* ═══ HERO ═══ */}
       <section className="hero-section" id="hero">
-        <div className="hero-canvas-wrap">
-          <Suspense fallback={null}>
-            <HeroScene />
-          </Suspense>
-        </div>
         <div className="hero-content">
           <Reveal>
             <div className="hero-tag">
               Senior Architect · AI Systems · Cloud Infrastructure
             </div>
           </Reveal>
-          <Reveal delay={0.08}>
+          <ScaleReveal delay={0.1}>
             <h1 className="hero-title">
               <span className="hero-title-l1">Architect of</span>
               <span className="hero-title-l2 gradient-text">Intelligent Systems</span>
             </h1>
-          </Reveal>
-          <Reveal delay={0.14}>
+          </ScaleReveal>
+          <Reveal delay={0.25}>
             <p className="hero-bio">
               I design <strong>systems that scale</strong>, <strong>platforms that endure</strong>, and <strong>AI workflows that ship to production</strong>. Close to two decades at the intersection of cloud architecture, intelligent automation, and large-scale IoT — bringing rigorous engineering thinking to problems where the stakes are high and the margins for error are low.
             </p>
           </Reveal>
-          <Reveal delay={0.2}>
+          <Reveal delay={0.4}>
             <div className="hero-chips">
-              <span className="chip v">AI Architecture</span>
-              <span className="chip t">Cloud Systems</span>
-              <span className="chip r">IoT at Scale</span>
-              <span className="chip">Agentic Workflows</span>
-              <span className="chip">Distributed Design</span>
+              <FloatIn delay={0.5} rotate={-2}><span className="chip v">AI Architecture</span></FloatIn>
+              <FloatIn delay={0.6} rotate={2}><span className="chip t">Cloud Systems</span></FloatIn>
+              <FloatIn delay={0.7} rotate={-3}><span className="chip r">IoT at Scale</span></FloatIn>
+              <FloatIn delay={0.8} rotate={2}><span className="chip">Agentic Workflows</span></FloatIn>
+              <FloatIn delay={0.9} rotate={-2}><span className="chip">Distributed Design</span></FloatIn>
             </div>
           </Reveal>
         </div>
       </section>
 
+      {/* ═══ MARQUEE DIVIDER ═══ */}
+      <TextMarquee text="Architecture · Intelligence · Systems · Scale · Production · " speed={400} />
+
       {/* ═══ ABOUT ═══ */}
       <section id="about">
         <div className="container">
-          <Reveal>
+          <ScaleReveal>
             <div className="section-eyebrow">About</div>
             <h2 className="section-title">What I <span className="gradient-text">do</span></h2>
-          </Reveal>
+          </ScaleReveal>
           <Reveal delay={0.15}>
             <div className="about-wrap">
               <div className="about-text">
@@ -101,23 +96,24 @@ export default function Home() {
 
       {/* ═══ PHILOSOPHY ═══ */}
       <section id="philosophy" className="phi-section">
-        <div className="phi-canvas-wrap">
-          <Suspense fallback={null}>
-            <PhilosophyScene />
-          </Suspense>
-        </div>
         <div className="container">
-          <Reveal>
+          <ScaleReveal>
             <div className="section-eyebrow">Perspective</div>
             <h2 className="section-title">How I think about <span className="gradient-text">building</span></h2>
-          </Reveal>
+          </ScaleReveal>
           <Reveal delay={0.15}>
             <p className="phi-quote">
               Great architecture is not about the technologies you choose. It is about the decisions you make before you choose them.
             </p>
-            <p className="phi-body">The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong.</p>
-            <p className="phi-body">My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly — not hidden behind abstractions that will eventually betray you.</p>
           </Reveal>
+          <TextRevealByWord
+            text="The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong."
+            className="phi-body"
+          />
+          <TextRevealByWord
+            text="My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly."
+            className="phi-body"
+          />
           <StaggerContainer className="pillars-grid">
             {PILLARS.map(p => (
               <StaggerItem key={p.num}>
@@ -137,34 +133,37 @@ export default function Home() {
       {/* ═══ DOMAINS ═══ */}
       <section id="domains">
         <div className="container">
-          <Reveal>
+          <ScaleReveal>
             <div className="section-eyebrow">Expertise</div>
             <h2 className="section-title">Domains of <span className="gradient-text">deep work</span></h2>
             <p className="domains-lead">Across close to two decades my focus has crystallised into areas where I have developed both technical depth and architectural judgement — not just experience, but genuine design intuition earned through consequential decisions in production environments.</p>
-          </Reveal>
-          <StaggerContainer className="domains-grid">
-            {DOMAINS.map(d => (
-              <StaggerItem key={d.title}>
+          </ScaleReveal>
+          <div className="domains-grid">
+            {DOMAINS.map((d, i) => (
+              <SlideIn key={d.title} direction={i % 2 === 0 ? 'left' : 'right'} delay={i * 0.1}>
                 <div className="domain-card">
                   <div className="domain-icon">{d.icon}</div>
                   <h3>{d.title}</h3>
                   <p>{d.desc}</p>
                 </div>
-              </StaggerItem>
+              </SlideIn>
             ))}
-          </StaggerContainer>
+          </div>
         </div>
       </section>
+
+      {/* ═══ MARQUEE DIVIDER ═══ */}
+      <TextMarquee text="Deep Work · AI Systems · Cloud Native · Distributed Design · " speed={-350} />
 
       {/* ═══ EXPLORE ═══ */}
       <section id="explore">
         <div className="container">
-          <Reveal>
+          <ScaleReveal>
             <div className="section-eyebrow">Explore</div>
             <h2 className="section-title">Go <span className="gradient-text">deeper</span></h2>
-          </Reveal>
-          <StaggerContainer className="explore-grid">
-            <StaggerItem>
+          </ScaleReveal>
+          <div className="explore-grid">
+            <ScrollScale>
               <Link to="/showcase" className="explore-card">
                 <span className="explore-icon">◈</span>
                 {hasNewContent(SHOWCASE) && <span className="explore-new-dot" title="New content">New</span>}
@@ -172,16 +171,16 @@ export default function Home() {
                 <p>Architecture diagrams and production code patterns from my work in agentic AI, RAG pipelines, and intelligent systems.</p>
                 <span className="explore-arr">View showcase →</span>
               </Link>
-            </StaggerItem>
-            <StaggerItem>
+            </ScrollScale>
+            <ScrollScale>
               <Link to="/thinking" className="explore-card">
                 <span className="explore-icon">⬡</span>
                 <h3>Thinking</h3>
                 <p>Current areas of inquiry — the questions and ideas I'm exploring at the intersection of architecture, AI, and systems design.</p>
                 <span className="explore-arr">Read thinking →</span>
               </Link>
-            </StaggerItem>
-            <StaggerItem>
+            </ScrollScale>
+            <ScrollScale>
               <Link to="/writing" className="explore-card">
                 <span className="explore-icon">▣</span>
                 {hasNewContent(ARTICLES) && <span className="explore-new-dot" title="New content">New</span>}
@@ -189,18 +188,18 @@ export default function Home() {
                 <p>Long-form notes from the field on AI systems, architecture decisions, engineering leadership, and the craft of building well.</p>
                 <span className="explore-arr">Read writing →</span>
               </Link>
-            </StaggerItem>
-          </StaggerContainer>
+            </ScrollScale>
+          </div>
         </div>
       </section>
 
       {/* ═══ CONNECT ═══ */}
       <section id="connect" className="connect-section">
         <div className="container">
-          <Reveal>
+          <ScaleReveal>
             <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Connect</div>
             <h2 className="section-title" style={{ textAlign: 'center' }}>Let's think <span className="gradient-text">together</span></h2>
-          </Reveal>
+          </ScaleReveal>
           <Reveal delay={0.15}>
             <p className="connect-sub">I am genuinely interested in conversations about systems, intelligence, and the craft of building things well. Whether you have a hard problem, a collaboration in mind, or something worth discussing.</p>
           </Reveal>

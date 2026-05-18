@@ -53,6 +53,7 @@ export default function Writing() {
               <StaggerItem key={article.slug} className="writing-card">
                 <Link to={`/writing/${article.slug}`}>
                   <GlassCard>
+                    <GenerativeCover slug={article.slug} category={article.category} height={140} className="wc-cover" />
                     <div className="wc-meta">
                       <span className="wc-tag">{article.category}</span>
                       {article.featured && <span className="wc-badge featured">Featured</span>}
@@ -60,6 +61,9 @@ export default function Writing() {
                       <span className="wc-date">{article.dateDisplay}</span>
                     </div>
                     <h3>{article.title}</h3>
+                    {article.theme && (
+                      <p className="wc-theme">{article.theme}</p>
+                    )}
                     <p className="excerpt">{article.excerpt}</p>
                     <div className="wc-foot">
                       <span>{article.readTime}</span>
