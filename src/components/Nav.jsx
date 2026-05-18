@@ -13,14 +13,24 @@ const NAV_ITEMS = [
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 40)
+      // Nav appears after scrolling past the landing screen (80vh)
+      setVisible(y > window.innerHeight * 0.6 || location.pathname !== '/')
+    }
+    // Show nav immediately on non-home pages
+    if (location.pathname !== '/') {
+      setVisible(true)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [location.pathname])
 
   useEffect(() => {
     setDrawerOpen(false)
@@ -80,7 +90,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+      <nav className={`nav ${scrolled ? 'scrolled' : ''} ${visible ? 'nav-visible' : ''}`}>
         <div className="nav-inner">
           <Link to="/" className="nav-brand">
             <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="nav-logo" />

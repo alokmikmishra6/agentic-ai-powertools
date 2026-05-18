@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -9,6 +10,8 @@ import Thinking from './pages/Thinking'
 import ScrollProgress from './components/ScrollProgress'
 import ParallaxOverlays from './components/ParallaxOverlays'
 import SmoothScroll from './components/SmoothScroll'
+import CustomCursor from './components/CustomCursor'
+import PageTransition from './components/PageTransition'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -19,20 +22,25 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const location = useLocation()
+
   return (
     <SmoothScroll>
+      <CustomCursor />
       <ParallaxOverlays />
       <ScrollProgress />
       <ScrollToTop />
       <Nav />
       <main style={{ position: 'relative', zIndex: 1 }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/writing" element={<Writing />} />
-          <Route path="/writing/:slug" element={<ArticlePage />} />
-          <Route path="/showcase" element={<Showcase />} />
-          <Route path="/thinking" element={<Thinking />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/writing" element={<PageTransition><Writing /></PageTransition>} />
+            <Route path="/writing/:slug" element={<PageTransition><ArticlePage /></PageTransition>} />
+            <Route path="/showcase" element={<PageTransition><Showcase /></PageTransition>} />
+            <Route path="/thinking" element={<PageTransition><Thinking /></PageTransition>} />
+          </Routes>
+        </AnimatePresence>
       </main>
       <Footer />
     </SmoothScroll>

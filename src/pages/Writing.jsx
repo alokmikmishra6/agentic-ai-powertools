@@ -53,7 +53,7 @@ export default function Writing() {
               <StaggerItem key={article.slug} className="writing-card">
                 <Link to={`/writing/${article.slug}`}>
                   <GlassCard>
-                    <GenerativeCover slug={article.slug} category={article.category} height={140} className="wc-cover" />
+                    <GenerativeCover slug={article.slug} category={article.category} height={160} className="wc-cover" />
                     <div className="wc-meta">
                       <span className="wc-tag">{article.category}</span>
                       {article.featured && <span className="wc-badge featured">Featured</span>}
