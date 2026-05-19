@@ -9,8 +9,8 @@
   --border: rgba(255,255,255,0.08);
   --border2: rgba(255,255,255,0.14);
   --text: #ffffff;
-  --text2: rgba(255,255,255,0.88);
-  --text3: rgba(255,255,255,0.62);
+  --text2: rgba(255,255,255,0.94);
+  --text3: rgba(255,255,255,0.75);
   --accent: #ffffff;
   --accent2: rgba(255,255,255,0.9);
   --glass: rgba(255,255,255,0.03);
@@ -164,9 +164,9 @@ section {
 
 .nav-links a {
   font-family: var(--font2);
-  font-size: 0.78rem;
-  font-weight: 400;
-  color: var(--text2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ffffff;
   letter-spacing: 0.02em;
   transition: color 0.3s;
   position: relative;
@@ -589,7 +589,7 @@ section {
 }
 
 .pillar p {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--text2);
   line-height: 1.6;
   font-weight: 300;
@@ -611,6 +611,16 @@ section {
   gap: 16px;
 }
 
+.domains-grid > * {
+  display: flex;
+  height: 100%;
+}
+
+.domains-grid > * > * {
+  height: 100%;
+  width: 100%;
+}
+
 .domain-card {
   position: relative;
   padding: 32px;
@@ -619,6 +629,9 @@ section {
   border: 1px solid rgba(255,255,255,0.06);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .domain-card::before {
@@ -648,17 +661,18 @@ section {
 
 .domain-card h3 {
   font-family: var(--font);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 12px;
   color: var(--text);
 }
 
 .domain-card p {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--text2);
   line-height: 1.7;
   font-weight: 300;
+  flex: 1;
 }
 
 /* ═══ EXPLORE CARDS ═══ */
@@ -715,14 +729,22 @@ section {
 }
 
 .explore-arr {
+  display: inline-block;
   margin-top: 20px;
-  font-size: 0.78rem;
-  color: rgba(201,168,124,0.6);
+  padding: 10px 22px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #0a0a0a;
+  background: #c9a87c;
+  border-radius: var(--radius-sm);
   font-family: var(--font2);
-  transition: color 0.3s;
+  transition: all 0.3s;
 }
 
-.explore-card:hover .explore-arr { color: #c9a87c; }
+.explore-card:hover .explore-arr {
+  background: #d4b896;
+  box-shadow: 0 4px 20px rgba(201,168,124,0.35);
+}
 
 .explore-new-dot {
   position: absolute;
@@ -772,19 +794,20 @@ section {
   gap: 10px;
   padding: 12px 28px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(201,168,124,0.3);
+  border: none;
   font-family: var(--font2);
-  font-size: 0.85rem;
-  color: rgba(201,168,124,0.8);
-  background: rgba(201,168,124,0.05);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #0a0a0a;
+  background: #c9a87c;
   transition: all 0.3s;
 }
 
 .connect-link:hover {
-  border-color: rgba(201,168,124,0.6);
-  color: #c9a87c;
-  background: rgba(201,168,124,0.1);
-  box-shadow: 0 0 20px rgba(201,168,124,0.15);
+  color: #0a0a0a;
+  background: #d4b896;
+  box-shadow: 0 4px 24px rgba(201,168,124,0.35);
+  transform: translateY(-1px);
 }
 
 .connect-link svg {
@@ -833,7 +856,7 @@ section {
 .page-hero .section-title { margin-bottom: 16px; }
 
 .page-lead {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--text2);
   max-width: 620px;
   line-height: 1.8;
@@ -847,12 +870,20 @@ section {
   gap: 8px;
   font-family: var(--font2);
   font-size: 0.82rem;
-  color: var(--text3);
+  font-weight: 500;
+  color: #0a0a0a;
+  background: #c9a87c;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
   margin-bottom: 24px;
-  transition: color 0.2s;
+  transition: all 0.3s;
 }
 
-.back-link:hover { color: var(--text); }
+.back-link:hover {
+  background: #d4b896;
+  box-shadow: 0 4px 20px rgba(201,168,124,0.35);
+  transform: translateY(-1px);
+}
 
 /* ═══ WRITING ═══ */
 .filters {
@@ -863,17 +894,18 @@ section {
 }
 
 .filter-btn {
-  padding: 8px 20px;
+  padding: 10px 22px;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  border: 1px solid rgba(201,168,124,0.2);
-  color: rgba(201,168,124,0.7);
-  background: rgba(201,168,124,0.04);
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  background: rgba(201,168,124,0.12);
   transition: all 0.3s;
 }
 
-.filter-btn:hover { border-color: rgba(201,168,124,0.5); color: #c9a87c; background: rgba(201,168,124,0.08); }
-.filter-btn.active { background: rgba(201,168,124,0.15); border-color: rgba(201,168,124,0.6); color: #c9a87c; box-shadow: 0 0 16px rgba(201,168,124,0.15); }
+.filter-btn:hover { color: #fff; background: rgba(201,168,124,0.3); }
+.filter-btn.active { background: #c9a87c; color: #0a0a0a; font-weight: 600; box-shadow: 0 4px 20px rgba(201,168,124,0.3); }
 
 .writing-grid {
   display: grid;
@@ -942,7 +974,7 @@ section {
 
 .writing-card h3 {
   font-family: var(--font);
-  font-size: 1.02rem;
+  font-size: 1.08rem;
   font-weight: 600;
   margin-bottom: 10px;
   line-height: 1.35;
@@ -954,7 +986,7 @@ section {
 }
 
 .writing-card .excerpt {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--text2);
   line-height: 1.7;
   font-weight: 300;
@@ -1065,18 +1097,19 @@ section {
   margin: 40px auto 0;
   padding: 14px 40px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(201,168,124,0.3);
-  font-size: 0.85rem;
-  color: rgba(201,168,124,0.8);
-  background: rgba(201,168,124,0.05);
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #0a0a0a;
+  background: #c9a87c;
   transition: all 0.3s;
 }
 
 .load-more-btn:hover {
-  border-color: rgba(201,168,124,0.6);
-  color: #c9a87c;
-  background: rgba(201,168,124,0.1);
-  box-shadow: 0 0 20px rgba(201,168,124,0.12);
+  color: #0a0a0a;
+  background: #d4b896;
+  box-shadow: 0 4px 24px rgba(201,168,124,0.35);
+  transform: translateY(-1px);
 }
 
 /* ═══ ARTICLE PAGE ═══ */
@@ -1090,13 +1123,22 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font2);
   font-size: 0.82rem;
-  color: var(--text3);
+  font-weight: 500;
+  color: #0a0a0a;
+  background: #c9a87c;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
   margin-bottom: 32px;
-  transition: color 0.2s;
+  transition: all 0.3s;
 }
 
-.article-back:hover { color: var(--text); }
+.article-back:hover {
+  background: #d4b896;
+  box-shadow: 0 4px 20px rgba(201,168,124,0.35);
+  transform: translateY(-1px);
+}
 
 .article-cover {
   width: 100%;
