@@ -61,10 +61,9 @@ export default function Home() {
                   transition={{ delay: 1.6, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
                   className="cosmos-text-sub"
                 >
-                  Engineering the future of intelligent systems — from the edge to the cosmos
+                  Systems that think. Architecture that scales. Intelligence by design.
                 </motion.span>
               </div>
-              <div className="cosmos-horizon" />
             </motion.div>
           )}
         </AnimatePresence>

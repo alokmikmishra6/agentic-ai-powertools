@@ -285,29 +285,19 @@ section {
 
 .cosmos-text-main {
   font-family: var(--font);
-  font-size: clamp(1.4rem, 3.5vw, 2.6rem);
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  color: rgba(255,255,255,0.85);
+  font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+  font-weight: 200;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.9);
 }
 
 .cosmos-text-sub {
   font-family: var(--font2);
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
   font-weight: 300;
-  letter-spacing: 0.04em;
-  color: rgba(201,168,124,0.6);
-  max-width: 480px;
-}
-
-.cosmos-horizon {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 40%;
-  background: radial-gradient(ellipse 120% 60% at 50% 100%, rgba(201,168,124,0.06) 0%, transparent 70%);
-  pointer-events: none;
+  letter-spacing: 0.06em;
+  color: rgba(201,168,124,0.7);
+  max-width: 520px;
 }
 
 .landing-scroll-hint {
@@ -382,11 +372,11 @@ section {
 
 .hero-tag {
   font-family: var(--font2);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--text3);
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .hero-title {
@@ -399,23 +389,23 @@ section {
 
 .hero-title-l1 {
   display: block;
-  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-size: clamp(3rem, 7vw, 5.5rem);
   color: var(--text);
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .hero-title-l2 {
   display: block;
-  font-size: clamp(3.2rem, 7.5vw, 6.2rem);
+  font-size: clamp(3.8rem, 9vw, 7.5rem);
   font-weight: 700;
   color: var(--text);
 }
 
 .hero-bio {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--text2);
-  max-width: 580px;
-  line-height: 1.8;
+  max-width: 620px;
+  line-height: 1.85;
   margin-bottom: 40px;
   font-weight: 400;
 }
@@ -1304,8 +1294,8 @@ section {
 }
 
 @media (max-width: 480px) {
-  .hero-title-l1 { font-size: 1.5rem; }
-  .hero-title-l2 { font-size: 2rem; }
+  .hero-title-l1 { font-size: 1.8rem; }
+  .hero-title-l2 { font-size: 2.4rem; }
   .section-title { font-size: 1.5rem; }
   .page-hero { padding: 100px 0 30px; }
   .page-hero h1 { font-size: 1.8rem; }
