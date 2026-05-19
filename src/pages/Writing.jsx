@@ -10,7 +10,7 @@ const TWO_WEEKS = 14 * 24 * 60 * 60 * 1000
 const isNew = (dateStr) => (Date.now() - new Date(dateStr).getTime()) < TWO_WEEKS
 
 export default function Writing() {
-  const [filter, setFilter] = useState('All')
+  const [filter, setFilter] = useState('Featured')
   const [showCount, setShowCount] = useState(100)
 
   const filtered = filter === 'All' ? ARTICLES
@@ -60,13 +60,13 @@ export default function Writing() {
               <StaggerItem key={article.slug} className={`writing-card${article.featured ? ' writing-card--featured' : ''}${isNew(article.date) ? ' writing-card--new' : ''}`}>
                 <Link to={`/writing/${article.slug}`}>
                   <GlassCard>
+                    <GenerativeCover slug={article.slug} category={article.category} height={article.featured ? 200 : 160} className="wc-cover" />
                     {(article.featured || isNew(article.date)) && (
                       <div className="wc-spotlight">
                         {article.featured && <span className="wc-spotlight-label">★ Featured</span>}
                         {isNew(article.date) && <span className="wc-spotlight-label wc-spotlight-new">New</span>}
                       </div>
                     )}
-                    <GenerativeCover slug={article.slug} category={article.category} height={article.featured ? 200 : 160} className="wc-cover" />
                     <div className="wc-meta">
                       <span className="wc-tag">{article.category}</span>
                       {article.featured && <span className="wc-badge featured">Featured</span>}
