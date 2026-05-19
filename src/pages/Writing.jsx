@@ -11,13 +11,20 @@ const isNew = (dateStr) => (Date.now() - new Date(dateStr).getTime()) < TWO_WEEK
 
 export default function Writing() {
   const [filter, setFilter] = useState('All')
-  const [showCount, setShowCount] = useState(6)
+  const [showCount, setShowCount] = useState(100)
 
   const filtered = filter === 'All' ? ARTICLES
     : filter === 'Featured' ? ARTICLES.filter(a => a.featured)
     : filter === 'New' ? ARTICLES.filter(a => isNew(a.date))
     : ARTICLES.filter(a => a.category === filter)
-  const visible = filtered.slice(0, showCount)
+
+  // Sort: featured first, then new, then rest
+  const sorted = [...filtered].sort((a, b) => {
+    const aScore = (a.featured ? 2 : 0) + (isNew(a.date) ? 1 : 0)
+    const bScore = (b.featured ? 2 : 0) + (isNew(b.date) ? 1 : 0)
+    return bScore - aScore
+  })
+  const visible = sorted.slice(0, showCount)
 
   return (
     <>
@@ -40,7 +47,7 @@ export default function Writing() {
                 <button
                   key={c}
                   className={`filter-btn ${filter === c ? 'active' : ''}`}
-                  onClick={() => { setFilter(c); setShowCount(6) }}
+                  onClick={() => { setFilter(c); setShowCount(100) }}
                 >
                   {c}
                 </button>
@@ -50,10 +57,16 @@ export default function Writing() {
 
           <StaggerContainer key={filter} className="writing-grid">
             {visible.map(article => (
-              <StaggerItem key={article.slug} className="writing-card">
+              <StaggerItem key={article.slug} className={`writing-card${article.featured ? ' writing-card--featured' : ''}${isNew(article.date) ? ' writing-card--new' : ''}`}>
                 <Link to={`/writing/${article.slug}`}>
                   <GlassCard>
-                    <GenerativeCover slug={article.slug} category={article.category} height={160} className="wc-cover" />
+                    {(article.featured || isNew(article.date)) && (
+                      <div className="wc-spotlight">
+                        {article.featured && <span className="wc-spotlight-label">★ Featured</span>}
+                        {isNew(article.date) && <span className="wc-spotlight-label wc-spotlight-new">New</span>}
+                      </div>
+                    )}
+                    <GenerativeCover slug={article.slug} category={article.category} height={article.featured ? 200 : 160} className="wc-cover" />
                     <div className="wc-meta">
                       <span className="wc-tag">{article.category}</span>
                       {article.featured && <span className="wc-badge featured">Featured</span>}
