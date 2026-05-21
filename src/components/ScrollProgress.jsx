@@ -14,17 +14,16 @@ export default function ScrollProgress() {
   }, [])
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        height: '1px',
-        width: `${progress * 100}%`,
-        background: 'rgba(255,255,255,0.6)',
-        zIndex: 1000,
-        transition: 'width 0.1s linear',
-      }}
-    />
+    <>
+      {/* Vertical progress line — right edge */}
+      <div className="scroll-progress-track">
+        <div className="scroll-progress-fill" style={{ height: `${progress * 100}%` }} />
+        <div className="scroll-progress-dot" style={{ top: `${progress * 100}%` }} />
+      </div>
+      {/* Percentage counter in nav area */}
+      <div className="scroll-progress-pct" style={{ opacity: progress > 0.01 ? 1 : 0 }}>
+        <span>{Math.round(progress * 100).toString().padStart(2, '0')}</span>%
+      </div>
+    </>
   )
 }

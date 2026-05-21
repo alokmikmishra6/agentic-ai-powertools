@@ -1,132 +1,200 @@
 import { useRef, useEffect, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DESIGN PHILOSOPHY:
-   The 3D scene visualizes "the architecture of intelligence" — not generic
-   space/planets. Every element has meaning:
-   - Central nexus = the intelligence core (icosahedron — platonic solid)
-   - Network nodes = distributed systems / microservices / agents
-   - Connection lines = data flow / architecture relationships
-   - Flowing particles = live data streaming through the system
-   - Ambient field = the possibility space of computation
-
-   Color system: Single gold (#c9a87c) palette with opacity for depth.
-   This creates visual unity between 3D scene and UI.
+   AURORA NOISE FIELD — Fullscreen shader art
+   
+   No geometric primitives. No rotating spheres.
+   Pure mathematical visual art via fragment shader:
+   - Multi-layered simplex noise creating organic aurora ribbons
+   - Mouse-reactive distortion field
+   - Scroll-reactive color morphing
+   - Subtle grain + film texture
+   
+   Inspired by: Linear.app, Vercel, Stripe, Lusion.co
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function damp(current, target, speed, dt) {
-  return current + (target - current) * (1 - Math.exp(-speed * dt))
-}
+const auroraVertexShader = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = vec4(position, 1.0);
+  }
+`
 
-// Seeded random for deterministic node placement
-function seededRandom(seed) {
-  const x = Math.sin(seed * 9301 + 49297) * 49297
-  return x - Math.floor(x)
-}
+const auroraFragmentShader = `
+  precision highp float;
+  
+  varying vec2 vUv;
+  uniform float uTime;
+  uniform vec2 uMouse;
+  uniform float uScroll;
+  uniform vec2 uResolution;
+  uniform float uLoad;
+  
+  // ── Simplex 3D noise ──
+  vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+  vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+  vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+  vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+  
+  float snoise(vec3 v) {
+    const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+    vec3 i = floor(v + dot(v, C.yyy));
+    vec3 x0 = v - i + dot(i, C.xxx);
+    vec3 g = step(x0.yzx, x0.xyz);
+    vec3 l = 1.0 - g;
+    vec3 i1 = min(g.xyz, l.zxy);
+    vec3 i2 = max(g.xyz, l.zxy);
+    vec3 x1 = x0 - i1 + C.xxx;
+    vec3 x2 = x0 - i2 + C.yyy;
+    vec3 x3 = x0 - D.yyy;
+    i = mod289(i);
+    vec4 p = permute(permute(permute(
+      i.z + vec4(0.0, i1.z, i2.z, 1.0))
+      + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+      + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+    float n_ = 0.142857142857;
+    vec3 ns = n_ * D.wyz - D.xzx;
+    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+    vec4 x_ = floor(j * ns.z);
+    vec4 y_ = floor(j - 7.0 * x_);
+    vec4 x2_ = x_ * ns.x + ns.yyyy;
+    vec4 y2_ = y_ * ns.x + ns.yyyy;
+    vec4 h = 1.0 - abs(x2_) - abs(y2_);
+    vec4 b0 = vec4(x2_.xy, y2_.xy);
+    vec4 b1 = vec4(x2_.zw, y2_.zw);
+    vec4 s0 = floor(b0)*2.0 + 1.0;
+    vec4 s1 = floor(b1)*2.0 + 1.0;
+    vec4 sh = -step(h, vec4(0.0));
+    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+    vec3 p0 = vec3(a0.xy, h.x);
+    vec3 p1 = vec3(a0.zw, h.y);
+    vec3 p2 = vec3(a1.xy, h.z);
+    vec3 p3 = vec3(a1.zw, h.w);
+    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+    p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+    m = m * m;
+    return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+  }
+  
+  // ── Fractional Brownian Motion ──
+  float fbm(vec3 p) {
+    float value = 0.0;
+    float amplitude = 0.5;
+    float frequency = 1.0;
+    for (int i = 0; i < 5; i++) {
+      value += amplitude * snoise(p * frequency);
+      frequency *= 2.0;
+      amplitude *= 0.5;
+    }
+    return value;
+  }
+  
+  // ── Domain warping (creates organic flowing shapes) ──
+  float warpedNoise(vec3 p) {
+    vec3 q = vec3(
+      fbm(p + vec3(0.0, 0.0, 0.0)),
+      fbm(p + vec3(5.2, 1.3, 2.8)),
+      fbm(p + vec3(1.7, 9.2, 3.4))
+    );
+    vec3 r = vec3(
+      fbm(p + 4.0 * q + vec3(1.7, 9.2, 0.0) + 0.15 * uTime),
+      fbm(p + 4.0 * q + vec3(8.3, 2.8, 0.0) + 0.12 * uTime),
+      fbm(p + 4.0 * q + vec3(3.1, 4.7, 0.0) + 0.1 * uTime)
+    );
+    return fbm(p + 4.0 * r);
+  }
+  
+  void main() {
+    vec2 uv = vUv;
+    vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
+    vec2 st = (uv - 0.5) * aspect;
+    
+    // Mouse influence — distorts UV space (subtle warp)
+    vec2 mouseInfluence = uMouse * 0.15;
+    float mouseDist = length(st - mouseInfluence);
+    float mouseWarp = smoothstep(0.8, 0.0, mouseDist) * 0.08;
+    st += normalize(st - mouseInfluence) * mouseWarp;
+    
+    // Scroll morphs the noise space
+    float scrollOffset = uScroll * 2.0;
+    
+    // ── Layer 1: Deep aurora ribbons ──
+    float n1 = warpedNoise(vec3(st * 1.2, uTime * 0.05 + scrollOffset * 0.3));
+    
+    // ── Layer 2: Mid-frequency detail ──
+    float n2 = snoise(vec3(st * 2.5 + n1 * 0.5, uTime * 0.08 + scrollOffset * 0.5));
+    
+    // ── Layer 3: Fine grain movement ──
+    float n3 = snoise(vec3(st * 5.0 + vec2(n1, n2) * 0.3, uTime * 0.12 + scrollOffset));
+    
+    // ── Combine into aurora shape ──
+    float aurora = smoothstep(-0.4, 0.8, n1) * 0.6;
+    aurora += smoothstep(-0.2, 0.6, n2) * 0.25;
+    aurora += smoothstep(0.0, 0.5, n3) * 0.1;
+    
+    // Concentrate aurora in bands (like real aurora borealis)
+    float band = sin(st.y * 3.0 + n1 * 2.0 + uTime * 0.03) * 0.5 + 0.5;
+    aurora *= mix(0.4, 1.0, band);
+    
+    // Mouse proximity boost
+    float mouseGlow = smoothstep(0.6, 0.0, mouseDist) * 0.3;
+    aurora += mouseGlow;
+    
+    // ── Color palette (gold/warm tones — matches brand) ──
+    vec3 color1 = vec3(0.788, 0.659, 0.486); // #c9a87c gold
+    vec3 color2 = vec3(0.42, 0.30, 0.18);    // deep amber
+    vec3 color3 = vec3(0.15, 0.10, 0.06);    // near-black warm
+    vec3 color4 = vec3(0.55, 0.40, 0.25);    // mid warm
+    
+    // Scroll shifts palette subtly
+    float scrollHue = uScroll * 0.3;
+    vec3 colorA = mix(color2, color1, smoothstep(-0.3, 0.5, n1 + scrollHue));
+    vec3 colorB = mix(color3, color4, smoothstep(-0.2, 0.4, n2));
+    vec3 finalColor = mix(colorB, colorA, aurora);
+    
+    // Intensity control
+    finalColor *= aurora * 0.7 + 0.02; // Very dark base, bright only where aurora exists
+    
+    // ── Edge fade (natural vignette in shader) ──
+    float edgeFade = 1.0 - smoothstep(0.3, 0.9, length(st * 0.8));
+    finalColor *= edgeFade;
+    
+    // ── Film grain ──
+    float grain = fract(sin(dot(uv * uTime * 0.01, vec2(12.9898, 78.233))) * 43758.5453);
+    finalColor += (grain - 0.5) * 0.015;
+    
+    // ── Load-in fade ──
+    finalColor *= uLoad;
+    
+    // Keep overall brightness very low — this is a background
+    finalColor *= 0.35;
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`
 
-// ═══ NETWORK GRAPH — The core visualization ═══
-function NetworkGraph() {
-  const groupRef = useRef()
-  const linesRef = useRef()
-  const nodesRef = useRef([])
-  const nexusRef = useRef()
-  const nexusInnerRef = useRef()
-  const flowRef = useRef()
-  const fieldRef = useRef()
-
+// ═══ AURORA MESH — Fullscreen quad with custom shader ═══
+function AuroraMesh() {
+  const meshRef = useRef()
   const scrollRef = useRef(0)
   const mouseRef = useRef({ x: 0, y: 0 })
   const smoothMouse = useRef({ x: 0, y: 0 })
-  const loadProgress = useRef(0)
+  const loadRef = useRef(0)
 
-  // Generate network topology
-  const nodeCount = 18
-  const network = useMemo(() => {
-    const nodes = []
-    const connections = []
-
-    for (let i = 0; i < nodeCount; i++) {
-      const layer = i < 5 ? 0 : i < 12 ? 1 : 2
-      const layerRadius = [3.5, 6.5, 10][layer]
-      const angleOffset = layer * 0.4
-      const nodesInLayer = [5, 7, 6][layer]
-      const indexInLayer = i - [0, 5, 12][layer]
-      const angle = angleOffset + (indexInLayer / nodesInLayer) * Math.PI * 2
-      const elevation = (seededRandom(i * 7 + 3) - 0.5) * layerRadius * 0.6
-
-      const x = Math.cos(angle) * layerRadius + (seededRandom(i * 13) - 0.5) * 1.5
-      const y = elevation
-      const z = Math.sin(angle) * layerRadius * 0.7 + (seededRandom(i * 19) - 0.5) * 2 - 3
-
-      const size = [0.25, 0.16, 0.1][layer]
-      const geoType = layer
-
-      nodes.push({ x, y, z, size, layer, geoType, angle })
-    }
-
-    // Connect nearby nodes, prioritize cross-layer connections
-    for (let i = 0; i < nodeCount; i++) {
-      for (let j = i + 1; j < nodeCount; j++) {
-        const dx = nodes[i].x - nodes[j].x
-        const dy = nodes[i].y - nodes[j].y
-        const dz = nodes[i].z - nodes[j].z
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-        const layerDiff = Math.abs(nodes[i].layer - nodes[j].layer)
-        const threshold = layerDiff === 1 ? 5.5 : layerDiff === 0 ? 4.0 : 8.0
-
-        if (dist < threshold && seededRandom(i * 100 + j) > 0.35) {
-          connections.push([i, j, dist])
-        }
-      }
-    }
-
-    return { nodes, connections }
-  }, [])
-
-  // Line geometry for connections
-  const linePositions = useMemo(() => {
-    const arr = new Float32Array(network.connections.length * 6)
-    network.connections.forEach(([i, j], idx) => {
-      arr[idx * 6] = network.nodes[i].x
-      arr[idx * 6 + 1] = network.nodes[i].y
-      arr[idx * 6 + 2] = network.nodes[i].z
-      arr[idx * 6 + 3] = network.nodes[j].x
-      arr[idx * 6 + 4] = network.nodes[j].y
-      arr[idx * 6 + 5] = network.nodes[j].z
-    })
-    return arr
-  }, [network])
-
-  // Data flow particles
-  const flowCount = 90
-  const flowData = useMemo(() => {
-    const positions = new Float32Array(flowCount * 3)
-    const meta = []
-    for (let i = 0; i < flowCount; i++) {
-      const connIdx = Math.floor(seededRandom(i * 37) * network.connections.length)
-      const progress = seededRandom(i * 53)
-      const speed = 0.3 + seededRandom(i * 71) * 0.7
-      meta.push({ connIdx, progress, speed })
-    }
-    return { positions, meta }
-  }, [network])
-
-  // Ambient field particles
-  const fieldCount = 180
-  const fieldPositions = useMemo(() => {
-    const arr = new Float32Array(fieldCount * 3)
-    for (let i = 0; i < fieldCount; i++) {
-      const theta = seededRandom(i * 23) * Math.PI * 2
-      const phi = Math.acos(2 * seededRandom(i * 31) - 1)
-      const r = 4 + seededRandom(i * 41) * 16
-      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta)
-      arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.5
-      arr[i * 3 + 2] = r * Math.cos(phi) * 0.7 - 4
-    }
-    return arr
-  }, [])
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uMouse: { value: new THREE.Vector2(0, 0) },
+    uScroll: { value: 0 },
+    uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+    uLoad: { value: 0 },
+  }), [])
 
   useEffect(() => {
     const onScroll = () => { scrollRef.current = window.scrollY }
@@ -134,215 +202,56 @@ function NetworkGraph() {
       mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
       mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1
     }
+    const onResize = () => {
+      uniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('mousemove', onMouse, { passive: true })
+    window.addEventListener('resize', onResize)
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('mousemove', onMouse)
+      window.removeEventListener('resize', onResize)
     }
-  }, [])
+  }, [uniforms])
 
-  useFrame(({ clock }, delta) => {
-    const t = clock.getElapsedTime()
-    const scroll = scrollRef.current
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-    const progress = maxScroll > 0 ? scroll / maxScroll : 0
+  useFrame((_, delta) => {
+    if (!meshRef.current) return
+    const mat = meshRef.current.material
 
-    // Entry animation (3s assembly)
-    loadProgress.current = Math.min(1, t / 3.0)
-    const lp = loadProgress.current
-    const eased = 1 - Math.pow(1 - lp, 3)
+    // Smooth load-in
+    loadRef.current = Math.min(1, loadRef.current + delta * 0.4)
+    mat.uniforms.uLoad.value = loadRef.current
+
+    // Time
+    mat.uniforms.uTime.value += delta
 
     // Smooth mouse
-    smoothMouse.current.x = damp(smoothMouse.current.x, mouseRef.current.x, 3, delta)
-    smoothMouse.current.y = damp(smoothMouse.current.y, mouseRef.current.y, 3, delta)
-    const mx = smoothMouse.current.x
-    const my = smoothMouse.current.y
+    smoothMouse.current.x += (mouseRef.current.x - smoothMouse.current.x) * delta * 3
+    smoothMouse.current.y += (mouseRef.current.y - smoothMouse.current.y) * delta * 3
+    mat.uniforms.uMouse.value.set(smoothMouse.current.x, smoothMouse.current.y)
 
-    // Landing/scroll phase
-    const landingScroll = Math.min(1, scroll / (window.innerHeight * 0.8))
-
-    if (groupRef.current) {
-      const baseX = landingScroll * 3.0 - progress * 1.5
-      const baseY = landingScroll * -0.3 + 0.1 - progress * 0.5
-      groupRef.current.position.set(
-        baseX + mx * 0.6,
-        baseY + my * 0.4,
-        -2
-      )
-
-      const entryScale = 0.15 + eased * 0.85
-      const scrollScale = 1.0 - progress * 0.2
-      groupRef.current.scale.setScalar(entryScale * scrollScale)
-
-      groupRef.current.rotation.y = t * 0.03 + progress * Math.PI * 0.4 + mx * 0.12
-      groupRef.current.rotation.x = 0.15 + t * 0.01 + progress * 0.3 + my * 0.08
-    }
-
-    // ── Nexus ──
-    if (nexusRef.current) {
-      nexusRef.current.rotation.y = t * 0.15
-      nexusRef.current.rotation.x = t * 0.08
-      const pulse = 0.2 + Math.sin(t * 1.2) * 0.05 + Math.sin(t * 0.4) * 0.03
-      const mouseGlow = 1 - Math.min(1, Math.sqrt(mx * mx + my * my))
-      nexusRef.current.material.opacity = (pulse + mouseGlow * 0.1) * eased
-    }
-    if (nexusInnerRef.current) {
-      nexusInnerRef.current.rotation.y = -t * 0.2
-      nexusInnerRef.current.rotation.z = t * 0.12
-      nexusInnerRef.current.material.opacity = (0.4 + Math.sin(t * 0.8) * 0.12) * eased
-    }
-
-    // ── Network nodes ──
-    nodesRef.current.forEach((ref, i) => {
-      if (!ref) return
-      const node = network.nodes[i]
-      const breathe = 1 + Math.sin(t * 0.5 + i * 1.3) * 0.08
-      ref.scale.setScalar(breathe * eased)
-      ref.position.x = node.x + Math.sin(t * 0.3 + i * 2.1) * 0.12
-      ref.position.y = node.y + Math.cos(t * 0.25 + i * 1.7) * 0.08
-      ref.position.z = node.z + Math.sin(t * 0.2 + i * 3.3) * 0.08
-      ref.rotation.y = t * 0.2 + i
-      ref.rotation.x = t * 0.1 + i * 0.5
-      const layerOpacity = [0.6, 0.35, 0.2][node.layer]
-      if (ref.children[0] && ref.children[0].material) {
-        ref.children[0].material.opacity = layerOpacity * eased
-      }
-      if (ref.children[1] && ref.children[1].material) {
-        ref.children[1].material.opacity = layerOpacity * 0.4 * eased
-      }
-    })
-
-    // ── Connection lines ──
-    if (linesRef.current) {
-      linesRef.current.material.opacity = 0.12 * eased
-    }
-
-    // ── Data flow particles ──
-    if (flowRef.current) {
-      const pos = flowRef.current.geometry.attributes.position.array
-      flowData.meta.forEach((m, i) => {
-        m.progress += m.speed * delta * 0.4
-        if (m.progress > 1) m.progress -= 1
-        const [nodeA, nodeB] = network.connections[m.connIdx]
-        const a = network.nodes[nodeA]
-        const b = network.nodes[nodeB]
-        const p = m.progress
-        pos[i * 3] = a.x + (b.x - a.x) * p + Math.sin(t * 0.3 + i) * 0.08
-        pos[i * 3 + 1] = a.y + (b.y - a.y) * p + Math.cos(t * 0.25 + i) * 0.06
-        pos[i * 3 + 2] = a.z + (b.z - a.z) * p
-      })
-      flowRef.current.geometry.attributes.position.needsUpdate = true
-      flowRef.current.material.opacity = 0.6 * eased
-    }
-
-    // ── Ambient field ──
-    if (fieldRef.current) {
-      const pos = fieldRef.current.geometry.attributes.position.array
-      for (let i = 0; i < fieldCount; i++) {
-        const idx = i * 3
-        pos[idx + 1] += Math.sin(t * 0.15 + i * 0.7) * 0.002
-        pos[idx] += Math.cos(t * 0.12 + i * 0.5) * 0.0015
-      }
-      fieldRef.current.geometry.attributes.position.needsUpdate = true
-      fieldRef.current.material.opacity = 0.15 * eased
-    }
+    // Scroll
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+    const progress = maxScroll > 0 ? scrollRef.current / maxScroll : 0
+    mat.uniforms.uScroll.value += (progress - mat.uniforms.uScroll.value) * delta * 2
   })
 
-  // Node geometries by layer type
-  const geoTypes = useMemo(() => [
-    new THREE.IcosahedronGeometry(1, 0),
-    new THREE.OctahedronGeometry(1, 0),
-    new THREE.TetrahedronGeometry(1, 0),
-  ], [])
-
   return (
-    <group ref={groupRef} position={[0, 0.1, -2]}>
-      {/* Central Nexus */}
-      <lineSegments ref={nexusRef}>
-        <wireframeGeometry args={[new THREE.IcosahedronGeometry(1.8, 1)]} />
-        <lineBasicMaterial color="#c9a87c" transparent opacity={0} />
-      </lineSegments>
-      <lineSegments ref={nexusInnerRef}>
-        <wireframeGeometry args={[new THREE.IcosahedronGeometry(1.1, 0)]} />
-        <lineBasicMaterial color="#d4b896" transparent opacity={0} />
-      </lineSegments>
-
-      {/* Network Nodes */}
-      {network.nodes.map((node, i) => (
-        <group
-          key={i}
-          ref={el => { nodesRef.current[i] = el }}
-          position={[node.x, node.y, node.z]}
-        >
-          <lineSegments scale={[node.size, node.size, node.size]}>
-            <wireframeGeometry args={[geoTypes[node.geoType]]} />
-            <lineBasicMaterial color="#c9a87c" transparent opacity={0.3} />
-          </lineSegments>
-          <mesh scale={[node.size * 0.5, node.size * 0.5, node.size * 0.5]}>
-            <sphereGeometry args={[1, 8, 6]} />
-            <meshBasicMaterial color="#c9a87c" transparent opacity={0.1} />
-          </mesh>
-        </group>
-      ))}
-
-      {/* Connection Lines */}
-      <lineSegments ref={linesRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={network.connections.length * 2}
-            array={linePositions}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <lineBasicMaterial color="#c9a87c" transparent opacity={0.06} />
-      </lineSegments>
-
-      {/* Data Flow Particles */}
-      <points ref={flowRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={flowCount}
-            array={flowData.positions}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          color="#c9a87c"
-          size={0.08}
-          transparent
-          opacity={0.6}
-          sizeAttenuation
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </points>
-
-      {/* Ambient Computation Field */}
-      <points ref={fieldRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={fieldCount}
-            array={fieldPositions}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          color="#c9a87c"
-          size={0.018}
-          transparent
-          opacity={0.1}
-          sizeAttenuation
-          depthWrite={false}
-        />
-      </points>
-    </group>
+    <mesh ref={meshRef} frustumCulled={false}>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        vertexShader={auroraVertexShader}
+        fragmentShader={auroraFragmentShader}
+        uniforms={uniforms}
+        depthTest={false}
+        depthWrite={false}
+      />
+    </mesh>
   )
 }
 
+// ═══ EXPORT ═══
 export default function ImmersiveBackground() {
   return (
     <div style={{
@@ -352,12 +261,21 @@ export default function ImmersiveBackground() {
       pointerEvents: 'none',
     }}>
       <Canvas
-        camera={{ position: [0, 0, 12], fov: 50 }}
+        camera={{ position: [0, 0, 1], fov: 45 }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
-        style={{ width: '100%', height: '100%', background: 'transparent' }}
+        gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
+        style={{ width: '100%', height: '100%' }}
       >
-        <NetworkGraph />
+        <AuroraMesh />
+        <EffectComposer multisampling={0}>
+          <Bloom
+            luminanceThreshold={0.2}
+            luminanceSmoothing={0.9}
+            intensity={0.8}
+            mipmapBlur
+          />
+          <Vignette darkness={0.5} offset={0.2} />
+        </EffectComposer>
       </Canvas>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 
 /* ═══ APPLE-STYLE SCROLL ANIMATIONS ═══ */
@@ -110,8 +110,10 @@ export function TextMarquee({ text, speed = 300, className = '' }) {
 
   return (
     <div ref={ref} className={`text-marquee-wrap ${className}`}>
-      <motion.div className="text-marquee-track" style={{ x }}>
+      <motion.div className="text-marquee-track text-marquee-continuous" style={{ x }}>
         <span className="text-marquee-text">{text}</span>
+        <span className="text-marquee-text" aria-hidden="true">{text}</span>
+        <span className="text-marquee-text" aria-hidden="true">{text}</span>
         <span className="text-marquee-text" aria-hidden="true">{text}</span>
       </motion.div>
     </div>
@@ -212,4 +214,125 @@ export function Parallax({ children, speed = 0.2, className = '' }) {
       {children}
     </motion.div>
   )
+}
+
+// ── Content slides in from the side and rotates into place (3D perspective) ──
+export function PerspectiveReveal({ children, direction = 'left', delay = 0, className = '' }) {
+  const rotateY = direction === 'left' ? 25 : -25
+  const x = direction === 'left' ? -120 : 120
+  return (
+    <motion.div
+      className={className}
+      style={{ perspective: '1200px', height: '100%' }}
+      initial={{ opacity: 0, x, rotateY, filter: 'blur(4px)' }}
+      whileInView={{ opacity: 1, x: 0, rotateY: 0, filter: 'blur(0px)' }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 1.2, delay, ease }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// ── Content reveals through a clip-path wipe (like a curtain) ──
+export function ClipReveal({ children, direction = 'left', delay = 0, className = '' }) {
+  const clipFrom = {
+    left: 'inset(0 100% 0 0)',
+    right: 'inset(0 0 0 100%)',
+    top: 'inset(0 0 100% 0)',
+    bottom: 'inset(100% 0 0 0)',
+  }
+  return (
+    <motion.div
+      className={className}
+      initial={{ clipPath: clipFrom[direction], opacity: 0 }}
+      whileInView={{ clipPath: 'inset(0 0 0 0)', opacity: 1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 1.0, delay, ease: [0.77, 0, 0.175, 1] }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// ── Content flies toward viewer from deep Z-space ──
+export function DepthReveal({ children, delay = 0, className = '' }) {
+  return (
+    <motion.div
+      className={className}
+      style={{ perspective: '1000px', height: '100%' }}
+    >
+      <motion.div
+        initial={{ opacity: 0, z: -300, scale: 0.6, rotateX: 15, filter: 'blur(8px)' }}
+        whileInView={{ opacity: 1, z: 0, scale: 1, rotateX: 0, filter: 'blur(0px)' }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 1.4, delay, ease }}
+        style={{ transformStyle: 'preserve-3d', height: '100%' }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  )
+}
+
+// ── Cards fan out from center with staggered rotation ──
+export function FanReveal({ children, index = 0, total = 3, className = '' }) {
+  const spread = 8
+  const rotate = (index - (total - 1) / 2) * spread
+  const delay = index * 0.12
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, rotate: rotate * 2, y: 80, scale: 0.85 }}
+      whileInView={{ opacity: 1, rotate: 0, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 1.0, delay, ease }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// ── Horizontal scroll-linked section (pinned, content scrolls sideways) ──
+export function HorizontalScroll({ children, className = '' }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start']
+  })
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-60%'])
+
+  return (
+    <div ref={ref} className={`horizontal-scroll-outer ${className}`} style={{ height: '200vh' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+        <motion.div style={{ x, display: 'flex', gap: '40px', paddingLeft: '48px', paddingRight: '200px' }}>
+          {children}
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
+// ── Counter/number that counts up as it scrolls into view ──
+export function CountUp({ value, suffix = '', className = '' }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!isInView) return
+    const num = parseInt(value) || 0
+    const duration = 1500
+    const start = performance.now()
+    const tick = (now) => {
+      const elapsed = now - start
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 4)
+      setCount(Math.floor(eased * num))
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [isInView, value])
+
+  return <span ref={ref} className={className}>{isInView ? count : 0}{suffix}</span>
 }
