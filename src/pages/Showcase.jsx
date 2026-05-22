@@ -28,7 +28,7 @@ export default function Showcase() {
               {SHOWCASE.map((s, i) => (
                 <button
                   key={i}
-                  className={`sc-tab ${activeTab === i ? 'active' : ''}`}
+                  className={`sc-tab ${activeTab === i ? 'active' : ''} ${s.featured ? 'featured' : ''}`}
                   onClick={() => setActiveTab(i)}
                 >
                   {s.featured && <span className="sc-badge">★</span>}

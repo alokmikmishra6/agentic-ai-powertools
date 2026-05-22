@@ -69,8 +69,6 @@ export default function Writing() {
                     )}
                     <div className="wc-meta">
                       <span className="wc-tag">{article.category}</span>
-                      {article.featured && <span className="wc-badge featured">Featured</span>}
-                      {isNew(article.date) && <span className="wc-badge new">New</span>}
                       <span className="wc-date">{article.dateDisplay}</span>
                     </div>
                     <h3>{article.title}</h3>
@@ -116,29 +114,42 @@ export function ArticlePage() {
   }
 
   return (
-    <div className="container article-page">
-      <Reveal>
-        <Link to="/writing" className="article-back">← Back to writing</Link>
-      </Reveal>
-      <Reveal delay={0.1}>
-        <GenerativeCover slug={article.slug} category={article.category} height={320} className="article-cover" />
-      </Reveal>
-      <Reveal delay={0.15}>
-        <div className="article-meta-bar">
-          <span className="wc-tag">{article.category}</span>
-          <span>{article.dateDisplay}</span>
-          <span>{article.readTime}</span>
-        </div>
-        <h1>{article.title}</h1>
-      </Reveal>
-      <Reveal delay={0.2}>
-        <div className="article-body" dangerouslySetInnerHTML={{ __html: article.body }} />
-      </Reveal>
-      <Reveal delay={0.25}>
-        <div style={{ padding: '40px 0 80px' }}>
-          <Link to="/writing" className="article-back">← Back to all writing</Link>
-        </div>
-      </Reveal>
-    </div>
+    <article className="article-page">
+      <div className="article-page-inner">
+        <Reveal>
+          <Link to="/writing" className="article-back">← Back to writing</Link>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <GenerativeCover slug={article.slug} category={article.category} height={360} className="article-cover" />
+        </Reveal>
+        <Reveal delay={0.15}>
+          <div className="article-meta-bar">
+            <span className="wc-tag">{article.category}</span>
+            <span>{article.dateDisplay}</span>
+            <span>{article.readTime}</span>
+          </div>
+          <h1>{article.title}</h1>
+        </Reveal>
+
+        {/* TL;DR Summary Block */}
+        {(article.theme || article.excerpt) && (
+          <Reveal delay={0.18}>
+            <div className="article-tldr">
+              <div className="article-tldr-label">TL;DR</div>
+              <p className="article-tldr-text">{article.theme || article.excerpt}</p>
+            </div>
+          </Reveal>
+        )}
+
+        <Reveal delay={0.2}>
+          <div className="article-body" dangerouslySetInnerHTML={{ __html: article.body }} />
+        </Reveal>
+        <Reveal delay={0.25}>
+          <div className="article-footer-nav">
+            <Link to="/writing" className="article-back">← Back to all writing</Link>
+          </div>
+        </Reveal>
+      </div>
+    </article>
   )
 }

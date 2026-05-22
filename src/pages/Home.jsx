@@ -52,7 +52,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 40, filter: 'blur(12px)' }}
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   transition={{ delay: 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="cosmos-text-main"
+                  className="cosmos-text-main cosmos-golden"
                 >
                   Where Architecture<br />Meets Intelligence
                 </motion.span>
@@ -65,10 +65,10 @@ export default function Home() {
                   Systems that think. Architecture that scales. Intelligence by design.
                 </motion.span>
                 <motion.div
-                  initial={{ opacity: 0, scaleX: 0 }}
-                  animate={{ opacity: 1, scaleX: 1 }}
-                  transition={{ delay: 1.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="cosmos-line"
+                  className="cosmos-line-sony"
+                  initial={{ scaleX: 0, opacity: 1 }}
+                  animate={{ scaleX: 1, opacity: [1, 1, 1, 0] }}
+                  transition={{ delay: 1.8, duration: 2.5, ease: [0.22, 1, 0.36, 1], opacity: { delay: 3.5, duration: 0.8 } }}
                 />
               </div>
             </motion.div>
@@ -183,18 +183,16 @@ export default function Home() {
             <h2 className="section-title">How I think about <span className="gradient-text">building</span></h2>
           </ScaleReveal>
           <ClipReveal direction="bottom" delay={0.1}>
-            <p className="phi-quote">
+            <p className="phi-quote gradient-text">
               Great architecture is not about the technologies you choose. It is about the decisions you make before you choose them.
             </p>
           </ClipReveal>
-          <TextRevealByWord
-            text="The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong."
-            className="phi-body"
-          />
-          <TextRevealByWord
-            text="My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly."
-            className="phi-body"
-          />
+          <p className="phi-body">
+            The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong.
+          </p>
+          <p className="phi-body">
+            My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly.
+          </p>
           <div className="pillars-grid">
             {PILLARS.map((p, i) => (
               <FanReveal key={p.num} index={i} total={PILLARS.length}>

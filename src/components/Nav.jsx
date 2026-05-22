@@ -92,7 +92,7 @@ export default function Nav() {
     <>
       <nav className={`nav ${scrolled ? 'scrolled' : ''} ${visible ? 'nav-visible' : ''}`}>
         <div className="nav-inner">
-          <Link to="/" className="nav-brand">
+          <Link to="/" className="nav-brand" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
             <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="nav-logo" />
             Alok Mishra
           </Link>
