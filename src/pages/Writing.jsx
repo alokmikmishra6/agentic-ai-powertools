@@ -8,6 +8,7 @@ import ArticleTOC from '../components/ArticleTOC'
 import ReadingProgress from '../components/ReadingProgress'
 import CopyCodeBlocks from '../components/CopyCodeBlocks'
 import RelatedArticles from '../components/RelatedArticles'
+import Subscribe from '../components/Subscribe'
 import { ARTICLES } from '../data/content'
 
 const CATEGORIES = ['All', 'Featured', 'New', 'AI Systems', 'Architecture', 'Reflection', 'Leadership']
@@ -163,6 +164,11 @@ export function ArticlePage() {
         {/* Related Articles */}
         <Reveal delay={0.22}>
           <RelatedArticles currentSlug={article.slug} category={article.category} />
+        </Reveal>
+
+        {/* Subscribe CTA */}
+        <Reveal delay={0.23}>
+          <Subscribe compact />
         </Reveal>
 
         <Reveal delay={0.25}>

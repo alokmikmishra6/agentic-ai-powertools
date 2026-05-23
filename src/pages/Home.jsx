@@ -5,6 +5,7 @@ import { Reveal, ScaleReveal, SlideIn, FloatIn, ScrollScale, StaggerContainer, S
 import GlassCard from '../components/GlassCard'
 import TiltCard from '../components/TiltCard'
 import ExploreCardCanvas from '../components/ExploreCardCanvas'
+import Subscribe from '../components/Subscribe'
 import { DOMAINS, PILLARS, ARTICLES, SHOWCASE } from '../data/content'
 
 const TWO_WEEKS = 14 * 24 * 60 * 60 * 1000
@@ -262,6 +263,15 @@ export default function Home() {
       </section>
 
       {/* ═══ CONNECT ═══ */}
+      {/* ═══ SUBSCRIBE ═══ */}
+      <section id="subscribe" className="subscribe-section">
+        <div className="container">
+          <ScaleReveal>
+            <Subscribe />
+          </ScaleReveal>
+        </div>
+      </section>
+
       <section id="connect" className="connect-section">
         <div className="container">
           <ScaleReveal>

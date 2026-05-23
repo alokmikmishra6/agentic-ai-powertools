@@ -4,3 +4,5 @@ dist/
 *.backup.js
 *.backup.css
 .github/
+.env
+.env.local
