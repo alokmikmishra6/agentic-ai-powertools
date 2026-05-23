@@ -12,6 +12,7 @@ import ParallaxOverlays from './components/ParallaxOverlays'
 import SmoothScroll from './components/SmoothScroll'
 import CustomCursor from './components/CustomCursor'
 import PageTransition from './components/PageTransition'
+import CommandPalette from './components/CommandPalette'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -31,6 +32,7 @@ export default function App() {
       <ScrollProgress />
       <ScrollToTop />
       <Nav />
+      <CommandPalette />
       <main style={{ position: 'relative', zIndex: 1 }}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>

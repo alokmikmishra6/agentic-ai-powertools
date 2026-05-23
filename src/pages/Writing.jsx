@@ -3,6 +3,11 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Reveal, StaggerContainer, StaggerItem } from '../components/ScrollReveal'
 import GlassCard from '../components/GlassCard'
 import GenerativeCover from '../components/GenerativeCover'
+import ArticleAudioPlayer from '../components/ArticleAudioPlayer'
+import ArticleTOC from '../components/ArticleTOC'
+import ReadingProgress from '../components/ReadingProgress'
+import CopyCodeBlocks from '../components/CopyCodeBlocks'
+import RelatedArticles from '../components/RelatedArticles'
 import { ARTICLES } from '../data/content'
 
 const CATEGORIES = ['All', 'Featured', 'New', 'AI Systems', 'Architecture', 'Reflection', 'Leadership']
@@ -141,15 +146,37 @@ export function ArticlePage() {
           </Reveal>
         )}
 
+        {/* Audio Player */}
+        <Reveal delay={0.19}>
+          <ArticleAudioPlayer articleBody={article.body} title={article.title} />
+        </Reveal>
+
+        {/* Table of Contents — inline on mobile, fixed sidebar on desktop */}
+        <div className="article-toc-inline">
+          <ArticleTOC articleBody={article.body} />
+        </div>
+
         <Reveal delay={0.2}>
           <div className="article-body" dangerouslySetInnerHTML={{ __html: article.body }} />
         </Reveal>
+
+        {/* Related Articles */}
+        <Reveal delay={0.22}>
+          <RelatedArticles currentSlug={article.slug} category={article.category} />
+        </Reveal>
+
         <Reveal delay={0.25}>
           <div className="article-footer-nav">
             <Link to="/writing" className="article-back">← Back to all writing</Link>
           </div>
         </Reveal>
       </div>
+
+      {/* Floating: Reading Progress */}
+      <ReadingProgress readTime={article.readTime} />
+
+      {/* Inject copy buttons on code blocks */}
+      <CopyCodeBlocks />
     </article>
   )
 }

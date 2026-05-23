@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import WhatsNew from './WhatsNew'
 
 const NAV_ITEMS = [
   { label: 'About', href: '/#about' },
@@ -101,6 +102,7 @@ export default function Nav() {
               <li key={item.label}>{renderLink(item)}</li>
             ))}
           </ul>
+          <WhatsNew />
           <button
             className="nav-burger"
             onClick={() => setDrawerOpen(!drawerOpen)}
