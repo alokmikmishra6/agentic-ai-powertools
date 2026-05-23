@@ -13,7 +13,7 @@ export const ARTICLES = [
     featured: true,
     theme: "The role is not disappearing — it is ascending. From writing code to orchestrating systems of intelligence. The developers who thrive will be T-shaped: deep in engineering, broad in orchestration.",
     excerpt: "Google's Developer Intelligence team just told us where development is heading. 75% of their code is AI-generated. Here is what that means for architectural identity.",
-    body: `<p>Google's Developer Intelligence team recently presented at I/O 2025 with a number that should stop every software engineer mid-scroll: 75% of new code at Google is now written with AI assistance. Not autocomplete suggestions. Not snippet generation. Substantive, structural, production-bound code. If you are still thinking of AI as a faster keyboard, you are thinking about this wrong.</p>
+    body: `<p>Google's Developer Intelligence team recently presented at I/O 2026 with a number that should stop every software engineer mid-scroll: 75% of new code at Google is now written with AI assistance. Not autocomplete suggestions. Not snippet generation. Substantive, structural, production-bound code. If you are still thinking of AI as a faster keyboard, you are thinking about this wrong.</p>
 
 <p>The talk articulated something I have been observing across every team I advise: the developer role is not being replaced — it is being elevated. The unit of work is no longer the function or the class. It is the system. And the engineers who thrive in this new landscape are not the fastest coders — they are the clearest thinkers.</p>
 
