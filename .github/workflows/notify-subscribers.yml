@@ -1,0 +1,84 @@
+name: Notify Subscribers on New Content
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/data/content.js'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect new articles
+        id: detect
+        run: |
+          # Get articles added in this push by diffing content.js
+          DIFF=$(git diff HEAD~1 HEAD -- src/data/content.js || true)
+          
+          # Extract new slugs (lines starting with + that contain slug:)
+          NEW_SLUGS=$(echo "$DIFF" | grep '^\+.*slug:' | grep -v '^\+\+\+' | sed 's/.*slug: *"\([^"]*\)".*/\1/' || true)
+          
+          if [ -z "$NEW_SLUGS" ]; then
+            echo "No new articles detected."
+            echo "has_new=false" >> $GITHUB_OUTPUT
+          else
+            echo "New articles: $NEW_SLUGS"
+            echo "has_new=true" >> $GITHUB_OUTPUT
+            echo "slugs<<EOF" >> $GITHUB_OUTPUT
+            echo "$NEW_SLUGS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Extract article details and send email
+        if: steps.detect.outputs.has_new == 'true'
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          SITE_URL: https://alokmishra.github.io/agentic-ai-powertools
+        run: |
+          # Parse new article details from content.js
+          SLUGS="${{ steps.detect.outputs.slugs }}"
+          
+          # Build email body
+          SUBJECT="New on Alok's site"
+          BODY="Hey there,\n\nI just published new writing:\n\n"
+          
+          for SLUG in $SLUGS; do
+            # Extract title for this slug from content.js
+            TITLE=$(grep -A1 "slug: \"$SLUG\"" src/data/content.js | grep "title:" | head -1 | sed 's/.*title: *"\([^"]*\)".*/\1/' || echo "$SLUG")
+            EXCERPT=$(grep -A8 "slug: \"$SLUG\"" src/data/content.js | grep "excerpt:" | head -1 | sed 's/.*excerpt: *"\([^"]*\)".*/\1/' || echo "")
+            
+            BODY="${BODY}**[${TITLE}](${SITE_URL}/#/writing/${SLUG})**\n"
+            if [ -n "$EXCERPT" ]; then
+              BODY="${BODY}${EXCERPT}\n"
+            fi
+            BODY="${BODY}\n"
+          done
+          
+          BODY="${BODY}---\n\nAs always — no fluff, just signal.\n\n— Alok"
+          
+          # Count new articles for subject line
+          COUNT=$(echo "$SLUGS" | wc -w | tr -d ' ')
+          if [ "$COUNT" -gt 1 ]; then
+            SUBJECT="$COUNT new essays just dropped"
+          else
+            FIRST_TITLE=$(echo "$SLUGS" | head -1)
+            TITLE=$(grep -A1 "slug: \"$FIRST_TITLE\"" src/data/content.js | grep "title:" | head -1 | sed 's/.*title: *"\([^"]*\)".*/\1/' || echo "New post")
+            SUBJECT="New: $TITLE"
+          fi
+          
+          # Send via Buttondown API
+          curl -s -X POST "https://api.buttondown.email/v1/emails" \
+            -H "Authorization: Token $BUTTONDOWN_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg subject "$SUBJECT" \
+              --arg body "$(printf '%b' "$BODY")" \
+              '{subject: $subject, body: $body, status: "sent"}'
+            )"
+          
+          echo "Newsletter sent: $SUBJECT"

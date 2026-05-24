@@ -3,6 +3,6 @@ dist/
 .DS_Store
 *.backup.js
 *.backup.css
-.github/
 .env
 .env.local
+.github/prompts/ui-ux-pro-max/
