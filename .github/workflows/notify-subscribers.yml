@@ -112,7 +112,7 @@ jobs:
             -d "$(jq -n \
               --arg subject "$SUBJECT" \
               --arg body "$BODY" \
-              '{subject: $subject, body: $body, status: "sent"}'
+              '{subject: $subject, body: $body, status: "about_to_send"}'
             )")
           
           HTTP_CODE=$(echo "$RESPONSE" | tail -1)
