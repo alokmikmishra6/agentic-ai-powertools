@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const BUTTONDOWN_API = 'https://api.buttondown.email/v1/subscribers'
+const BUTTONDOWN_API = 'https://api.buttondown.com/v1/subscribers'
 
 /**
  * Email subscribe form — connects to Buttondown.

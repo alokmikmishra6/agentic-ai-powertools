@@ -78,7 +78,7 @@ export default function WhatsNew() {
     }
 
     try {
-      const res = await fetch('https://api.buttondown.email/v1/subscribers', {
+      const res = await fetch('https://api.buttondown.com/v1/subscribers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

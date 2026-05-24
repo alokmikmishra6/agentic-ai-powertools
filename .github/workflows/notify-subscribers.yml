@@ -106,9 +106,10 @@ jobs:
           echo "Body preview: $(echo "$BODY" | head -5)"
           
           # Send via Buttondown API
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://api.buttondown.email/v1/emails" \
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://api.buttondown.com/v1/emails" \
             -H "Authorization: Token $BUTTONDOWN_API_KEY" \
             -H "Content-Type: application/json" \
+            -H "X-Buttondown-Live-Dangerously: true" \
             -d "$(jq -n \
               --arg subject "$SUBJECT" \
               --arg body "$BODY" \
