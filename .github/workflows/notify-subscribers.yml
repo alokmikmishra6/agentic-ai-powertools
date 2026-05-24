@@ -5,6 +5,12 @@ on:
     branches: [main]
     paths:
       - 'src/data/content.js'
+  workflow_dispatch:
+    inputs:
+      test_slug:
+        description: 'Article slug to test with (e.g. token-economy-agentic-systems)'
+        required: false
+        default: ''
 
 jobs:
   notify:
@@ -17,6 +23,17 @@ jobs:
       - name: Detect new articles
         id: detect
         run: |
+          # Manual trigger with test slug
+          TEST_SLUG="${{ github.event.inputs.test_slug }}"
+          if [ -n "$TEST_SLUG" ]; then
+            echo "Manual trigger with slug: $TEST_SLUG"
+            echo "has_new=true" >> $GITHUB_OUTPUT
+            echo "slugs<<EOF" >> $GITHUB_OUTPUT
+            echo "$TEST_SLUG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           # Compare the full push range (handles multi-commit pushes)
           BEFORE="${{ github.event.before }}"
           AFTER="${{ github.sha }}"
