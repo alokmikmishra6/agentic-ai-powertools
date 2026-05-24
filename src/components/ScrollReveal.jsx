@@ -100,22 +100,17 @@ export function ScrollSlide({ children, speed = 100, className = '' }) {
 }
 
 // Horizontal text marquee that moves with scroll — Juan Mora style
-export function TextMarquee({ text, speed = 300, className = '' }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start']
-  })
-  const x = useTransform(scrollYProgress, [0, 1], [0, -speed])
-
+export function TextMarquee({ text, speed = 40, className = '' }) {
   return (
-    <div ref={ref} className={`text-marquee-wrap ${className}`}>
-      <motion.div className="text-marquee-track text-marquee-continuous" style={{ x }}>
+    <div className={`text-marquee-wrap ${className}`}>
+      <div className="text-marquee-fade text-marquee-fade--left" />
+      <div className="text-marquee-fade text-marquee-fade--right" />
+      <div className="text-marquee-track">
         <span className="text-marquee-text">{text}</span>
         <span className="text-marquee-text" aria-hidden="true">{text}</span>
         <span className="text-marquee-text" aria-hidden="true">{text}</span>
         <span className="text-marquee-text" aria-hidden="true">{text}</span>
-      </motion.div>
+      </div>
     </div>
   )
 }

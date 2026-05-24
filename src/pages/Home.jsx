@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Reveal, ScaleReveal, SlideIn, FloatIn, ScrollScale, StaggerContainer, StaggerItem, Parallax, TextMarquee, TextRevealByWord, PerspectiveReveal, ClipReveal, DepthReveal, FanReveal, HorizontalScroll } from '../components/ScrollReveal'
+import { Reveal, ScaleReveal, FloatIn, StaggerContainer, StaggerItem, ClipReveal, DepthReveal } from '../components/ScrollReveal'
 import GlassCard from '../components/GlassCard'
 import TiltCard from '../components/TiltCard'
 import ExploreCardCanvas from '../components/ExploreCardCanvas'
 import Subscribe from '../components/Subscribe'
-import { DOMAINS, PILLARS, ARTICLES, SHOWCASE } from '../data/content'
+import { ARTICLES, SHOWCASE } from '../data/content'
 
 const TWO_WEEKS = 14 * 24 * 60 * 60 * 1000
 const hasNewContent = (items, dateField = 'date') =>
@@ -136,104 +136,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ MARQUEE DIVIDER ═══ */}
-      <TextMarquee text="Architecture · Intelligence · Systems · Scale · Production · " speed={400} />
-
-      {/* ═══ ABOUT ═══ */}
-      <section id="about">
-        <div className="container">
-          <ScaleReveal>
-            <div className="section-eyebrow">About</div>
-            <h2 className="section-title">What I <span className="gradient-text">do</span></h2>
-          </ScaleReveal>
-          <ClipReveal direction="left" delay={0.1}>
-            <div className="about-wrap">
-              <div className="about-text">
-                <p>I'm Alok Mishra — a Senior Software Architect with close to two decades of hands-on experience building production systems at scale. My work sits at the intersection of <strong>AI/ML infrastructure</strong>, <strong>cloud-native distributed systems</strong>, and <strong>IoT platforms</strong> that serve millions of devices.</p>
-                <p>Currently I focus on designing agentic AI workflows, RAG pipelines, and LLM integrations that go beyond demos into systems that are reliable, auditable, and safe to run autonomously. I care deeply about the architecture that surrounds intelligence — the trust boundaries, the evaluation frameworks, the operational scaffolding.</p>
-                <p>Before AI became the centre of gravity, I spent years architecting real-time data platforms, event-driven microservice ecosystems, and large-scale IoT infrastructure across healthcare, industrial, and enterprise domains.</p>
-              </div>
-              <div className="about-stats">
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">~20</span>
-                  <span className="about-stat-label">Years in Software</span>
-                </div>
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">AI</span>
-                  <span className="about-stat-label">Systems & Agentic Workflows</span>
-                </div>
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">Cloud</span>
-                  <span className="about-stat-label">Native Architecture</span>
-                </div>
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">IoT</span>
-                  <span className="about-stat-label">Platforms at Scale</span>
-                </div>
-              </div>
-            </div>
-          </ClipReveal>
-        </div>
+      {/* ═══ SCROLL KEYWORDS ═══ */}
+      <section className="scroll-keywords">
+        <StaggerContainer className="scroll-keywords-track">
+          {['Agentic AI', 'Distributed Systems', 'Cloud Architecture', 'RAG Pipelines', 'IoT at Scale', 'Engineering Craft'].map((item) => (
+            <StaggerItem key={item} className="scroll-keyword">{item}</StaggerItem>
+          ))}
+        </StaggerContainer>
       </section>
-
-      {/* ═══ PHILOSOPHY ═══ */}
-      <section id="philosophy" className="phi-section">
-        <div className="container">
-          <ScaleReveal>
-            <div className="section-eyebrow">Perspective</div>
-            <h2 className="section-title">How I think about <span className="gradient-text">building</span></h2>
-          </ScaleReveal>
-          <ClipReveal direction="bottom" delay={0.1}>
-            <p className="phi-quote gradient-text">
-              Great architecture is not about the technologies you choose. It is about the decisions you make before you choose them.
-            </p>
-          </ClipReveal>
-          <p className="phi-body">
-            The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong.
-          </p>
-          <p className="phi-body">
-            My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly.
-          </p>
-          <div className="pillars-grid">
-            {PILLARS.map((p, i) => (
-              <FanReveal key={p.num} index={i} total={PILLARS.length}>
-                <div className="pillar">
-                  <span className="pillar-num">{p.num}</span>
-                  <div>
-                    <h4>{p.title}</h4>
-                    <p>{p.desc}</p>
-                  </div>
-                </div>
-              </FanReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ DOMAINS ═══ */}
-      <section id="domains">
-        <div className="container">
-          <ScaleReveal>
-            <div className="section-eyebrow">Expertise</div>
-            <h2 className="section-title">Domains of <span className="gradient-text">deep work</span></h2>
-            <p className="domains-lead">Across close to two decades my focus has crystallised into areas where I have developed both technical depth and architectural judgement — not just experience, but genuine design intuition earned through consequential decisions in production environments.</p>
-          </ScaleReveal>
-          <div className="domains-grid">
-            {DOMAINS.map((d, i) => (
-              <PerspectiveReveal key={d.title} direction={i % 2 === 0 ? 'left' : 'right'} delay={i * 0.1}>
-                <TiltCard className="domain-card">
-                  <div className="domain-icon">{d.icon}</div>
-                  <h3>{d.title}</h3>
-                  <p>{d.desc}</p>
-                </TiltCard>
-              </PerspectiveReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ MARQUEE DIVIDER ═══ */}
-      <TextMarquee text="Deep Work · AI Systems · Cloud Native · Distributed Design · " speed={-350} />
 
       {/* ═══ EXPLORE ═══ */}
       <section id="explore">

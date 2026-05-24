@@ -3,12 +3,13 @@ import { Link, useLocation } from 'react-router-dom'
 import WhatsNew from './WhatsNew'
 
 const NAV_ITEMS = [
-  { label: 'About', href: '/#about' },
-  { label: 'Philosophy', href: '/#philosophy' },
-  { label: 'Domains', href: '/#domains' },
   { label: 'Showcase', href: '/showcase' },
   { label: 'Thinking', href: '/thinking' },
   { label: 'Writing', href: '/writing' },
+]
+
+const NAV_SECONDARY = [
+  { label: 'About', href: '/about' },
   { label: 'Connect', href: '/#connect' },
 ]
 
@@ -101,6 +102,10 @@ export default function Nav() {
             {NAV_ITEMS.map(item => (
               <li key={item.label}>{renderLink(item)}</li>
             ))}
+            <li className="nav-divider" aria-hidden="true" />
+            {NAV_SECONDARY.map(item => (
+              <li key={item.label}>{renderLink(item)}</li>
+            ))}
           </ul>
           <WhatsNew />
           <button
@@ -115,6 +120,10 @@ export default function Nav() {
       <div className={`nav-drawer ${drawerOpen ? 'open' : ''}`}>
         <Link to="/" onClick={() => setDrawerOpen(false)}>Home</Link>
         {NAV_ITEMS.map(item => (
+          <span key={item.label}>{renderLink(item)}</span>
+        ))}
+        <div className="nav-drawer-divider" />
+        {NAV_SECONDARY.map(item => (
           <span key={item.label}>{renderLink(item)}</span>
         ))}
       </div>

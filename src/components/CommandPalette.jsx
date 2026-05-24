@@ -25,6 +25,7 @@ const ALL_ITEMS = [
     keywords: `${s.title} ${s.tag} ${s.description || ''}`.toLowerCase(),
   })),
   { type: 'page', title: 'Home', subtitle: 'Landing page', path: '/', keywords: 'home landing' },
+  { type: 'page', title: 'About', subtitle: 'Bio, philosophy & expertise', path: '/about', keywords: 'about bio philosophy domains expertise' },
   { type: 'page', title: 'Writing', subtitle: 'All articles', path: '/writing', keywords: 'writing articles blog' },
   { type: 'page', title: 'Showcase', subtitle: 'Code gallery', path: '/showcase', keywords: 'showcase code projects' },
   { type: 'page', title: 'Thinking', subtitle: 'Philosophy & models', path: '/thinking', keywords: 'thinking philosophy mental models' },
