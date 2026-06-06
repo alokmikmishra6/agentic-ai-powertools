@@ -4,6 +4,658 @@ const _isNew = (dateStr) => (Date.now() - new Date(dateStr).getTime()) < TWO_WEE
 
 export const ARTICLES = [
   {
+    slug: "agentic-ai-harness-engineering",
+    title: "Agentic AI Harness Engineering: Building the Control Plane for Autonomous Systems",
+    category: "AI Systems",
+    date: "2026-06-05",
+    dateDisplay: "Jun 5, 2026",
+    readTime: "22 min read",
+    featured: true,
+    theme: "An AI harness is not a wrapper around an LLM. It is the engineered substrate — the nervous system — that governs how agents perceive, decide, act, and recover. Without it, you have a demo. With it, you have a production system.",
+    excerpt: "The difference between a prototype agent and a production agent is not the model. It is the harness — the orchestration layer that handles retries, fallbacks, state, evaluation, and graceful degradation when the LLM inevitably fails.",
+    body: `<p>Every team building agentic AI hits the same wall. The prototype works beautifully in a demo — the agent reasons, calls tools, produces correct outputs. Then you ship it. Within hours, you discover that the LLM hallucinates a tool name, retries infinitely, loses state mid-conversation, or silently degrades in quality with no signal that anything is wrong.</p>
+
+<p>The difference between that prototype and a production system is not a better model. It is the harness — the engineered control plane that wraps, constrains, monitors, and recovers the agent through every failure mode the real world will throw at it.</p>
+
+<p>I call this discipline <strong>harness engineering</strong>: the systematic design of the non-LLM infrastructure that makes agentic systems reliable, observable, and safe at scale. It is the most under-discussed and under-invested layer in the agentic AI stack, and it is the layer that determines whether your system survives contact with production traffic.</p>
+
+<h3>What Is an Agent Harness?</h3>
+
+<p>An agent harness is the orchestration substrate that sits between your application logic and the LLM. It is responsible for everything the model cannot be trusted to do reliably: managing state across turns, enforcing execution policies, handling failures gracefully, collecting telemetry, and ensuring the agent operates within defined boundaries.</p>
+
+<div style="margin: 2.5rem auto; max-width: 700px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; text-align: center;">Anatomy of an Agent Harness</div>
+
+<div style="display: flex; flex-direction: column; gap: 0.4rem; align-items: center;">
+
+<div style="width: 100%; background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.25); border-radius: 8px; padding: 0.6rem 1rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.65rem; font-weight: 700; color: #58a6ff;">APPLICATION LAYER</div>
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem;">Business logic, user interface, API endpoints</div>
+</div>
+
+<div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid rgba(212,184,150,0.5);"></div>
+
+<div style="width: 100%; background: linear-gradient(135deg, rgba(212,184,150,0.1), rgba(212,184,150,0.04)); border: 1.5px solid rgba(212,184,150,0.4); border-radius: 10px; padding: 1rem;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #d4b896; text-align: center; margin-bottom: 0.8rem; letter-spacing: 0.05em;">AGENT HARNESS</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+<div style="background: rgba(212,184,150,0.1); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #d4b896; font-weight: 600; margin-bottom: 0.25rem;">STATE MACHINE</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); line-height: 1.4;">Turn management<br/>Context windowing<br/>Memory persistence</div>
+</div>
+<div style="background: rgba(40,200,64,0.08); border: 1px solid rgba(40,200,64,0.2); border-radius: 6px; padding: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #28c840; font-weight: 600; margin-bottom: 0.25rem;">EXECUTION POLICY</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); line-height: 1.4;">Max retries<br/>Timeout enforcement<br/>Cost ceilings</div>
+</div>
+<div style="background: rgba(255,95,87,0.08); border: 1px solid rgba(255,95,87,0.2); border-radius: 6px; padding: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #ff5f57; font-weight: 600; margin-bottom: 0.25rem;">RECOVERY ENGINE</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); line-height: 1.4;">Fallback chains<br/>Circuit breakers<br/>Graceful degrade</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+<div style="background: rgba(254,188,46,0.08); border: 1px solid rgba(254,188,46,0.2); border-radius: 6px; padding: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #febc2e; font-weight: 600; margin-bottom: 0.25rem;">TOOL REGISTRY</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); line-height: 1.4;">Schema validation<br/>Permissions<br/>Rate limits</div>
+</div>
+<div style="background: rgba(138,99,210,0.08); border: 1px solid rgba(138,99,210,0.2); border-radius: 6px; padding: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #8a63d2; font-weight: 600; margin-bottom: 0.25rem;">EVALUATION LAYER</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); line-height: 1.4;">Output quality<br/>Guardrails<br/>Drift detection</div>
+</div>
+<div style="background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2); border-radius: 6px; padding: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #58a6ff; font-weight: 600; margin-bottom: 0.25rem;">TELEMETRY</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); line-height: 1.4;">Latency + cost<br/>Trace correlation<br/>Anomaly signals</div>
+</div>
+</div>
+</div>
+
+<div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid rgba(212,184,150,0.5);"></div>
+
+<div style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 0.6rem 1rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.65rem; font-weight: 700; color: rgba(255,255,255,0.5);">LLM PROVIDER</div>
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem;">OpenAI &middot; Anthropic &middot; Local Models &middot; Routers</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<p>The critical insight is that every component above the LLM layer is deterministic, testable, and under your control. The LLM is the only non-deterministic element — and the harness exists precisely to contain that non-determinism within safe operational boundaries.</p>
+
+<h3>The Six Pillars of Harness Engineering</h3>
+
+<p>After building and operating production agent systems across multiple domains, I have converged on six pillars that every serious harness must implement. Skip any one of these and you will discover the gap in production — usually at the worst possible time.</p>
+
+<div style="margin: 2.5rem auto; max-width: 680px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; text-align: center;">Six Pillars of Harness Engineering</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+<div style="background: rgba(212,184,150,0.12); border: 1px solid rgba(212,184,150,0.25); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #d4b896; font-weight: 700; margin-bottom: 0.3rem;">01 STATE MANAGEMENT</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.6); line-height: 1.4;">Turn tracking, context windowing, memory persistence, checkpoint/restore</div>
+</div>
+<div style="background: rgba(40,200,64,0.12); border: 1px solid rgba(40,200,64,0.25); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #28c840; font-weight: 700; margin-bottom: 0.3rem;">02 EXECUTION POLICY</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.6); line-height: 1.4;">Retry budgets, timeout enforcement, cost ceilings, concurrency limits</div>
+</div>
+<div style="background: rgba(254,188,46,0.12); border: 1px solid rgba(254,188,46,0.25); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #febc2e; font-weight: 700; margin-bottom: 0.3rem;">03 RECOVERY ENGINE</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.6); line-height: 1.4;">Fallback model chains, circuit breakers, graceful degradation, dead-letter queues</div>
+</div>
+<div style="background: rgba(255,95,87,0.12); border: 1px solid rgba(255,95,87,0.25); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #ff5f57; font-weight: 700; margin-bottom: 0.3rem;">04 TOOL GOVERNANCE</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.6); line-height: 1.4;">Schema validation, permission boundaries, rate limiting, parameter sanitisation</div>
+</div>
+<div style="background: rgba(138,99,210,0.12); border: 1px solid rgba(138,99,210,0.25); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #8a63d2; font-weight: 700; margin-bottom: 0.3rem;">05 EVALUATION LAYER</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.6); line-height: 1.4;">Output quality scoring, guardrail checks, semantic drift detection, regression alerts</div>
+</div>
+<div style="background: rgba(88,166,255,0.12); border: 1px solid rgba(88,166,255,0.25); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #58a6ff; font-weight: 700; margin-bottom: 0.3rem;">06 OBSERVABILITY</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.6); line-height: 1.4;">Structured traces, cost attribution, quality metrics, anomaly detection, SLA tracking</div>
+</div>
+</div>
+</div>
+</div>
+
+<h3>Pillar 1: State Management — The Agent's Memory Architecture</h3>
+
+<p>The most common failure mode in production agents is state corruption. The agent loses track of where it is in a multi-step task, re-executes steps it already completed, or hallucinates that it did something it never actually did. This happens because most agent frameworks treat state as an afterthought — a growing list of messages with no structure.</p>
+
+<p>A production harness implements state as an explicit, typed state machine with well-defined transitions:</p>
+
+<div style="margin: 2.5rem auto; max-width: 680px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; text-align: center;">Agent State Machine</div>
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 0;">
+
+<div style="background: rgba(88,166,255,0.12); border: 1.5px solid rgba(88,166,255,0.4); border-radius: 20px; padding: 0.4rem 1.2rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #58a6ff;">IDLE</div>
+</div>
+<div style="display: flex; align-items: center; gap: 0.4rem; margin: 0.3rem 0;">
+<div style="width: 1px; height: 16px; background: rgba(255,255,255,0.2);"></div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4); font-style: italic;">user_input</div>
+</div>
+
+<div style="background: rgba(138,99,210,0.12); border: 1.5px solid rgba(138,99,210,0.4); border-radius: 20px; padding: 0.4rem 1.2rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #8a63d2;">PLANNING</div>
+</div>
+<div style="display: flex; width: 100%; justify-content: center; margin: 0.3rem 0;">
+<div style="display: flex; align-items: center; gap: 0;">
+<div style="text-align: right; width: 40%;"><span style="font-size: 0.55rem; color: rgba(255,95,87,0.7); font-style: italic;">plan_failed</span></div>
+<div style="width: 1px; height: 16px; background: rgba(255,255,255,0.2); margin: 0 1rem;"></div>
+<div style="text-align: left; width: 40%;"><span style="font-size: 0.55rem; color: rgba(40,200,64,0.7); font-style: italic;">plan_ready</span></div>
+</div>
+</div>
+
+<div style="display: flex; width: 100%; justify-content: center; gap: 2rem; margin-bottom: 0.3rem;">
+<div style="background: rgba(255,95,87,0.1); border: 1.5px solid rgba(255,95,87,0.35); border-radius: 20px; padding: 0.4rem 1rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #ff5f57;">RECOVERY</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35); margin-top: 0.15rem;">retry → PLANNING</div>
+</div>
+<div style="background: rgba(40,200,64,0.1); border: 1.5px solid rgba(40,200,64,0.35); border-radius: 20px; padding: 0.4rem 1rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #28c840;">EXECUTING</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35); margin-top: 0.15rem;">tool calls + LLM</div>
+</div>
+</div>
+
+<div style="display: flex; width: 100%; justify-content: center; gap: 0.5rem; align-items: center; margin: 0.2rem 0;">
+<div style="font-size: 0.5rem; color: rgba(255,95,87,0.6);">exec_failed /</div>
+<div style="font-size: 0.5rem; color: rgba(255,95,87,0.6);">eval_fail</div>
+<div style="width: 40px; height: 1px; background: linear-gradient(90deg, rgba(255,95,87,0.3), rgba(254,188,46,0.3));"></div>
+<div style="font-size: 0.5rem; color: rgba(40,200,64,0.6);">exec_success</div>
+</div>
+
+<div style="background: rgba(254,188,46,0.1); border: 1.5px solid rgba(254,188,46,0.35); border-radius: 20px; padding: 0.4rem 1.2rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #febc2e;">EVALUATING</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35); margin-top: 0.15rem;">gate checks + quality scoring</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.4rem; margin: 0.3rem 0;">
+<div style="width: 1px; height: 16px; background: rgba(40,200,64,0.3);"></div>
+<div style="font-size: 0.55rem; color: rgba(40,200,64,0.6); font-style: italic;">eval_pass</div>
+</div>
+
+<div style="background: rgba(212,184,150,0.15); border: 1.5px solid rgba(212,184,150,0.5); border-radius: 20px; padding: 0.4rem 1.2rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.7rem; font-weight: 700; color: #d4b896;">COMPLETE</div>
+</div>
+
+</div>
+
+<div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap;">
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.2rem 0.5rem;">Every transition logged</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.2rem 0.5rem;">Max dwell timeout per state</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.2rem 0.5rem;">Deterministic — LLM cannot override</div>
+</div>
+</div>
+</div>
+
+<p>Every state transition is logged. Every transition has a maximum dwell time (timeout). The state machine enforces that the agent cannot skip steps, cannot execute without planning, cannot complete without evaluation. This is not a suggestion to the LLM — it is deterministic code that the LLM cannot override.</p>
+
+<p>The context window strategy is equally critical. A naive implementation passes the entire conversation history to every LLM call. A production harness implements <strong>sliding-window context</strong> with semantic compression: recent turns are passed verbatim, older turns are summarised, and irrelevant tool outputs are pruned. The agent always has the context it needs without the token bloat that degrades both quality and cost.</p>
+
+<h3>Pillar 2: Execution Policy — Budgets, Bounds, and Backpressure</h3>
+
+<p>An unconstrained agent is a liability. Without execution policies, a single confused agent can retry a failing API call indefinitely, burn through your entire token budget in minutes, or spawn cascading tool calls that overwhelm downstream services. Execution policy is the set of hard constraints that define the operational envelope:</p>
+
+<div style="margin: 2.5rem auto; max-width: 660px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; text-align: center;">Execution Policy Configuration</div>
+
+<div style="background: rgba(212,184,150,0.06); border: 1px solid rgba(212,184,150,0.2); border-radius: 8px; padding: 0.8rem; margin-bottom: 0.5rem;">
+<div style="font-family: monospace; font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">POLICY: research-agent-v2</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+<div style="background: rgba(255,95,87,0.08); border: 1px solid rgba(255,95,87,0.15); border-radius: 6px; padding: 0.6rem;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #ff5f57; font-weight: 600; margin-bottom: 0.4rem;">RETRY BUDGET</div>
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.5); line-height: 1.8;">
+<div style="display: flex; justify-content: space-between;"><span>per_tool</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">3</span></div>
+<div style="display: flex; justify-content: space-between;"><span>per_turn</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">5</span></div>
+<div style="display: flex; justify-content: space-between;"><span>backoff</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">exp 1s</span></div>
+<div style="display: flex; justify-content: space-between;"><span>on</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">5xx, timeout</span></div>
+</div>
+</div>
+<div style="background: rgba(254,188,46,0.08); border: 1px solid rgba(254,188,46,0.15); border-radius: 6px; padding: 0.6rem;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #febc2e; font-weight: 600; margin-bottom: 0.4rem;">TIMEOUTS</div>
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.5); line-height: 1.8;">
+<div style="display: flex; justify-content: space-between;"><span>llm_call</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">30s</span></div>
+<div style="display: flex; justify-content: space-between;"><span>tool_exec</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">60s</span></div>
+<div style="display: flex; justify-content: space-between;"><span>per_turn</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">120s</span></div>
+<div style="display: flex; justify-content: space-between;"><span>task_total</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">600s</span></div>
+</div>
+</div>
+<div style="background: rgba(40,200,64,0.08); border: 1px solid rgba(40,200,64,0.15); border-radius: 6px; padding: 0.6rem;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #28c840; font-weight: 600; margin-bottom: 0.4rem;">COST CEILING</div>
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.5); line-height: 1.8;">
+<div style="display: flex; justify-content: space-between;"><span>per_turn</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">50K tok</span></div>
+<div style="display: flex; justify-content: space-between;"><span>per_task</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">200K tok</span></div>
+<div style="display: flex; justify-content: space-between;"><span>hourly</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">$2.00</span></div>
+<div style="display: flex; justify-content: space-between;"><span>breach</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">degrade</span></div>
+</div>
+</div>
+<div style="background: rgba(138,99,210,0.08); border: 1px solid rgba(138,99,210,0.15); border-radius: 6px; padding: 0.6rem;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #8a63d2; font-weight: 600; margin-bottom: 0.4rem;">CONCURRENCY</div>
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.5); line-height: 1.8;">
+<div style="display: flex; justify-content: space-between;"><span>parallel_tools</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">3</span></div>
+<div style="display: flex; justify-content: space-between;"><span>pending_tasks</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">10</span></div>
+<div style="display: flex; justify-content: space-between;"><span>max_turns</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">15</span></div>
+<div style="display: flex; justify-content: space-between;"><span>on_limit</span><span style="color: rgba(255,255,255,0.7); font-family: monospace;">yield</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="margin-top: 0.8rem; text-align: center; font-size: 0.6rem; color: rgba(255,255,255,0.35); font-style: italic;">Hard stops enforced by harness infrastructure — not guidelines, not prompts.</div>
+</div>
+</div>
+
+<p>These are not guidelines — they are hard stops enforced by the harness. When an agent hits a cost ceiling, the harness does not ask the agent what to do. It downgrades to a cheaper model, or pauses and escalates to a human, or terminates the task with a structured error. The agent has no say in this. That is the point.</p>
+
+<p>The most important execution policy is the <strong>turn limit</strong>. Agents in unbounded loops are the number one cause of cost blowouts in production. A well-designed harness enforces a maximum turn count per task and, when that limit is reached, forces the agent to summarise its progress and yield — either to a human or to a supervisor agent that can decide whether to allocate more budget.</p>
+
+<h3>Pillar 3: Recovery Engine — Designing for Failure</h3>
+
+<p>LLMs fail. They fail in ways that are hard to predict and hard to distinguish from correct behaviour. A production harness treats failure as the default assumption and designs every path with recovery in mind.</p>
+
+<p>The recovery engine implements three patterns:</p>
+
+<div style="margin: 2.5rem auto; max-width: 680px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; text-align: center;">Recovery Pattern Hierarchy</div>
+
+<div style="display: flex; flex-direction: column; gap: 0;">
+
+<div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem;">
+<div style="flex: 0 0 auto; background: rgba(255,95,87,0.15); border: 1px solid rgba(255,95,87,0.3); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #ff5f57; font-weight: 700;">!</div>
+</div>
+<div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 0.4rem 0.6rem;">
+<div style="font-size: 0.6rem; color: rgba(255,255,255,0.5);">FAILURE DETECTED</div>
+</div>
+</div>
+
+<div style="margin-left: 14px; width: 1px; height: 12px; background: linear-gradient(180deg, rgba(255,95,87,0.4), rgba(254,188,46,0.4));"></div>
+
+<div style="display: flex; align-items: stretch; gap: 0.6rem; margin-bottom: 0.3rem;">
+<div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;">
+<div style="background: rgba(254,188,46,0.15); border: 1px solid rgba(254,188,46,0.3); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #febc2e; font-weight: 700;">R</div>
+</div>
+</div>
+<div style="flex: 1; background: rgba(254,188,46,0.06); border: 1px solid rgba(254,188,46,0.2); border-radius: 6px; padding: 0.5rem 0.7rem; display: flex; justify-content: space-between; align-items: center;">
+<div>
+<div style="font-family: monospace; font-size: 0.6rem; color: #febc2e; font-weight: 600;">RETRY</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4); margin-top: 0.1rem;">Same model, fresh context window</div>
+</div>
+<div style="background: rgba(40,200,64,0.15); border: 1px solid rgba(40,200,64,0.3); border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.55rem; color: #28c840;">success → continue</div>
+</div>
+</div>
+
+<div style="margin-left: 14px; width: 1px; height: 12px; background: linear-gradient(180deg, rgba(254,188,46,0.4), rgba(138,99,210,0.4));"></div>
+<div style="margin-left: 22px; font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-bottom: 0.15rem;">exhausted</div>
+
+<div style="display: flex; align-items: stretch; gap: 0.6rem; margin-bottom: 0.3rem;">
+<div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;">
+<div style="background: rgba(138,99,210,0.15); border: 1px solid rgba(138,99,210,0.3); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #8a63d2; font-weight: 700;">F</div>
+</div>
+</div>
+<div style="flex: 1; background: rgba(138,99,210,0.06); border: 1px solid rgba(138,99,210,0.2); border-radius: 6px; padding: 0.5rem 0.7rem; display: flex; justify-content: space-between; align-items: center;">
+<div>
+<div style="font-family: monospace; font-size: 0.6rem; color: #8a63d2; font-weight: 600;">FALLBACK</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4); margin-top: 0.1rem;">Cheaper model, simplified prompt</div>
+</div>
+<div style="background: rgba(40,200,64,0.1); border: 1px solid rgba(40,200,64,0.25); border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.55rem; color: rgba(40,200,64,0.8);">degraded → continue</div>
+</div>
+</div>
+
+<div style="margin-left: 14px; width: 1px; height: 12px; background: linear-gradient(180deg, rgba(138,99,210,0.4), rgba(255,95,87,0.4));"></div>
+<div style="margin-left: 22px; font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-bottom: 0.15rem;">exhausted</div>
+
+<div style="display: flex; align-items: stretch; gap: 0.6rem;">
+<div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;">
+<div style="background: rgba(255,95,87,0.2); border: 1.5px solid rgba(255,95,87,0.4); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+<div style="font-family: monospace; font-size: 0.55rem; color: #ff5f57; font-weight: 700;">C</div>
+</div>
+</div>
+<div style="flex: 1; background: rgba(255,95,87,0.08); border: 1.5px solid rgba(255,95,87,0.25); border-radius: 6px; padding: 0.5rem 0.7rem; display: flex; justify-content: space-between; align-items: center;">
+<div>
+<div style="font-family: monospace; font-size: 0.6rem; color: #ff5f57; font-weight: 600;">CIRCUIT BREAK</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4); margin-top: 0.1rem;">Stop calling, preserve state, cooldown</div>
+</div>
+<div style="background: rgba(255,95,87,0.12); border: 1px solid rgba(255,95,87,0.25); border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.55rem; color: rgba(255,95,87,0.8);">→ human escalation</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<p><strong>Fallback chains</strong> are the most underutilised pattern. When GPT-4o times out or produces garbage, you do not retry with GPT-4o. You fall back to Claude Sonnet with a simplified prompt. If that fails, you fall back to a template-based response that at least preserves correctness. The user gets a degraded but functional response instead of an error. The quality degradation is logged, and the system self-heals when the primary model recovers.</p>
+
+<p><strong>Circuit breakers</strong> prevent cascade failures. If a tool endpoint returns errors on three consecutive calls, the harness opens the circuit — it stops calling that tool entirely for a cooldown period. This prevents the agent from burning retries against a downed service, protects downstream systems from thundering herds, and gives the infrastructure time to recover.</p>
+
+<p><strong>Checkpoint/restore</strong> is the safety net. Before every tool execution, the harness checkpoints the full agent state. If the tool call corrupts the conversation or the agent enters an unrecoverable state, you restore to the last good checkpoint and try an alternative path. This is not theoretical — it is essential for any agent that makes external writes (sending emails, creating tickets, deploying code).</p>
+
+<h3>Pillar 4: Tool Governance — The Agent's API Contract</h3>
+
+<p>Tools are the agent's hands. Without governance, those hands can do anything — including things the agent was never designed to do. Tool governance is the layer that ensures every tool call is valid, authorised, bounded, and audited.</p>
+
+<p>A governed tool registry provides four guarantees:</p>
+
+<ul>
+<li><strong>Schema validation:</strong> Every tool call is validated against a strict JSON schema before execution. If the LLM hallucinates a parameter, the call is rejected before it reaches the tool — not after.</li>
+<li><strong>Permission boundaries:</strong> Tools are scoped to the current task context. A research agent cannot access write tools. A summarisation agent cannot access network tools. This is enforced by the harness, not by the prompt.</li>
+<li><strong>Rate limiting:</strong> Each tool has per-minute and per-task call limits. An agent cannot spam an API endpoint regardless of what the LLM decides to do.</li>
+<li><strong>Parameter sanitisation:</strong> All tool parameters are sanitised for injection attacks. SQL parameters are parameterised. Shell commands are escaped. URLs are validated against allow-lists.</li>
+</ul>
+
+<div style="margin: 2.5rem auto; max-width: 680px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; text-align: center;">Tool Call Lifecycle</div>
+
+<div style="background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.2); border-radius: 6px; padding: 0.4rem 0.6rem; margin-bottom: 0.8rem; text-align: center;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #58a6ff;">LLM Output: <span style="color: rgba(255,255,255,0.5);">call search_docs(query=&apos;...&apos;)</span></div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 0.35rem;">
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">01</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,184,150,0.3), rgba(212,184,150,0.05));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Parse tool name + parameters</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">02</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(40,200,64,0.3), rgba(40,200,64,0.05));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Schema validation</div>
+<div style="font-size: 0.5rem; color: rgba(255,95,87,0.6); background: rgba(255,95,87,0.08); border-radius: 3px; padding: 0.1rem 0.3rem;">fail → reject + retry</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">03</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(254,188,46,0.3), rgba(254,188,46,0.05));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Permission check</div>
+<div style="font-size: 0.5rem; color: rgba(255,95,87,0.6); background: rgba(255,95,87,0.08); border-radius: 3px; padding: 0.1rem 0.3rem;">fail → reject + log</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">04</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(138,99,210,0.3), rgba(138,99,210,0.05));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Rate limit check</div>
+<div style="font-size: 0.5rem; color: rgba(254,188,46,0.7); background: rgba(254,188,46,0.08); border-radius: 3px; padding: 0.1rem 0.3rem;">fail → queue</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">05</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Parameter sanitisation</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">06</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Checkpoint current state</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(212,184,150,0.06); border-radius: 4px; padding: 0.2rem 0;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: #d4b896; text-align: right; font-weight: 600;">07</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,184,150,0.4), rgba(212,184,150,0.1));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: #d4b896; font-weight: 600;">Execute tool</div>
+<div style="font-size: 0.5rem; color: rgba(254,188,46,0.7); background: rgba(254,188,46,0.08); border-radius: 3px; padding: 0.1rem 0.3rem;">timeout → fallback</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">08</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Validate output schema</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">09</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(88,166,255,0.3), rgba(88,166,255,0.05));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Log trace span (tool, params, duration, cost)</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<div style="flex: 0 0 20px; font-family: monospace; font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: right;">10</div>
+<div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(40,200,64,0.3), rgba(40,200,64,0.05));"></div>
+<div style="flex: 0 0 auto; font-size: 0.6rem; color: rgba(255,255,255,0.55);">Return structured result to LLM</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<p>The key architectural decision is that the harness — not the LLM — determines which tools are available for a given turn. You can dynamically narrow the tool set based on the agent's current state. In the PLANNING state, only read-only tools are available. In the EXECUTING state, write tools become accessible. This state-dependent tool availability eliminates entire categories of agent misbehaviour.</p>
+
+<h3>Pillar 5: Evaluation Layer — Continuous Quality Assurance</h3>
+
+<p>You cannot run an agent in production without knowing whether its outputs are good. But "good" is hard to define for free-form language generation. The evaluation layer solves this by applying multiple lightweight checks at runtime — not just during development.</p>
+
+<p>A production evaluation layer operates at three levels:</p>
+
+<div style="margin: 2.5rem auto; max-width: 660px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; text-align: center;">Runtime Evaluation Stack</div>
+<div style="display: grid; gap: 0.6rem;">
+<div style="background: rgba(255,95,87,0.08); border: 1px solid rgba(255,95,87,0.2); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #ff5f57; font-weight: 700; margin-bottom: 0.3rem;">GATE CHECKS (per-turn, blocking)</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.55); line-height: 1.5;">Format compliance — does output match expected schema? Guardrail pass — no PII leakage, no harmful content, no policy violations? Factual grounding — are claims supported by retrieved context?</div>
+</div>
+<div style="background: rgba(254,188,46,0.08); border: 1px solid rgba(254,188,46,0.2); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #febc2e; font-weight: 700; margin-bottom: 0.3rem;">QUALITY SCORING (per-task, non-blocking)</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.55); line-height: 1.5;">Relevance score against user intent. Completeness — did the agent address all parts of the request? Coherence — is the multi-turn conversation logically consistent?</div>
+</div>
+<div style="background: rgba(40,200,64,0.08); border: 1px solid rgba(40,200,64,0.2); border-radius: 8px; padding: 0.8rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #28c840; font-weight: 700; margin-bottom: 0.3rem;">DRIFT DETECTION (aggregate, async)</div>
+<div style="font-size: 0.65rem; color: rgba(255,255,255,0.55); line-height: 1.5;">Rolling quality percentiles — is p50 quality declining over the last hour/day? Behavioural drift — is the agent using tools differently than its baseline? Cost drift — is token consumption trending upward without corresponding quality gains?</div>
+</div>
+</div>
+</div>
+</div>
+
+<p>Gate checks are blocking — if an output fails a gate check, the harness rejects it and forces the agent to regenerate. Quality scores are non-blocking — they are logged and used for alerting and continuous improvement. Drift detection runs asynchronously over aggregated data, looking for systemic degradation that per-request checks would miss.</p>
+
+<p>The most valuable evaluation metric I have found in practice is the <strong>regeneration rate</strong>: what percentage of agent outputs are rejected by gate checks and regenerated? A healthy agent regenerates less than 5% of outputs. When regeneration exceeds 15%, something fundamental has changed — a model update, a prompt regression, or a shift in input distribution — and the system alerts operators to investigate.</p>
+
+<h3>Pillar 6: Observability — The Nervous System</h3>
+
+<p>Observability for agentic systems is qualitatively different from traditional application monitoring. You are not just tracking request latency and error rates. You are tracking reasoning quality, decision coherence, tool utilisation patterns, and cost efficiency — metrics that have no direct equivalent in conventional software.</p>
+
+<p>A production harness emits structured traces that capture the full decision chain:</p>
+
+<div style="margin: 2.5rem auto; max-width: 680px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; text-align: center;">Agent Trace Schema</div>
+
+<div style="background: rgba(212,184,150,0.06); border: 1px solid rgba(212,184,150,0.2); border-radius: 8px; padding: 0.6rem; margin-bottom: 0.5rem;">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #d4b896; font-weight: 600;">TRACE: task_7f2a</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.3);">total: 3,160ms</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 0.35rem;">
+
+<div style="position: relative; padding-left: 0.8rem; border-left: 2px solid rgba(138,99,210,0.4);">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #8a63d2;">planning</div>
+<div style="display: flex; gap: 0.5rem;">
+<span style="font-size: 0.5rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); border-radius: 3px; padding: 0.05rem 0.3rem;">420ms</span>
+<span style="font-size: 0.5rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); border-radius: 3px; padding: 0.05rem 0.3rem;">1.2K tok</span>
+</div>
+</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-top: 0.15rem;">model: gpt-4o &middot; plan_steps: 4 &middot; confidence: 0.87</div>
+</div>
+
+<div style="position: relative; padding-left: 0.8rem; border-left: 2px solid rgba(254,188,46,0.4);">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #febc2e;">tool: search_docs</div>
+<div style="display: flex; gap: 0.5rem;">
+<span style="font-size: 0.5rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); border-radius: 3px; padding: 0.05rem 0.3rem;">890ms</span>
+<span style="font-size: 0.5rem; color: rgba(254,188,46,0.5); background: rgba(254,188,46,0.08); border-radius: 3px; padding: 0.05rem 0.3rem;">score: 0.72</span>
+</div>
+</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-top: 0.15rem;">params: {query: &quot;...&quot;, limit: 10} &middot; results: 7 docs</div>
+</div>
+
+<div style="position: relative; padding-left: 0.8rem; border-left: 2px solid rgba(255,95,87,0.4);">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #ff5f57;">tool: search_docs <span style="font-size: 0.5rem; background: rgba(255,95,87,0.15); border-radius: 3px; padding: 0.05rem 0.3rem; margin-left: 0.3rem;">RETRY #1</span></div>
+<div style="display: flex; gap: 0.5rem;">
+<span style="font-size: 0.5rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); border-radius: 3px; padding: 0.05rem 0.3rem;">650ms</span>
+<span style="font-size: 0.5rem; color: rgba(40,200,64,0.6); background: rgba(40,200,64,0.08); border-radius: 3px; padding: 0.05rem 0.3rem;">score: 0.89</span>
+</div>
+</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-top: 0.15rem;">reason: low_relevance &middot; params: {query: &quot;...&quot;, limit: 20} &middot; results: 12 docs</div>
+</div>
+
+<div style="position: relative; padding-left: 0.8rem; border-left: 2px solid rgba(40,200,64,0.4);">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<div style="font-family: monospace; font-size: 0.6rem; color: #28c840;">generation</div>
+<div style="display: flex; gap: 0.5rem;">
+<span style="font-size: 0.5rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); border-radius: 3px; padding: 0.05rem 0.3rem;">1,200ms</span>
+<span style="font-size: 0.5rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); border-radius: 3px; padding: 0.05rem 0.3rem;">3.4K tok</span>
+</div>
+</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-top: 0.15rem;">model: gpt-4o &middot; gate_check: PASS &middot; quality: 0.91</div>
+</div>
+
+</div>
+</div>
+
+<div style="display: flex; justify-content: space-between; margin-top: 0.6rem; padding: 0.4rem 0.6rem; background: rgba(212,184,150,0.08); border-radius: 6px;">
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4);"><span style="color: #d4b896;">tokens:</span> 4,600</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4);"><span style="color: #d4b896;">cost:</span> $0.023</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4);"><span style="color: #d4b896;">turns:</span> 2</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.4);"><span style="color: #d4b896;">tools:</span> 2 (1 retry)</div>
+</div>
+</div>
+</div>
+
+<p>This trace gives you everything: latency breakdown per phase, token consumption per call, quality scores, retry reasons, and total cost attribution. You can aggregate these traces to build dashboards that answer the questions that matter: which tasks are expensive and why? Which tools fail most often? Is quality trending down after the last prompt change? Which user queries consistently trigger recovery paths?</p>
+
+<h3>Harness Patterns for Multi-Agent Systems</h3>
+
+<p>When you move from single agents to multi-agent architectures, the harness becomes even more critical. You are now managing not just individual agent behaviour but inter-agent communication, coordination protocols, and system-level properties that emerge from agent interactions.</p>
+
+<div style="margin: 2.5rem auto; max-width: 700px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; text-align: center;">Multi-Agent Harness Architecture</div>
+
+<div style="background: rgba(212,184,150,0.08); border: 1.5px solid rgba(212,184,150,0.35); border-radius: 10px; padding: 1rem; margin-bottom: 0.6rem;">
+<div style="font-family: monospace; font-size: 0.65rem; color: #d4b896; font-weight: 700; text-align: center; margin-bottom: 0.6rem;">SUPERVISOR HARNESS</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem; margin-bottom: 0.8rem;">
+<div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.5);">Task Router</div>
+</div>
+<div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.5);">Budget Allocator</div>
+</div>
+<div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.5);">Result Merger</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+<div style="background: rgba(88,166,255,0.08); border: 1.5px solid rgba(88,166,255,0.25); border-radius: 8px; padding: 0.6rem; position: relative;">
+<div style="position: absolute; top: -6px; right: 8px; background: rgba(88,166,255,0.2); border-radius: 3px; padding: 0.05rem 0.3rem; font-size: 0.45rem; color: #58a6ff;">ACTIVE</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: #58a6ff; font-weight: 600; margin-bottom: 0.3rem;">AGENT A</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); margin-bottom: 0.3rem;">Research</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.3rem;">
+retries: 3<br/>timeout: 30s<br/>tools: read-only<br/>cap: $0.50
+</div>
+</div>
+<div style="background: rgba(138,99,210,0.08); border: 1.5px solid rgba(138,99,210,0.25); border-radius: 8px; padding: 0.6rem; position: relative;">
+<div style="position: absolute; top: -6px; right: 8px; background: rgba(138,99,210,0.2); border-radius: 3px; padding: 0.05rem 0.3rem; font-size: 0.45rem; color: #8a63d2;">QUEUED</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: #8a63d2; font-weight: 600; margin-bottom: 0.3rem;">AGENT B</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); margin-bottom: 0.3rem;">Analysis</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.3rem;">
+retries: 5<br/>timeout: 60s<br/>tools: compute<br/>cap: $1.00
+</div>
+</div>
+<div style="background: rgba(40,200,64,0.08); border: 1.5px solid rgba(40,200,64,0.25); border-radius: 8px; padding: 0.6rem; position: relative;">
+<div style="position: absolute; top: -6px; right: 8px; background: rgba(40,200,64,0.15); border-radius: 3px; padding: 0.05rem 0.3rem; font-size: 0.45rem; color: #28c840;">QUEUED</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: #28c840; font-weight: 600; margin-bottom: 0.3rem;">AGENT C</div>
+<div style="font-size: 0.55rem; color: rgba(255,255,255,0.45); margin-bottom: 0.3rem;">Writing</div>
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.3); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.3rem;">
+retries: 2<br/>timeout: 45s<br/>tools: write<br/>cap: $0.30
+</div>
+</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem;">
+<div style="background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35);">Budget</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: rgba(255,255,255,0.6);">$2.00</div>
+</div>
+<div style="background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35);">Max Agents</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: rgba(255,255,255,0.6);">5</div>
+</div>
+<div style="background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35);">Deadline</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: rgba(255,255,255,0.6);">120s</div>
+</div>
+<div style="background: rgba(255,255,255,0.03); border-radius: 4px; padding: 0.3rem; text-align: center;">
+<div style="font-size: 0.5rem; color: rgba(255,255,255,0.35);">Coordination</div>
+<div style="font-family: monospace; font-size: 0.6rem; color: rgba(255,255,255,0.6);">msg-pass</div>
+</div>
+</div>
+</div>
+</div>
+
+<p>The supervisor harness manages the fleet: it routes sub-tasks to specialist agents, allocates budget across them, enforces system-level deadlines, and merges results. Each agent has its own harness with its own policies — but the supervisor can override those policies when system-level constraints demand it (e.g., reducing Agent B's timeout because Agent A took longer than expected and the deadline is approaching).</p>
+
+<p>The critical principle for multi-agent harnesses is <strong>no shared mutable state</strong>. Agents communicate through structured messages, not shared memory. This eliminates race conditions, makes agent interactions reproducible, and allows you to replay and debug any multi-agent interaction from the message log alone.</p>
+
+<h3>The Anti-Patterns</h3>
+
+<p>Having reviewed dozens of production agent systems, I see the same harness anti-patterns repeatedly:</p>
+
+<div style="margin: 2.5rem auto; max-width: 660px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; text-align: center;">Common Harness Anti-Patterns</div>
+<div style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 2;">
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #ff5f57; font-family: monospace; font-weight: 700;">01</span> <strong>Prompt-based guardrails.</strong> "Please do not call this tool more than 3 times" in the system prompt. The LLM will violate this. Enforce with code.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #ff5f57; font-family: monospace; font-weight: 700;">02</span> <strong>Unbounded conversation history.</strong> Passing the full message array to every call. Tokens grow linearly, quality degrades, costs explode.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #ff5f57; font-family: monospace; font-weight: 700;">03</span> <strong>No fallback chain.</strong> Single model provider, single retry strategy. One API outage takes down the entire system.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #ff5f57; font-family: monospace; font-weight: 700;">04</span> <strong>Silent failures.</strong> Catching exceptions, returning empty strings, and hoping the user will not notice. Always fail explicitly.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #ff5f57; font-family: monospace; font-weight: 700;">05</span> <strong>Evaluation as afterthought.</strong> Only checking output quality during development. Production outputs go unchecked until a user complains.</div>
+<div style="padding: 0.4rem 0;"><span style="color: #ff5f57; font-family: monospace; font-weight: 700;">06</span> <strong>Monolithic agent scope.</strong> One agent does everything. No task decomposition, no principle of least privilege, no blast radius containment.</div>
+</div>
+</div>
+</div>
+
+<h3>Framework Comparison: Where Existing Tools Fall Short</h3>
+
+<p>The current generation of agent frameworks — LangGraph, CrewAI, AutoGen, Semantic Kernel — provide excellent primitives for agent orchestration. But they are not harnesses. They provide the building blocks; you must engineer the harness yourself.</p>
+
+<p>LangGraph gives you state machines and conditional edges. But it does not give you cost ceilings, circuit breakers, or runtime evaluation. CrewAI gives you multi-agent coordination. But it does not give you per-agent budget allocation, fallback chains, or checkpoint/restore. AutoGen gives you conversational patterns. But it does not give you structured traces, drift detection, or graceful degradation.</p>
+
+<p>This is not a criticism of these frameworks — they are designed as orchestration layers, not control planes. The harness is the layer you build on top of them. It is your system's unique operational intelligence, tailored to your failure modes, your cost constraints, and your quality requirements.</p>
+
+<h3>Key Takeaways</h3>
+
+<div style="margin: 2.5rem auto; max-width: 660px;">
+<div style="background: linear-gradient(135deg, rgba(212,184,150,0.08), rgba(201,168,124,0.03)); border: 1px solid rgba(212,184,150,0.3); border-radius: 12px; padding: 1.5rem; position: relative;">
+<div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; text-align: center;">Engineering Principles</div>
+<div style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 2;">
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">01</span> The harness is the product. The LLM is a component. Never confuse the two.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">02</span> Every policy must be enforced in code, never in prompts. What can be overridden by the LLM will be overridden by the LLM.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">03</span> Design for failure first. The happy path is the exception. Recovery is the normal operating mode.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">04</span> Budget everything: tokens, time, retries, cost. Unbounded resources create unbounded risk.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">05</span> Observe everything. You cannot improve what you cannot measure. Traces are not optional.</div>
+<div style="padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">06</span> Evaluate continuously. Development-time testing is necessary but insufficient. Production quality requires runtime checks.</div>
+<div style="padding: 0.4rem 0;"><span style="color: #d4b896; font-family: monospace; font-weight: 700;">07</span> Agents are cattle, not pets. They should be stateless, replaceable, and independently deployable. The harness holds the state.</div>
+</div>
+</div>
+</div>
+
+<p>The teams that ship reliable agent systems are not the ones with the best prompts or the most expensive models. They are the ones that invest disproportionately in the harness — in the boring, deterministic infrastructure that makes the exciting, non-deterministic AI component safe to operate at scale. The harness is where engineering discipline meets AI capability. It is where production systems are won or lost.</p>`
+  },
+  {
     slug: "security-principles-agentic-ai",
     title: "Security Principles for Agentic AI Systems: From Trust Boundaries to Earned Autonomy",
     category: "AI Systems",
@@ -1551,6 +2203,351 @@ export const THINKING = [
 ];
 
 export const SHOWCASE = [
+  {
+    slug: "agent-harness-framework",
+    title: "Production Agent Harness with Circuit Breakers and Fallback Chains",
+    tag: "AI Infrastructure",
+    tagClass: "ai",
+    featured: true,
+    date: "2026-06-05",
+    problem: "Agent frameworks provide orchestration primitives but not production resilience. Teams deploy agents that retry infinitely, burn token budgets, lose state on failure, and provide no visibility into quality degradation — turning a demo into an operational liability.",
+    approach: "A harness framework that wraps any LLM-based agent with deterministic execution policies, fallback model chains, circuit breakers, checkpoint/restore, runtime evaluation gates, and structured observability — all enforced in code, never in prompts.",
+    architecture: `<div style="font-family: monospace; font-size: 0.72rem; line-height: 1.7; color: rgba(255,255,255,0.7); white-space: pre; overflow-x: auto;">
+┌─────────────────────────────────────────────────────────┐
+│                    AGENT HARNESS                         │
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │              EXECUTION POLICY                     │  │
+│  │  max_retries: 3  │  timeout: 30s  │  budget: $1  │  │
+│  └───────────────────────────────────────────────────┘  │
+│                          │                              │
+│  ┌──────────┐    ┌──────▼──────┐    ┌──────────────┐   │
+│  │ STATE    │    │ TOOL        │    │ EVALUATION   │   │
+│  │ MACHINE  │    │ GOVERNANCE  │    │ LAYER        │   │
+│  │          │    │             │    │              │   │
+│  │ IDLE     │    │ Schema val  │    │ Gate checks  │   │
+│  │ PLANNING │    │ Permissions │    │ Quality score│   │
+│  │ EXECUTING│    │ Rate limits │    │ Drift detect │   │
+│  │ EVALUATNG│    │ Sanitise    │    │              │   │
+│  │ RECOVERY │    │             │    │              │   │
+│  └──────────┘    └─────────────┘    └──────────────┘   │
+│                          │                              │
+│  ┌───────────────────────▼───────────────────────────┐  │
+│  │              RECOVERY ENGINE                       │  │
+│  │                                                   │  │
+│  │  Retry (same model) ──▶ Fallback (cheaper model)  │  │
+│  │  ──▶ Circuit Break ──▶ Human Escalation           │  │
+│  └───────────────────────────────────────────────────┘  │
+│                          │                              │
+│  ┌───────────────────────▼───────────────────────────┐  │
+│  │              TELEMETRY COLLECTOR                   │  │
+│  │  Traces │ Cost │ Quality │ Latency │ Anomalies    │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+</div>`,
+    code: `import time
+import json
+from enum import Enum
+from dataclasses import dataclass, field
+from typing import Any, Callable
+
+# --- Execution Policy ---
+
+@dataclass
+class ExecutionPolicy:
+    max_retries: int = 3
+    timeout_seconds: float = 30.0
+    max_tokens_per_turn: int = 50_000
+    max_cost_per_task: float = 1.0
+    max_turns: int = 15
+    backoff_base: float = 1.0  # exponential backoff
+
+# --- Agent States ---
+
+class AgentState(Enum):
+    IDLE = "idle"
+    PLANNING = "planning"
+    EXECUTING = "executing"
+    EVALUATING = "evaluating"
+    RECOVERY = "recovery"
+    COMPLETE = "complete"
+
+# --- Circuit Breaker ---
+
+class CircuitBreaker:
+    def __init__(self, failure_threshold: int = 3, cooldown: float = 60.0):
+        self.failure_threshold = failure_threshold
+        self.cooldown = cooldown
+        self.failures: dict[str, list[float]] = {}
+        self.open_until: dict[str, float] = {}
+
+    def record_failure(self, service: str):
+        now = time.time()
+        self.failures.setdefault(service, []).append(now)
+        # Only count recent failures
+        recent = [t for t in self.failures[service] if now - t < self.cooldown]
+        self.failures[service] = recent
+        if len(recent) >= self.failure_threshold:
+            self.open_until[service] = now + self.cooldown
+
+    def is_open(self, service: str) -> bool:
+        if service not in self.open_until:
+            return False
+        if time.time() > self.open_until[service]:
+            del self.open_until[service]
+            self.failures.pop(service, None)
+            return False
+        return True
+
+    def record_success(self, service: str):
+        self.failures.pop(service, None)
+        self.open_until.pop(service, None)
+
+# --- Fallback Chain ---
+
+@dataclass
+class ModelConfig:
+    name: str
+    call_fn: Callable
+    cost_per_1k_tokens: float
+    timeout: float = 30.0
+
+class FallbackChain:
+    def __init__(self, models: list[ModelConfig]):
+        self.models = models  # ordered primary -> cheapest fallback
+        self.circuit_breaker = CircuitBreaker()
+
+    async def call(self, messages: list[dict], **kwargs) -> dict:
+        last_error = None
+        for model in self.models:
+            if self.circuit_breaker.is_open(model.name):
+                continue
+            try:
+                result = await model.call_fn(messages, **kwargs)
+                self.circuit_breaker.record_success(model.name)
+                return {"model_used": model.name, "result": result}
+            except Exception as e:
+                self.circuit_breaker.record_failure(model.name)
+                last_error = e
+        raise RuntimeError(f"All models exhausted. Last: {last_error}")
+
+# --- Evaluation Gate ---
+
+@dataclass
+class EvalResult:
+    passed: bool
+    score: float
+    reason: str
+
+class EvaluationGate:
+    def __init__(self, checks: list[Callable]):
+        self.checks = checks
+
+    def evaluate(self, output: str, context: dict) -> EvalResult:
+        for check in self.checks:
+            result = check(output, context)
+            if not result.passed:
+                return result
+        return EvalResult(passed=True, score=1.0, reason="all_checks_passed")
+
+# --- Trace Collector ---
+
+@dataclass
+class Span:
+    name: str
+    start_time: float = field(default_factory=time.time)
+    end_time: float | None = None
+    tokens_used: int = 0
+    cost: float = 0.0
+    metadata: dict = field(default_factory=dict)
+
+class TraceCollector:
+    def __init__(self, task_id: str):
+        self.task_id = task_id
+        self.spans: list[Span] = []
+        self._active: Span | None = None
+
+    def start_span(self, name: str, **meta) -> Span:
+        span = Span(name=name, metadata=meta)
+        self._active = span
+        self.spans.append(span)
+        return span
+
+    def end_span(self, tokens: int = 0, cost: float = 0.0):
+        if self._active:
+            self._active.end_time = time.time()
+            self._active.tokens_used = tokens
+            self._active.cost = cost
+            self._active = None
+
+    def summary(self) -> dict:
+        total_tokens = sum(s.tokens_used for s in self.spans)
+        total_cost = sum(s.cost for s in self.spans)
+        total_duration = (
+            (self.spans[-1].end_time or time.time()) - self.spans[0].start_time
+            if self.spans else 0
+        )
+        return {
+            "task_id": self.task_id,
+            "spans": len(self.spans),
+            "total_tokens": total_tokens,
+            "total_cost": f"\${total_cost:.4f}",
+            "total_duration_ms": int(total_duration * 1000),
+        }
+
+# --- The Harness ---
+
+class AgentHarness:
+    def __init__(
+        self,
+        policy: ExecutionPolicy,
+        fallback_chain: FallbackChain,
+        eval_gate: EvaluationGate,
+        tools: dict[str, Callable] | None = None,
+    ):
+        self.policy = policy
+        self.fallback_chain = fallback_chain
+        self.eval_gate = eval_gate
+        self.tools = tools or {}
+        self.state = AgentState.IDLE
+        self.turn_count = 0
+        self.total_cost = 0.0
+        self.trace: TraceCollector | None = None
+
+    async def run(self, task: str, context: dict = None) -> dict:
+        self.trace = TraceCollector(task_id=task[:32])
+        self.state = AgentState.PLANNING
+        self.turn_count = 0
+        context = context or {}
+        messages = [{"role": "user", "content": task}]
+
+        while self.turn_count < self.policy.max_turns:
+            self.turn_count += 1
+
+            # --- Execute with harness controls ---
+            self.state = AgentState.EXECUTING
+            span = self.trace.start_span(
+                f"turn_{self.turn_count}", state=self.state.value
+            )
+
+            try:
+                response = await self.fallback_chain.call(messages)
+            except RuntimeError as e:
+                self.state = AgentState.RECOVERY
+                self.trace.end_span()
+                return self._escalate(str(e), messages)
+
+            tokens = response["result"].get("tokens_used", 0)
+            cost = tokens * 0.00003  # approximate
+            self.total_cost += cost
+            self.trace.end_span(tokens=tokens, cost=cost)
+
+            # --- Cost ceiling check ---
+            if self.total_cost > self.policy.max_cost_per_task:
+                return self._budget_exceeded(messages)
+
+            # --- Evaluate output ---
+            self.state = AgentState.EVALUATING
+            output = response["result"].get("content", "")
+            eval_result = self.eval_gate.evaluate(output, context)
+
+            if not eval_result.passed:
+                messages.append({
+                    "role": "system",
+                    "content": f"Output rejected: {eval_result.reason}. Retry."
+                })
+                continue
+
+            # --- Check if task is complete ---
+            if response["result"].get("done", False):
+                self.state = AgentState.COMPLETE
+                return {
+                    "status": "complete",
+                    "output": output,
+                    "trace": self.trace.summary(),
+                    "model_used": response["model_used"],
+                }
+
+            messages.append({"role": "assistant", "content": output})
+
+        # Turn limit reached
+        return self._turn_limit_reached(messages)
+
+    def _escalate(self, error: str, messages: list) -> dict:
+        return {
+            "status": "escalated",
+            "error": error,
+            "context": messages[-3:],
+            "trace": self.trace.summary() if self.trace else {},
+        }
+
+    def _budget_exceeded(self, messages: list) -> dict:
+        return {
+            "status": "budget_exceeded",
+            "cost": f"\${self.total_cost:.4f}",
+            "trace": self.trace.summary() if self.trace else {},
+        }
+
+    def _turn_limit_reached(self, messages: list) -> dict:
+        return {
+            "status": "turn_limit",
+            "turns": self.turn_count,
+            "trace": self.trace.summary() if self.trace else {},
+        }`,
+    lang: "python",
+    runInstructions: `# Install dependencies
+pip install asyncio
+
+# Usage example:
+import asyncio
+from harness import (
+    AgentHarness, ExecutionPolicy, FallbackChain,
+    ModelConfig, EvaluationGate, EvalResult
+)
+
+# Define your model call functions
+async def call_gpt4o(messages, **kw):
+    # Your OpenAI API call here
+    return {"content": "...", "tokens_used": 1200, "done": True}
+
+async def call_claude_sonnet(messages, **kw):
+    # Your Anthropic API call here
+    return {"content": "...", "tokens_used": 900, "done": True}
+
+# Build the harness
+policy = ExecutionPolicy(max_retries=3, timeout_seconds=30, max_cost_per_task=2.0)
+chain = FallbackChain([
+    ModelConfig("gpt-4o", call_gpt4o, cost_per_1k_tokens=0.03),
+    ModelConfig("claude-sonnet", call_claude_sonnet, cost_per_1k_tokens=0.015),
+])
+
+def format_check(output, ctx):
+    if len(output) < 10:
+        return EvalResult(False, 0.0, "output_too_short")
+    return EvalResult(True, 1.0, "ok")
+
+gate = EvaluationGate(checks=[format_check])
+harness = AgentHarness(policy=policy, fallback_chain=chain, eval_gate=gate)
+
+# Run
+result = asyncio.run(harness.run("Summarise the Q2 sales report"))
+print(result)
+# {'status': 'complete', 'output': '...', 'trace': {...}, 'model_used': 'gpt-4o'}`,
+    outcomes: [
+      "Circuit breaker prevents cascading failures — 3 consecutive failures opens circuit for 60s cooldown",
+      "Fallback chain maintains availability — automatic model downgrade when primary is unavailable or over-budget",
+      "Cost ceiling enforcement stops runaway agents — hard stop at configurable dollar limit per task",
+      "Structured traces provide full cost/latency/quality attribution per span",
+      "Evaluation gates reject low-quality outputs before they reach users — forcing regeneration with context"
+    ],
+    lessons: [
+      "Enforce everything in code, never in prompts — the LLM will violate any instruction-based constraint under adversarial or edge-case inputs",
+      "Fallback chains should degrade gracefully, not fail completely — a cheaper model with a simpler prompt is always better than an error",
+      "Circuit breakers need per-service granularity — one downed tool should not disable unrelated capabilities",
+      "Trace everything from day one — retrofitting observability is 10x harder than building it in",
+      "Turn limits are the single most important safety mechanism — unbounded loops are the primary cause of production cost blowouts"
+    ]
+  },
   {
     slug: "prompt-injection-firewall",
     title: "Prompt Injection Firewall for Multi-Agent Systems",
