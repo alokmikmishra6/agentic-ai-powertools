@@ -25,6 +25,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_BEEHIIV_API_KEY: ${{ secrets.BEEHIIV_API_KEY }}
+          VITE_SUBSCRIBE_PROXY_URL: ${{ secrets.SUBSCRIBE_PROXY_URL }}
       - run: touch dist/.nojekyll && cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -39,3 +42,19 @@ jobs:
     steps:
       - uses: actions/deploy-pages@v4
         id: deployment
+
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Send newsletter for new content
+        env:
+          BEEHIIV_API_KEY: ${{ secrets.BEEHIIV_API_KEY }}
+          SITE_URL: https://alokmishra.github.io/agentic-ai-powertools
+        run: node scripts/notify-subscribers.mjs

@@ -70,25 +70,21 @@ export default function WhatsNew() {
     setSubStatus('loading')
     setSubError('')
 
-    const apiKey = import.meta.env.VITE_BUTTONDOWN_API_KEY
-    if (!apiKey) {
+    const proxyUrl = import.meta.env.VITE_SUBSCRIBE_PROXY_URL
+    if (!proxyUrl) {
       setSubStatus('subscribed')
       localStorage.setItem(SUBSCRIBED_KEY, '1')
       return
     }
 
     try {
-      const res = await fetch('https://api.buttondown.com/v1/subscribers', {
+      const res = await fetch(proxyUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${apiKey}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email_address: email,
-          type: 'regular',
-          tags: ['website'],
-          metadata: { source: 'nav-panel' },
+          email,
+          utm_source: 'nav-panel',
+          utm_medium: 'bell-icon',
         }),
       })
 
@@ -98,7 +94,7 @@ export default function WhatsNew() {
         setEmail('')
       } else {
         const data = await res.json().catch(() => ({}))
-        setSubError(data?.detail || 'Something went wrong.')
+        setSubError(data?.message || 'Something went wrong.')
         setSubStatus('error')
       }
     } catch {

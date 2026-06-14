@@ -62,11 +62,13 @@ export default function Writing() {
           </Reveal>
 
           <StaggerContainer key={filter} className="writing-grid">
-            {visible.map(article => (
-              <StaggerItem key={article.slug} className={`writing-card${article.featured ? ' writing-card--featured' : ''}${isNew(article.date) ? ' writing-card--new' : ''}`}>
+            {visible.map((article, idx) => {
+              const isHero = article.featured && idx === 0
+              return (
+              <StaggerItem key={article.slug} className={`writing-card${isHero ? ' writing-card--featured' : ''}${article.featured && !isHero ? ' writing-card--accent' : ''}${isNew(article.date) ? ' writing-card--new' : ''}`}>
                 <Link to={`/writing/${article.slug}`}>
                   <GlassCard>
-                    <GenerativeCover slug={article.slug} category={article.category} height={article.featured ? 200 : 160} className="wc-cover" />
+                    <GenerativeCover slug={article.slug} category={article.category} height={isHero ? 120 : 100} className="wc-cover" />
                     {(article.featured || isNew(article.date)) && (
                       <div className="wc-spotlight">
                         {article.featured && <span className="wc-spotlight-label">★ Featured</span>}
@@ -78,9 +80,6 @@ export default function Writing() {
                       <span className="wc-date">{article.dateDisplay}</span>
                     </div>
                     <h3>{article.title}</h3>
-                    {article.theme && (
-                      <p className="wc-theme">{article.theme}</p>
-                    )}
                     <p className="excerpt">{article.excerpt}</p>
                     <div className="wc-foot">
                       <span>{article.readTime}</span>
@@ -89,7 +88,8 @@ export default function Writing() {
                   </GlassCard>
                 </Link>
               </StaggerItem>
-            ))}
+              )
+            })}
           </StaggerContainer>
 
           {showCount < filtered.length && (
@@ -152,31 +152,30 @@ export function ArticlePage() {
           <ArticleAudioPlayer articleBody={article.body} title={article.title} />
         </Reveal>
 
-        {/* Table of Contents — inline on mobile, fixed sidebar on desktop */}
-        <div className="article-toc-inline">
-          <ArticleTOC articleBody={article.body} />
-        </div>
-
         <Reveal delay={0.2}>
           <div className="article-body" dangerouslySetInnerHTML={{ __html: article.body }} />
         </Reveal>
 
-        {/* Related Articles */}
-        <Reveal delay={0.22}>
-          <RelatedArticles currentSlug={article.slug} category={article.category} />
-        </Reveal>
-
-        {/* Subscribe CTA */}
-        <Reveal delay={0.23}>
-          <Subscribe compact />
-        </Reveal>
-
-        <Reveal delay={0.25}>
+        <Reveal delay={0.21}>
           <div className="article-footer-nav">
             <Link to="/writing" className="article-back">← Back to all writing</Link>
           </div>
         </Reveal>
       </div>
+
+      {/* ─── Post-article section (outside reading column) ─── */}
+      <div className="article-footer-section">
+        <Reveal delay={0.22}>
+          <RelatedArticles currentSlug={article.slug} category={article.category} />
+        </Reveal>
+
+        <Reveal delay={0.23}>
+          <Subscribe />
+        </Reveal>
+      </div>
+
+      {/* Table of Contents — fixed sidebar, always visible */}
+      <ArticleTOC articleBody={article.body} />
 
       {/* Floating: Reading Progress */}
       <ReadingProgress readTime={article.readTime} />

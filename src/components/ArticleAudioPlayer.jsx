@@ -66,7 +66,6 @@ export default function ArticleAudioPlayer({ articleBody, title }) {
   const [speed, setSpeed] = useState(1)
   const [voices, setVoices] = useState([])
   const [selectedVoice, setSelectedVoice] = useState(null)
-  const [showVoices, setShowVoices] = useState(false)
   const [currentChunk, setCurrentChunk] = useState(0)
 
   const chunksRef = useRef([])
@@ -539,10 +538,7 @@ export default function ArticleAudioPlayer({ articleBody, title }) {
           <span className="audio-label">
             {playing ? (paused ? 'Paused' : 'Playing') : 'Listen to this article'}
           </span>
-          <span className="audio-time">
-            {timeDisplay}
-            {selectedVoice && <span className="audio-voice-name"> · {selectedVoice.name.split('(')[0].trim()}</span>}
-          </span>
+          <span className="audio-time">{timeDisplay}</span>
         </div>
 
         <div className="audio-progress-track" onClick={handleSeek} title="Click to seek">
@@ -558,19 +554,6 @@ export default function ArticleAudioPlayer({ articleBody, title }) {
           {speed}×
         </button>
 
-        <button
-          className="audio-btn audio-btn-voice"
-          onClick={() => setShowVoices(!showVoices)}
-          title="Change voice"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
-          </svg>
-        </button>
-
         {playing && (
           <button
             className="audio-btn audio-btn-stop"
@@ -583,34 +566,6 @@ export default function ArticleAudioPlayer({ articleBody, title }) {
           </button>
         )}
       </div>
-
-      {/* Voice selector dropdown */}
-      {showVoices && voices.length > 0 && (
-        <div className="audio-voice-picker">
-          <div className="audio-voice-picker-header">
-            <span>Select Voice</span>
-            <span className="audio-voice-hint">
-              Tip: Download premium voices in System Settings → Accessibility → Spoken Content
-            </span>
-          </div>
-          <div className="audio-voice-list">
-            {voices.slice(0, 12).map((v, i) => (
-              <button
-                key={v.name}
-                className={`audio-voice-option ${selectedVoice?.name === v.name ? 'active' : ''}`}
-                onClick={() => { setSelectedVoice(v); setShowVoices(false) }}
-              >
-                <span className="audio-voice-option-name">{v.name.split('(')[0].trim()}</span>
-                <span className="audio-voice-option-meta">
-                  {v.lang}
-                  {!v.localService && ' · Cloud'}
-                  {i === 0 && ' · Best'}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

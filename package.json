@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:content": "node scripts/build-articles.mjs",
+    "new:writing": "node scripts/new-writing.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -22,6 +24,8 @@
   "devDependencies": {
     "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "^6.0.2",
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.5",
     "vite": "^8.0.13"
   }
 }

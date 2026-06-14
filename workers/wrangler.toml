@@ -1,0 +1,6 @@
+name = "beehiiv-subscribe-proxy"
+main = "subscribe-proxy.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+# BEEHIIV_API_KEY is set as a secret via: npx wrangler secret put BEEHIIV_API_KEY

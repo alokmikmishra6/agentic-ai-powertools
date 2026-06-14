@@ -8,10 +8,8 @@ import About from './pages/About'
 import Writing, { ArticlePage } from './pages/Writing'
 import Showcase from './pages/Showcase'
 import Thinking from './pages/Thinking'
-import ScrollProgress from './components/ScrollProgress'
 import ParallaxOverlays from './components/ParallaxOverlays'
 import SmoothScroll from './components/SmoothScroll'
-import CustomCursor from './components/CustomCursor'
 import PageTransition from './components/PageTransition'
 import CommandPalette from './components/CommandPalette'
 
@@ -28,9 +26,7 @@ export default function App() {
 
   return (
     <SmoothScroll>
-      <CustomCursor />
       <ParallaxOverlays />
-      <ScrollProgress />
       <ScrollToTop />
       <Nav />
       <CommandPalette />

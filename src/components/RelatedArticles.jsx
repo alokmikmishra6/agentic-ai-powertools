@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import { ARTICLES } from '../data/content'
+import GenerativeCover from './GenerativeCover'
 
 /**
- * Shows 2-3 related articles at the bottom of an article page.
+ * Shows 3 related articles at the bottom of an article page.
  * Matches by category first, then by recency.
  */
 export default function RelatedArticles({ currentSlug, category }) {
@@ -23,9 +24,12 @@ export default function RelatedArticles({ currentSlug, category }) {
       <div className="related-grid">
         {related.map(article => (
           <Link key={article.slug} to={`/writing/${article.slug}`} className="related-card">
-            <span className="related-tag">{article.category}</span>
-            <h4 className="related-card-title">{article.title}</h4>
-            <span className="related-meta">{article.readTime}</span>
+            <GenerativeCover slug={article.slug} category={article.category} height={120} className="related-cover" />
+            <div className="related-card-body">
+              <span className="related-tag">{article.category}</span>
+              <h4 className="related-card-title">{article.title}</h4>
+              <span className="related-meta">{article.readTime}</span>
+            </div>
           </Link>
         ))}
       </div>

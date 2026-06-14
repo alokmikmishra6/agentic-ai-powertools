@@ -1,8 +1,0 @@
-{
-  "title": "The edge is not a smaller cloud — it is a different problem class",
-  "tag": "Cloud & Edge",
-  "tagClass": "cl",
-  "featured": false,
-  "sidebarText": "The edge-cloud continuum",
-  "body": "As compute moves toward the physical world, the assumptions behind clean cloud architecture start breaking. Connectivity is intermittent. Resources are constrained. Updates carry irreversible risk. Designing well for the edge requires reasoning from first principles about what distributed actually means when the network is not a given."
-}

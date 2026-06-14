@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
-const BUTTONDOWN_API = 'https://api.buttondown.com/v1/subscribers'
+const SUBSCRIBE_PROXY = import.meta.env.VITE_SUBSCRIBE_PROXY_URL || ''
 
 /**
- * Email subscribe form — connects to Buttondown.
+ * Email subscribe form — connects to Beehiiv via Cloudflare Worker proxy.
  * Placement: Footer + end of articles.
- * API key set via VITE_BUTTONDOWN_API_KEY env variable.
+ * Proxy URL set via VITE_SUBSCRIBE_PROXY_URL env variable.
  */
-export default function Subscribe({ compact = false }) {
+export default function Subscribe({ compact = false, source = 'website' }) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const [errorMsg, setErrorMsg] = useState('')
@@ -19,26 +19,20 @@ export default function Subscribe({ compact = false }) {
     setStatus('loading')
     setErrorMsg('')
 
-    const apiKey = import.meta.env.VITE_BUTTONDOWN_API_KEY
-
-    if (!apiKey) {
-      // Demo mode — no API key configured yet
+    if (!SUBSCRIBE_PROXY) {
+      // Demo mode — no proxy configured yet
       setStatus('success')
       return
     }
 
     try {
-      const res = await fetch(BUTTONDOWN_API, {
+      const res = await fetch(SUBSCRIBE_PROXY, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${apiKey}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email_address: email,
-          type: 'regular',
-          tags: ['website'],
-          metadata: { source: compact ? 'article-inline' : 'footer' },
+          email,
+          utm_source: source,
+          utm_medium: compact ? 'article-inline' : 'footer',
         }),
       })
 
@@ -47,10 +41,10 @@ export default function Subscribe({ compact = false }) {
         setEmail('')
       } else {
         const data = await res.json().catch(() => ({}))
-        if (res.status === 409 || data?.email_address?.includes('already')) {
+        if (res.status === 409 || data?.message?.includes('already')) {
           setStatus('success') // Already subscribed is still a win
         } else {
-          setErrorMsg(data?.detail || data?.email_address?.[0] || 'Something went wrong. Try again.')
+          setErrorMsg(data?.message || 'Something went wrong. Try again.')
           setStatus('error')
         }
       }
