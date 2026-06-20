@@ -85,6 +85,7 @@ function getArticles() {
       slug,
       title: frontmatter.title,
       category: frontmatter.category || 'AI Systems',
+      tags: frontmatter.tags || [],
       date: frontmatter.date,
       dateDisplay,
       readTime,

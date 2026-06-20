@@ -77,6 +77,9 @@ export default function Writing() {
                     )}
                     <div className="wc-meta">
                       <span className="wc-tag">{article.category}</span>
+                      {article.tags?.filter(t => t !== article.category).map(tag => (
+                        <span key={tag} className="wc-tag wc-tag--secondary">{tag}</span>
+                      ))}
                       <span className="wc-date">{article.dateDisplay}</span>
                     </div>
                     <h3>{article.title}</h3>
@@ -131,6 +134,9 @@ export function ArticlePage() {
         <Reveal delay={0.15}>
           <div className="article-meta-bar">
             <span className="wc-tag">{article.category}</span>
+            {article.tags?.filter(t => t !== article.category).map(tag => (
+              <span key={tag} className="wc-tag wc-tag--secondary">{tag}</span>
+            ))}
             <span>{article.dateDisplay}</span>
             <span>{article.readTime}</span>
           </div>
