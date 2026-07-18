@@ -4,7 +4,7 @@ slug: ai-evaluation-production-systems
 category: AI Systems
 date: "2026-05-18"
 readTime: "9 min read"
-featured: true
+featured: false
 excerpt: "Most teams treat AI evaluation as a pre-launch gate. The teams that survive production treat it as infrastructure that runs every hour of every day."
 theme: "Evaluation is not testing. It is the continuous practice of knowing whether your AI is still doing what you think it is doing."
 ---

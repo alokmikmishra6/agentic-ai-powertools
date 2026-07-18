@@ -1,0 +1,11 @@
+{
+  "title": "How I run architecture reviews that engineers actually find useful",
+  "category": "Leadership",
+  "date": "2025-02-18",
+  "dateDisplay": "Feb 18, 2025",
+  "readTime": "7 min read",
+  "cover": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1400&h=600&fit=crop",
+  "coverThumb": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=300&fit=crop",
+  "excerpt": "Most architecture reviews are either rubber-stamps or interrogations. Neither produces better systems.",
+  "body": "<p>Most architecture reviews are either rubber-stamps or interrogations. The rubber-stamp review exists to satisfy a process requirement and produces no real signal. The interrogation review produces anxiety and defensiveness rather than better designs. Neither outcome is what you want.</p><h3>The format I have settled on</h3><p>I structure reviews around three explicit phases, and I tell presenters about this structure in advance so they can prepare for it rather than being surprised by it.</p><p><strong>Understanding phase:</strong> Before any critique, I ask questions until I can explain the proposed design back to the presenter. This does two things: it ensures I am not critiquing a misunderstanding of the design, and it often surfaces unstated assumptions that the presenter has not made explicit because they are obvious to them.</p><p><strong>Tradeoffs phase:</strong> I ask the presenter to articulate what was given up to achieve the design's properties. Every design choice is a tradeoff. If a presenter cannot articulate what was traded away, that is a signal that the tradeoffs were not consciously made.</p><p><strong>Risk phase:</strong> I ask what could go wrong, and specifically what the presenter is most uncertain about. Uncertainty is not a weakness — it is information. A presenter who can identify the riskiest assumption in their design has given the review something useful to focus on.</p><h3>What I never do</h3><p>I never critique a design without first understanding it well enough to defend it. And I never leave a review without ensuring the presenter knows what they need to do next — whether that is a specific revision, a prototype, or a consultation with another team.</p>"
+}

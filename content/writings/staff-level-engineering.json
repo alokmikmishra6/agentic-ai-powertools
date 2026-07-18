@@ -1,0 +1,11 @@
+{
+  "title": "What staff-level engineering actually looks like in practice",
+  "category": "Leadership",
+  "date": "2026-01-18",
+  "dateDisplay": "Jan 18, 2026",
+  "readTime": "9 min read",
+  "cover": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1400&h=600&fit=crop",
+  "coverThumb": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=300&fit=crop",
+  "excerpt": "The transition from senior to staff engineer is not about writing better code.",
+  "body": "<p>The staff engineer title is one of the most inconsistently defined in the industry. In some organisations it means a very senior individual contributor. In others it is effectively a technical leadership role with cross-team scope. What I can describe is what I have found it to mean in practice, based on what the work actually requires.</p><h3>The unit of work changes</h3><p>As an engineer, you are measured by what you build. As a senior engineer, by what your team builds. As a staff engineer, by what your organisation builds — including the parts you were not directly involved in.</p><p>That shift in scope changes almost everything about how you work. The feedback loops are longer. The impact is harder to attribute. The work is more often about creating conditions for others to do good work than doing the technical work yourself. This can be deeply uncomfortable for engineers who are motivated by direct, tangible contribution.</p><h3>The leverage question</h3><p>The question I ask most often at this level is: where is my leverage? Writing code is low leverage when your time could be spent unblocking three teams who are each blocked on the same architectural question. Running a design review is high leverage if it prevents a decision that would take six months to unwind. Mentoring an engineer is extraordinarily high leverage if it accelerates their judgment in ways that compound over years.</p><p>This is not a statement that coding is unimportant. It is a statement that time is finite, and at staff level the highest-value use of that time is almost never the most technically satisfying use of it.</p>"
+}

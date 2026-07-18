@@ -4,7 +4,7 @@ slug: model-context-protocol-infrastructure
 category: AI Systems
 date: "2026-05-18"
 readTime: "8 min read"
-featured: true
+featured: false
 excerpt: "The Model Context Protocol turns tool integration from a bespoke wiring problem into a standardised infrastructure layer. This changes the economics of agentic AI."
 theme: "When every AI agent speaks a different language to every tool, integration becomes the bottleneck. MCP is the USB-C moment for agentic systems."
 ---

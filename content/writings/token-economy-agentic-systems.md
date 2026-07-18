@@ -4,7 +4,7 @@ slug: token-economy-agentic-systems
 category: AI Systems
 date: "2026-05-23"
 readTime: "16 min read"
-featured: true
+featured: false
 excerpt: "An unoptimized agent can burn through $2,000/month on a single workflow. The difference between a prototype and a production system is not capability — it is token discipline."
 theme: "Token optimization is not about saving money — it is about building systems that can scale without the cost curve becoming the binding constraint on what you can build."
 ---

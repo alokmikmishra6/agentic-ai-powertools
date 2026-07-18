@@ -4,7 +4,7 @@ slug: ai-token-cost-optimization
 category: AI Systems
 date: "2026-05-16"
 readTime: "10 min read"
-featured: true
+featured: false
 excerpt: "Most teams treat LLM costs as a cloud bill line item. The teams that scale AI treat token economics as an architectural discipline."
 theme: "Token economics is an architectural discipline. The teams that ignore it pay twice — once in dollars, once in latency."
 ---

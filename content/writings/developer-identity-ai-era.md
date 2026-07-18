@@ -4,7 +4,7 @@ slug: developer-identity-ai-era
 category: AI Systems
 date: "2026-05-22"
 readTime: "14 min read"
-featured: true
+featured: false
 excerpt: "Google's Developer Intelligence team just told us where development is heading. 75% of their code is AI-generated. Here is what that means for architectural identity."
 theme: "The role is not disappearing — it is ascending. From writing code to orchestrating systems of intelligence. The developers who thrive will be T-shaped: deep in engineering, broad in orchestration."
 ---

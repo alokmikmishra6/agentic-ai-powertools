@@ -4,7 +4,7 @@ slug: agentic-ai-harness-engineering
 category: AI Systems
 date: "2026-06-05"
 readTime: "22 min read"
-featured: true
+featured: false
 excerpt: "The difference between a prototype agent and a production agent is not the model. It is the harness — the orchestration layer that handles retries, fallbacks, state, evaluation, and graceful degradation when the LLM inevitably fails."
 theme: "An AI harness is not a wrapper around an LLM. It is the engineered substrate — the nervous system — that governs how agents perceive, decide, act, and recover. Without it, you have a demo. With it, you have a production system."
 ---

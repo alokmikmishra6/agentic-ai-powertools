@@ -4,7 +4,7 @@ slug: security-principles-agentic-ai
 category: AI Systems
 date: "2026-05-29"
 readTime: "18 min read"
-featured: true
+featured: false
 excerpt: "85% of enterprises are experimenting with agentic AI. Only 5% have reached production. The gap is not capability — it is trust. Here is the architectural blueprint for closing it."
 theme: "The security challenge of agentic AI is not that we need a new paradigm — it is that we need to extend existing security frameworks into a world where software reasons, acts autonomously, and can be manipulated through the same language interface that makes it useful."
 ---

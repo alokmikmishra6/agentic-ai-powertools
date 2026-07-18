@@ -483,6 +483,52 @@ const COVERS = {
     })
     drawVignette(ctx, w, h)
   },
+
+  'ai-second-brain-living-knowledge': (ctx, w, h) => {
+    drawBackground(ctx, w, h, '#080a12', '#7b9ed4')
+    const cx = w * 0.5, cy = h * 0.5
+    // Central reconciliation core — the "living" brain hub
+    const coreR = 22
+    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreR)
+    core.addColorStop(0, 'rgba(212, 184, 150, 0.55)'); core.addColorStop(0.6, 'rgba(212, 184, 150, 0.18)'); core.addColorStop(1, 'transparent')
+    ctx.fillStyle = core; ctx.beginPath(); ctx.arc(cx, cy, coreR, 0, Math.PI * 2); ctx.fill()
+    ctx.strokeStyle = 'rgba(212, 184, 150, 0.8)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx, cy, coreR, 0, Math.PI * 2); ctx.stroke()
+    // Pulsing rings — the metabolism
+    for (let i = 1; i <= 3; i++) { ctx.strokeStyle = `rgba(212, 184, 150, ${0.16 - i * 0.04})`; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(cx, cy, coreR + i * 18, 0, Math.PI * 2); ctx.stroke() }
+    ctx.font = '700 8px "Sora", sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.fillText('RECONCILE', cx, cy + 3)
+    // Incoming claim nodes feeding the core
+    const claims = [
+      { angle: -2.4, color: '#7b9ed4' },
+      { angle: -1.55, color: '#28c840' },
+      { angle: -0.5, color: '#7b9ed4' },
+      { angle: 2.6, color: '#7b9ed4' },
+    ]
+    claims.forEach(c => {
+      const dist = 78, nx = cx + Math.cos(c.angle) * dist, ny = cy + Math.sin(c.angle) * dist
+      ctx.strokeStyle = c.color + '55'; ctx.lineWidth = 1; ctx.setLineDash([3, 3])
+      ctx.beginPath(); ctx.moveTo(cx + Math.cos(c.angle) * coreR, cy + Math.sin(c.angle) * coreR); ctx.lineTo(nx - Math.cos(c.angle) * 8, ny - Math.sin(c.angle) * 8); ctx.stroke(); ctx.setLineDash([])
+      ctx.fillStyle = c.color + '30'; ctx.beginPath(); ctx.arc(nx, ny, 8, 0, Math.PI * 2); ctx.fill()
+      ctx.strokeStyle = c.color + 'cc'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(nx, ny, 8, 0, Math.PI * 2); ctx.stroke()
+    })
+    // The conflict — two claims on one slot, resolved: active (green) vs superseded (red)
+    const slotAngle = 0.85, slotDist = 82
+    const sx = cx + Math.cos(slotAngle) * slotDist, sy = cy + Math.sin(slotAngle) * slotDist
+    // active claim (green, solid link)
+    ctx.strokeStyle = 'rgba(40, 200, 64, 0.7)'; ctx.lineWidth = 1.5
+    ctx.beginPath(); ctx.moveTo(cx + Math.cos(slotAngle) * coreR, cy + Math.sin(slotAngle) * coreR); ctx.lineTo(sx - 6, sy - 6); ctx.stroke()
+    ctx.fillStyle = 'rgba(40, 200, 64, 0.35)'; ctx.beginPath(); ctx.arc(sx, sy, 9, 0, Math.PI * 2); ctx.fill()
+    ctx.strokeStyle = '#28c840'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(sx, sy, 9, 0, Math.PI * 2); ctx.stroke()
+    // superseded claim (red, struck through, offset behind)
+    const rx = sx + 24, ry = sy + 18
+    ctx.fillStyle = 'rgba(255, 95, 87, 0.15)'; ctx.beginPath(); ctx.arc(rx, ry, 8, 0, Math.PI * 2); ctx.fill()
+    ctx.strokeStyle = 'rgba(255, 95, 87, 0.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(rx, ry, 8, 0, Math.PI * 2); ctx.stroke()
+    ctx.strokeStyle = 'rgba(255, 95, 87, 0.7)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(rx - 6, ry - 6); ctx.lineTo(rx + 6, ry + 6); ctx.stroke()
+    // supersede arrow: red → green
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1; ctx.setLineDash([2, 2])
+    ctx.beginPath(); ctx.moveTo(rx - 6, ry - 5); ctx.lineTo(sx + 6, sy + 5); ctx.stroke(); ctx.setLineDash([])
+    ctx.font = '600 7px "Sora", sans-serif'; ctx.fillStyle = 'rgba(40, 200, 64, 0.8)'; ctx.fillText('active', sx, sy - 14)
+    drawVignette(ctx, w, h)
+  },
 }
 
 // ─── Fallback for unmapped articles ───
