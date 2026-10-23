@@ -1,23 +1,7 @@
 import { Link } from 'react-router-dom'
-import Subscribe from './Subscribe'
-
 export default function Footer() {
-  return (
-    <footer className="footer-wrap">
-      <div className="footer">
-        <div className="footer-subscribe">
-          <Subscribe compact source="site-footer" />
-        </div>
-        <div className="footer-bottom">
-          <small>© 2026 Alok Mishra. All rights reserved.</small>
-          <ul className="footer-links">
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/showcase">Showcase</Link></li>
-            <li><Link to="/thinking">Thinking</Link></li>
-            <li><Link to="/writing">Writing</Link></li>
-          </ul>
-        </div>
-      </div>
-    </footer>
-  )
+  return <footer className="journal-footer"><div className="journal-container">
+    <div className="journal-footer-top"><Link to="/" className="journal-brand-mark">am<span>.</span></Link><p>Stay curious.<br /><span>Build with intention.</span></p><nav aria-label="Footer navigation"><Link to="/writing">Writing</Link><Link to="/showcase">Showcase</Link><Link to="/saved">Saved</Link><Link to="/labs">Labs</Link><a href={`${import.meta.env.BASE_URL}feed.xml`}>RSS ↗</a></nav></div>
+    <div className="journal-footer-bottom"><span>© {new Date().getFullYear()} Alok Mishra</span><span>Independent thoughts on an interconnected world.</span><Link to="/?scrollTo=subscribe">Get the next essay ↗</Link></div>
+  </div></footer>
 }

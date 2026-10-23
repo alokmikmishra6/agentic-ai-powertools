@@ -1,99 +1,59 @@
-# Adding New Content
+# Publishing Field Notes
 
-Quick reference for adding writing, showcases, and thinking entries.
+## Write an essay
 
-## Option 1: Interactive CLI
+Run `npm run new:writing` to scaffold a Markdown file, or create one in `content/writings/`:
+
+```markdown
+---
+title: "My new essay"
+slug: my-new-essay
+category: AI Systems
+date: "2026-10-23"
+featured: false
+excerpt: "A short description for the library and sharing preview."
+theme: "An optional longer introduction."
+---
+
+Start your essay here.
+
+## A useful section heading
+
+Section headings become stable, shareable links automatically.
+```
+
+Categories are AI Systems, Architecture, Reflection, and Leadership. Reading time is calculated when omitted. Keep a published slug stable so bookmarks, reading progress, and shared links continue to work.
+
+Markdown takes precedence over a legacy JSON article with the same slug. Edit source files in `content/`; `src/data/content.js`, `src/data/index.js`, and `src/data/search-index.json` are generated files. The older `add-content.mjs` script edits generated data directly and should not be used for this workflow.
+
+## Curate the reading experience
+
+- `src/data/editorial.js`: add an essay's format (Concept, Deep dive, Implementation, or Perspective) to `FORMATS`. Add meaningful connections between real article slugs to `CONNECTIONS`, with a short explanation of why the next essay is useful.
+- `src/data/journeys.js`: curate ordered reading paths with real article slugs. Completion is stored in each reader's browser.
+- `src/components/labs/SystemLab.jsx` and `src/lib/labs.js`: the three interactive demos and their calculations. Essay-to-lab links are in `src/pages/Article.jsx`.
+- `content/showcase/`: Markdown or legacy JSON project sources. Use the existing Markdown sections: Problem, Approach, Architecture, Code, Run, Outcomes, and Lessons. Download buttons use the actual code and run instructions; reference snippets should clearly state their prerequisites.
+- `content/thinking/`: short inquiries in Markdown with frontmatter. Avoid duplicate Markdown and JSON versions of the same inquiry.
+
+Bookmarks, reading position, preferences, and completion stay in the reader's browser. There is no account or cross-device sync. Readers can clear their reading data on the Saved page.
+
+## Preview and publish
 
 ```bash
-# Add a new writing article
-node scripts/add-content.mjs writing
-
-# Add a new showcase
-node scripts/add-content.mjs showcase
-
-# Add a new thinking entry
-node scripts/add-content.mjs thinking
+npm run build:content
+npm test
+npm run dev
+# When ready to check the production output:
+npm run build
 ```
 
-The script prompts you for each field and inserts the entry at the top of the relevant array in `src/data/content.js`.
+The production build generates full HTML for each essay, an individual PNG sharing preview, RSS, a sitemap, and `updates.json`. Clean article URLs look like `/agentic-ai-powertools/writing/my-new-essay/`. Previously shared hash links remain supported.
 
-## Option 2: JSON File
+Review and commit the intended source and generated data changes, then push to `main` when ready to publish. GitHub Actions deploys the production build to GitHub Pages. A local preview or build does not publish anything or send email.
 
-Create a JSON file with the fields and pass it:
+## Free email updates
 
-```bash
-node scripts/add-content.mjs writing --json my-article.json
-```
+Follow [newsletter/SETUP.md](newsletter/SETUP.md) once to activate the Google Apps Script sender and connect its URL. Until configured, the website offers RSS and explains that email updates are coming soon.
 
-Example `my-article.json`:
-```json
-{
-  "title": "My New Article",
-  "category": "AI Systems",
-  "featured": true,
-  "excerpt": "A one-line summary.",
-  "body": "<p>The full article in HTML.</p>"
-}
-```
+Once activated, the hourly sender detects new or revised essays, projects, and inquiries in the deployed `updates.json`. It sends a digest to confirmed subscribers and queues overflow within Google's free quota. Existing content is baselined during setup, so activation does not send the whole archive. Each confirmed signup queues a welcome email and an owner notification. Unsubscribed readers are excluded from queued updates.
 
-## Option 3: Edit Directly
-
-Open `src/data/content.js` and add a new entry to the top of the relevant array:
-
-### Writing (ARTICLES array)
-```js
-{
-  slug: "my-article-slug",
-  title: "Article Title",
-  category: "AI Systems",        // AI Systems | Architecture | Reflection | Leadership
-  date: "2026-05-16",
-  dateDisplay: "May 16, 2026",
-  readTime: "8 min read",
-  featured: true,                 // shows "Featured" badge
-  cover: "https://...",           // Unsplash URL recommended
-  excerpt: "One-line summary.",
-  body: `<p>HTML content...</p>`
-}
-```
-
-### Showcase (SHOWCASE array)
-```js
-{
-  title: "Showcase Title",
-  tag: "AI Infrastructure",
-  tagClass: "ai",                // ai | sys
-  featured: true,                // shows ★ badge on tab
-  description: "Description text.",
-  code: `# Python code here...`,
-  lang: "python"
-}
-```
-
-### Thinking (THINKING array)
-```js
-{
-  title: "Question or thesis",
-  tag: "AI Architecture",
-  tagClass: "ai",               // ai | cl | sys
-  featured: true,
-  sidebarText: "Sidebar label",
-  body: "Full paragraph."
-}
-```
-
-## Content Features
-
-- **Featured badge**: Set `featured: true` — shows a gradient "Featured" badge on writing cards and ★ on showcase tabs
-- **New badge**: Articles published within the last 14 days automatically get a "New" badge (based on the `date` field)
-- **Home page indicators**: The Explore section shows a pulsing "New" dot on Showcase/Writing cards when there's featured or recent content
-- **Filter buttons**: The Writing page has "Featured" and "New" filter tabs alongside category filters
-
-## After Adding Content
-
-```bash
-npm run dev     # preview locally
-npm run build   # verify production build
-git add -A && git commit -m "Add: new content" && git push
-```
-
-Deployment to GitHub Pages happens automatically via GitHub Actions on push to `main`.
+Editing a published essay's content or metadata changes its revision and can trigger an update. Batch related edits into one deployment to keep digests useful. Changing only the site's styling does not change content revisions. Never commit the subscriber Sheet, exports, or private Google settings.

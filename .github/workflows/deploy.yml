@@ -26,10 +26,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_BEEHIIV_API_KEY: ${{ secrets.BEEHIIV_API_KEY }}
-          VITE_SUBSCRIBE_PROXY_URL: ${{ secrets.SUBSCRIBE_PROXY_URL }}
-      - run: node scripts/generate-rss.mjs
-      - run: touch dist/.nojekyll && cp dist/index.html dist/404.html
+          VITE_NEWSLETTER_URL: ${{ vars.NEWSLETTER_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

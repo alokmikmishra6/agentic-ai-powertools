@@ -498,7 +498,7 @@ export default function ArticleAudioPlayer({ articleBody, title }) {
   }
 
   // Don't render if Speech API unavailable
-  if (!window.speechSynthesis) return null
+  if (typeof window === 'undefined' || !window.speechSynthesis) return null
 
   const chunks = getChunks()
   const totalWords = chunks.reduce((sum, c) => sum + c.text.split(/\s+/).length, 0)

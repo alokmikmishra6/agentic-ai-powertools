@@ -552,27 +552,36 @@ export default function GenerativeCover({ slug, category, height = 180, classNam
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    const dpr = window.devicePixelRatio || 1
-    const w = canvas.clientWidth
-    const h = height
-
-    canvas.width = w * dpr
-    canvas.height = h * dpr
-    ctx.scale(dpr, dpr)
-
-    const renderer = COVERS[slug]
-    if (renderer) {
-      renderer(ctx, w, h)
-    } else {
-      drawFallback(ctx, w, h, slug, category)
+    if (!ctx) return
+    let visible = false
+    const draw = () => {
+      if (!visible || !canvas.clientWidth || !canvas.clientHeight) return
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const w = canvas.clientWidth
+      const h = canvas.clientHeight
+      canvas.width = w * dpr
+      canvas.height = h * dpr
+      ctx.scale(dpr, dpr)
+      const renderer = COVERS[slug]
+      if (renderer) renderer(ctx, w, h)
+      else drawFallback(ctx, w, h, slug, category)
     }
+    const observer = new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting
+      if (visible) draw()
+    }, { rootMargin: '150px' })
+    const resize = new ResizeObserver(draw)
+    observer.observe(canvas)
+    resize.observe(canvas)
+    return () => { observer.disconnect(); resize.disconnect() }
   }, [slug, category, height])
 
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       className={`generative-cover ${className}`}
-      style={{ width: '100%', height, display: 'block', borderRadius: 'var(--radius)' }}
+      style={{ width: '100%', '--cover-height': `${height}px`, display: 'block', borderRadius: 'var(--radius)' }}
     />
   )
 }

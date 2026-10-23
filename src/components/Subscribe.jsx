@@ -1,105 +1,20 @@
 import { useState } from 'react'
-
-const SUBSCRIBE_PROXY = import.meta.env.VITE_SUBSCRIBE_PROXY_URL || ''
-
-/**
- * Email subscribe form — connects to Beehiiv via Cloudflare Worker proxy.
- * Placement: Footer + end of articles.
- * Proxy URL set via VITE_SUBSCRIBE_PROXY_URL env variable.
- */
-export default function Subscribe({ compact = false, source = 'website' }) {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('idle') // idle | loading | success | error
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!email || !email.includes('@')) return
-
-    setStatus('loading')
-    setErrorMsg('')
-
-    if (!SUBSCRIBE_PROXY) {
-      // Demo mode — no proxy configured yet
-      setStatus('success')
-      return
-    }
-
-    try {
-      const res = await fetch(SUBSCRIBE_PROXY, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          utm_source: source,
-          utm_medium: compact ? 'article-inline' : 'footer',
-        }),
-      })
-
-      if (res.ok || res.status === 201) {
-        setStatus('success')
-        setEmail('')
-      } else {
-        const data = await res.json().catch(() => ({}))
-        if (res.status === 409 || data?.message?.includes('already')) {
-          setStatus('success') // Already subscribed is still a win
-        } else {
-          setErrorMsg(data?.message || 'Something went wrong. Try again.')
-          setStatus('error')
-        }
-      }
-    } catch {
-      setErrorMsg('Network error. Please try again.')
-      setStatus('error')
-    }
+import { Link } from 'react-router-dom'
+import { ARTICLES } from '../data/index'
+const configured = import.meta.env.VITE_NEWSLETTER_URL || ''
+// Only a Google-hosted signup URL is enabled; old paid-provider settings are ignored.
+const NEWSLETTER_URL = /^https:\/\/script\.google\.com\/macros\/s\/[^/?#]+\/exec$/.test(configured) ? configured : ''
+export default function Subscribe({ compact = false }) {
+  const [copied,setCopied] = useState(false)
+  async function copyFeed() {
+    try { await navigator.clipboard.writeText(new URL(`${import.meta.env.BASE_URL}feed.xml`,window.location.origin).href);setCopied(true) }
+    catch { setCopied(false) }
   }
-
-  if (status === 'success') {
-    return (
-      <div className={`subscribe ${compact ? 'subscribe--compact' : ''}`}>
-        <div className="subscribe-success">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4b896" strokeWidth="2">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          <span>You're in. You'll hear from me when something new drops.</span>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className={`subscribe ${compact ? 'subscribe--compact' : ''}`}>
-      {!compact && (
-        <div className="subscribe-header">
-          <h3 className="subscribe-title">Stay in the loop</h3>
-          <p className="subscribe-desc">
-            New essays on AI systems, architecture, and engineering craft. No spam, no fluff — just signal.
-          </p>
-        </div>
-      )}
-      {compact && (
-        <span className="subscribe-inline-label">Get notified on new posts →</span>
-      )}
-      <form className="subscribe-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          className="subscribe-input"
-          placeholder="your@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={status === 'loading'}
-        />
-        <button
-          type="submit"
-          className="subscribe-btn"
-          disabled={status === 'loading' || !email}
-        >
-          {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-        </button>
-      </form>
-      {status === 'error' && <p className="subscribe-error">{errorMsg}</p>}
-      <p className="subscribe-privacy">No spam. Unsubscribe anytime.</p>
-    </div>
-  )
+  return <div className={`subscribe ${compact ? 'subscribe--compact' : ''}`}>
+    <div className="subscribe-header"><h3 className="subscribe-title">Stay in the loop</h3><p className="subscribe-desc">New writing, revised ideas, and projects. A digest when there’s something new to explore.</p></div>
+    <div className="subscribe-options">{NEWSLETTER_URL && <a className="journal-button" href={NEWSLETTER_URL} target="_blank" rel="noopener noreferrer">Get updates by email ↗</a>}<a className="journal-text-link" href={`${import.meta.env.BASE_URL}feed.xml`}>Subscribe via RSS ↗</a><button className="journal-text-link" onClick={copyFeed}>{copied?'Feed link copied ✓':'Copy feed link'}</button></div>
+    <p className="subscribe-note">{NEWSLETTER_URL ? 'Confirm your address to join. Unsubscribe from any email.' : 'Email updates are coming soon. You can follow every new post through RSS today.'}</p>
+    {copied && <span role="status" className="sr-only">Feed link copied</span>}
+    <details className="subscribe-sample"><summary>A taste of the newsletter</summary><p>A short note from Alok, a few ideas worth exploring, and links to read them at your own pace.</p><ul>{ARTICLES.slice(0,3).map(a=><li key={a.slug}><Link to={`/writing/${a.slug}`}>{a.title} ↗</Link></li>)}</ul><p>No account is needed for RSS. Add the feed URL to your preferred reader.</p></details>
+  </div>
 }

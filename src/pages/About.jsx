@@ -1,109 +1,41 @@
 import { Link } from 'react-router-dom'
-import { Reveal, ScaleReveal, ClipReveal, PerspectiveReveal, FanReveal, DepthReveal } from '../components/ScrollReveal'
-import TiltCard from '../components/TiltCard'
-import { DOMAINS, PILLARS } from '../data/content'
+import { DOMAINS, PILLARS } from '../data/index'
 
 export default function About() {
-  return (
-    <>
-      <section className="page-hero">
-        <div className="container">
-          <Reveal>
-            <Link to="/" className="back-link">← Back to Home</Link>
-            <div className="section-eyebrow">About</div>
-            <h2 className="section-title">Building systems that <span className="gradient-text">endure</span></h2>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ═══ BIO ═══ */}
-      <section id="bio">
-        <div className="container">
-          <ClipReveal direction="left" delay={0.1}>
-            <div className="about-wrap">
-              <div className="about-text">
-                <p>I'm Alok Mishra — a Senior Software Architect with close to two decades of hands-on experience building production systems at scale. My work sits at the intersection of <strong>AI/ML infrastructure</strong>, <strong>cloud-native distributed systems</strong>, and <strong>IoT platforms</strong> that serve millions of devices.</p>
-                <p>Currently I focus on designing agentic AI workflows, RAG pipelines, and LLM integrations that go beyond demos into systems that are reliable, auditable, and safe to run autonomously. I care deeply about the architecture that surrounds intelligence — the trust boundaries, the evaluation frameworks, the operational scaffolding.</p>
-                <p>Before AI became the centre of gravity, I spent years architecting real-time data platforms, event-driven microservice ecosystems, and large-scale IoT infrastructure across healthcare, industrial, and enterprise domains.</p>
-              </div>
-              <div className="about-stats">
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">~20</span>
-                  <span className="about-stat-label">Years in Software</span>
-                </div>
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">AI</span>
-                  <span className="about-stat-label">Systems & Agentic Workflows</span>
-                </div>
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">Cloud</span>
-                  <span className="about-stat-label">Native Architecture</span>
-                </div>
-                <div className="about-stat">
-                  <span className="about-stat-num gradient-text">IoT</span>
-                  <span className="about-stat-label">Platforms at Scale</span>
-                </div>
-              </div>
-            </div>
-          </ClipReveal>
-        </div>
-      </section>
-
-      {/* ═══ PHILOSOPHY ═══ */}
-      <section id="philosophy" className="phi-section">
-        <div className="container">
-          <ScaleReveal>
-            <div className="section-eyebrow">Perspective</div>
-            <h2 className="section-title">How I think about <span className="gradient-text">building</span></h2>
-          </ScaleReveal>
-          <ClipReveal direction="bottom" delay={0.1}>
-            <p className="phi-quote gradient-text">
-              Great architecture is not about the technologies you choose. It is about the decisions you make before you choose them.
-            </p>
-          </ClipReveal>
-          <p className="phi-body">
-            The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong.
-          </p>
-          <p className="phi-body">
-            My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly.
-          </p>
-          <div className="pillars-grid">
-            {PILLARS.map((p, i) => (
-              <FanReveal key={p.num} index={i} total={PILLARS.length}>
-                <div className="pillar">
-                  <span className="pillar-num">{p.num}</span>
-                  <div>
-                    <h4>{p.title}</h4>
-                    <p>{p.desc}</p>
-                  </div>
-                </div>
-              </FanReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ DOMAINS ═══ */}
-      <section id="domains">
-        <div className="container">
-          <ScaleReveal>
-            <div className="section-eyebrow">Expertise</div>
-            <h2 className="section-title">Domains of <span className="gradient-text">deep work</span></h2>
-            <p className="domains-lead">Across close to two decades my focus has crystallised into areas where I have developed both technical depth and architectural judgement — not just experience, but genuine design intuition earned through consequential decisions in production environments.</p>
-          </ScaleReveal>
-          <div className="domains-grid">
-            {DOMAINS.map((d, i) => (
-              <PerspectiveReveal key={d.title} direction={i % 2 === 0 ? 'left' : 'right'} delay={i * 0.1}>
-                <TiltCard className="domain-card">
-                  <div className="domain-icon">{d.icon}</div>
-                  <h3>{d.title}</h3>
-                  <p>{d.desc}</p>
-                </TiltCard>
-              </PerspectiveReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  )
+  return <div className="journal-about journal-container">
+    <header className="editorial-heading">
+      <Link to="/" className="journal-breadcrumb">Home / About</Link>
+      <span className="journal-kicker">The person behind the notes</span>
+      <h1>A builder.<br />An observer.<br /><em>Always a student.</em></h1>
+    </header>
+    <section className="about-introduction" aria-labelledby="about-name">
+      <aside className="author-sheet">
+        <div className="author-signet" aria-hidden="true"><span>am.</span><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="105" /><ellipse cx="120" cy="120" rx="105" ry="44" transform="rotate(-40 120 120)" /><circle cx="200" cy="53" r="5" /></svg></div>
+        <span className="journal-kicker">Architecture / AI / Craft</span>
+        <h2 id="about-name">Alok Mishra</h2>
+        <p>Senior Software Architect</p>
+        <div className="author-sheet-facts"><span>~20 years <small>building production systems</small></span><span>One enduring question <small>How can we build this better?</small></span></div>
+        <a className="journal-text-link" href="https://www.linkedin.com/in/alokmishra6/" target="_blank" rel="noopener noreferrer">Start a conversation <span aria-hidden="true">↗</span></a>
+      </aside>
+      <div className="about-narrative">
+        <p className="about-opening">I’m Alok. I build systems.<br />And I write to understand them better.</p>
+        <p>I'm a Senior Software Architect with close to two decades of hands-on experience building production systems at scale. My work sits at the intersection of <strong>AI/ML infrastructure</strong>, <strong>cloud-native distributed systems</strong>, and <strong>IoT platforms</strong> that serve millions of devices.</p>
+        <p>Currently I focus on designing agentic AI workflows, RAG pipelines, and LLM integrations that go beyond demos into systems that are reliable, auditable, and safe to run autonomously. I care deeply about the architecture that surrounds intelligence — the trust boundaries, the evaluation frameworks, the operational scaffolding.</p>
+        <p>Before AI became the centre of gravity, I spent years architecting real-time data platforms, event-driven microservice ecosystems, and large-scale IoT infrastructure across healthcare, industrial, and enterprise domains.</p>
+        <Link className="journal-text-link" to="/writing">Spend some time in the notebook <span aria-hidden="true">↗</span></Link>
+      </div>
+    </section>
+    <section className="about-perspective journal-section" aria-labelledby="perspective-title">
+      <span className="journal-kicker">A working philosophy</span>
+      <h2 id="perspective-title">The decisions <em>before the code.</em></h2>
+      <blockquote>Great architecture is not about the technologies you choose. It is about the decisions you make before you choose them.</blockquote>
+      <p>The most consequential engineering work happens before the first line of code. It lives in the space between a requirement and a design — where the real question is not what to build, but what it will cost to be wrong.</p>
+      <p>My practice is grounded in systems thinking: understanding the whole before optimising the parts, designing for change rather than against it, and treating complexity as something to be managed honestly.</p>
+      <div className="about-principles">{PILLARS.map(p => <article className="about-principle" key={p.num}><span>{p.num}</span><h3>{p.title}</h3><p>{p.desc}</p></article>)}</div>
+    </section>
+    <section className="about-domains journal-section" aria-labelledby="domains-title">
+      <div className="journal-section-heading"><div><span className="journal-kicker">Where experience becomes perspective</span><h2 id="domains-title">Areas of deep work<span className="gold-period">.</span></h2></div><Link className="journal-text-link" to="/showcase">See the practice <span aria-hidden="true">↗</span></Link></div>
+      <div className="domain-index">{DOMAINS.map((d, i) => <details key={d.title}><summary><span className="domain-index-number">{String(i + 1).padStart(2, '0')}</span><h3>{d.title}</h3><span className="domain-expand" aria-hidden="true">+</span></summary><p>{d.desc}</p></details>)}</div>
+    </section>
+  </div>
 }

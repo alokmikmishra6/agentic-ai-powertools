@@ -1,132 +1,32 @@
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import WhatsNew from './WhatsNew'
+import { useState, useEffect, useRef } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
-const NAV_ITEMS = [
-  { label: 'Showcase', href: '/showcase' },
-  { label: 'Thinking', href: '/thinking' },
-  { label: 'Writing', href: '/writing' },
-]
-
-const NAV_SECONDARY = [
-  { label: 'About', href: '/about' },
-  { label: 'Connect', href: '/#connect' },
-]
+const ITEMS = [{ label: 'Writing', to: '/writing' }, { label: 'Showcase', to: '/showcase' }, { label: 'Labs', to: '/labs' }, { label: 'Thinking', to: '/thinking' }, { label: 'About', to: '/about' }]
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const menuRef = useRef(null)
   const location = useLocation()
-
+  useEffect(() => setOpen(false), [location])
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY
-      setScrolled(y > 40)
-      // Nav appears after scrolling past the landing screen (80vh)
-      setVisible(y > window.innerHeight * 0.6 || location.pathname !== '/')
+    const close = event => {
+      if (event.key === 'Escape' && open) { setOpen(false); menuRef.current?.focus() }
     }
-    // Show nav immediately on non-home pages
-    if (location.pathname !== '/') {
-      setVisible(true)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [location.pathname])
-
-  useEffect(() => {
-    setDrawerOpen(false)
-  }, [location])
-
-  const handleNav = (item, e) => {
-    if (item.href.startsWith('/#')) {
-      const sectionId = item.href.slice(2)
-      if (location.pathname === '/') {
-        e.preventDefault()
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
-      }
-    }
-    setDrawerOpen(false)
-  }
-
-  const isActive = (item) => {
-    if (item.href.startsWith('/#')) return false
-    return location.pathname === item.href
-  }
-
-  const renderLink = (item) => {
-    if (item.href.startsWith('/#')) {
-      const sectionId = item.href.slice(2)
-      if (location.pathname === '/') {
-        return (
-          <a
-            key={item.label}
-            href={`#${sectionId}`}
-            onClick={(e) => handleNav(item, e)}
-          >
-            {item.label}
-          </a>
-        )
-      }
-      // On sub-pages, navigate to home then scroll
-      return (
-        <Link
-          key={item.label}
-          to={`/${sectionId ? `?scrollTo=${sectionId}` : ''}`}
-          onClick={() => setDrawerOpen(false)}
-        >
-          {item.label}
-        </Link>
-      )
-    }
-    return (
-      <Link
-        key={item.label}
-        to={item.href}
-        className={isActive(item) ? 'active' : ''}
-      >
-        {item.label}
-      </Link>
-    )
-  }
-
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [open])
+  const search = () => { setOpen(false); window.dispatchEvent(new Event('journal:search')) }
   return (
     <>
-      <nav className={`nav ${scrolled ? 'scrolled' : ''} ${visible ? 'nav-visible' : ''}`}>
-        <div className="nav-inner">
-          <Link to="/" className="nav-brand" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
-            <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="nav-logo" />
-            Alok Mishra
-          </Link>
-          <ul className="nav-links">
-            {NAV_ITEMS.map(item => (
-              <li key={item.label}>{renderLink(item)}</li>
-            ))}
-            <li className="nav-divider" aria-hidden="true" />
-            {NAV_SECONDARY.map(item => (
-              <li key={item.label}>{renderLink(item)}</li>
-            ))}
-          </ul>
-          <WhatsNew />
-          <button
-            className="nav-burger"
-            onClick={() => setDrawerOpen(!drawerOpen)}
-            aria-label="Menu"
-          >
-            <span /><span /><span />
-          </button>
-        </div>
-      </nav>
-      <div className={`nav-drawer ${drawerOpen ? 'open' : ''}`}>
-        <Link to="/" onClick={() => setDrawerOpen(false)}>Home</Link>
-        {NAV_ITEMS.map(item => (
-          <span key={item.label}>{renderLink(item)}</span>
-        ))}
-        <div className="nav-drawer-divider" />
-        {NAV_SECONDARY.map(item => (
-          <span key={item.label}>{renderLink(item)}</span>
-        ))}
-      </div>
+      <a href="#main-content" className="skip-link" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus() }}>Skip to content</a>
+      <header className="journal-header">
+        <nav className="journal-nav journal-container" aria-label="Main navigation">
+          <Link to="/" className="journal-brand" aria-label="Alok Mishra home"><span className="journal-brand-mark">am<span>.</span></span><span>ALOK MISHRA<small>FIELD NOTES</small></span></Link>
+          <div className="journal-nav-links">{ITEMS.map(item => <NavLink key={item.to} to={item.to}>{item.label}</NavLink>)}</div>
+          <div className="journal-nav-actions"><Link to="/saved" className="nav-saved" aria-label="Saved essays">Saved</Link><button className="journal-search-trigger" onClick={search} aria-label="Search writing and projects"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10" cy="10" r="6.5" /><path d="m15 15 5 5" /></svg><span>Search</span><kbd>⌘ K</kbd></button><Link className="journal-nav-subscribe" to="/?scrollTo=subscribe">Subscribe <span aria-hidden="true">↗</span></Link><button ref={menuRef} className="journal-menu-button" aria-expanded={open} aria-controls="journal-mobile-menu" aria-label={open ? 'Close navigation menu' : 'Open navigation menu'} onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span aria-hidden="true">{open ? '×' : '☰'}</span></button></div>
+        </nav>
+        {open && <nav id="journal-mobile-menu" className="journal-mobile-menu" aria-label="Mobile navigation">{ITEMS.map(item => <NavLink key={item.to} to={item.to}>{item.label}<span aria-hidden="true">↗</span></NavLink>)}<Link to="/?scrollTo=subscribe">Subscribe <span aria-hidden="true">↗</span></Link></nav>}
+      </header>
     </>
   )
 }

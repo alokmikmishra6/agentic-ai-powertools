@@ -6,3 +6,5 @@ dist/
 .env
 .env.local
 .github/prompts/ui-ux-pro-max/
+
+newsletter/settings.local.json

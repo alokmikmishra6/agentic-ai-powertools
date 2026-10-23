@@ -16,15 +16,16 @@ const BEEHIIV_PUB_ID = 'pub_af7aba00-0993-4f40-9589-597bd53297de'
 const BEEHIIV_API = `https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`
 
 const ALLOWED_ORIGINS = [
-  'https://alokmishra.github.io',
+  'https://alokmikmishra6.github.io',
+  'http://127.0.0.1:5173',
   'http://localhost:5175',
   'http://localhost:5173',
 ]
 
 function corsHeaders(origin) {
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
   return {
-    'Access-Control-Allow-Origin': allowedOrigin,
+    ...(ALLOWED_ORIGINS.includes(origin) ? { 'Access-Control-Allow-Origin': origin } : {}),
+    'Vary': 'Origin',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
@@ -37,7 +38,7 @@ export default {
 
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders(origin) })
+      return new Response(null, { status: ALLOWED_ORIGINS.includes(origin) ? 204 : 403, headers: corsHeaders(origin) })
     }
 
     if (request.method !== 'POST') {

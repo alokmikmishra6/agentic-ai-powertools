@@ -4,6 +4,7 @@ export default function TiltCard({ children, className = '', style = {} }) {
   const cardRef = useRef(null)
 
   const handleMouseMove = (e) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const card = cardRef.current
     if (!card) return
     const rect = card.getBoundingClientRect()

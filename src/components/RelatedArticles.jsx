@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ARTICLES } from '../data/content'
+import { ARTICLES } from '../data/index'
 import GenerativeCover from './GenerativeCover'
 
 /**

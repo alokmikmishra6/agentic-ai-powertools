@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><base target="_top"><style>
+*{box-sizing:border-box}body{margin:0;padding:40px 22px;background:#0c100f;color:#eeeae2;font:16px/1.7 system-ui,sans-serif}main{max-width:560px;margin:5vh auto;border:1px solid #394735;border-radius:10px;padding:35px;background:#151d16}.mark{font:italic 48px Georgia,serif;color:#d7b98a}h1{font:400 42px/1.15 Georgia,serif;letter-spacing:-1px;margin:20px 0}p{color:#b7c1b4;font-size:15px}label{display:block;margin-top:25px;color:#d7b98a}input{width:100%;margin:10px 0 20px;background:#0c100f;color:#eeeae2;border:1px solid #566348;border-radius:4px;padding:14px;font:inherit}button{background:#d7b98a;color:#142014;border:0;border-radius:4px;padding:14px 20px;font:600 14px system-ui;cursor:pointer}button:disabled{opacity:.6}a{color:#d7b98a}.fine{font-size:12px}.trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}#result{border-top:1px solid #394735;margin-top:25px;padding-top:20px}input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #d7b98a;outline-offset:4px}
+</style></head><body><main><span class="mark">am.</span>
+<? if(action === 'signup') { ?>
+<h1>A note when there’s something worth sharing.</h1><p>New essays, revised ideas, and projects from Alok Mishra. Updates arrive as a digest when something changes in the notebook.</p>
+<form id="signup"><label for="email">Your email address</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"><div class="trap" aria-hidden="true"><label for="website">Website</label><input id="website" tabindex="-1" autocomplete="off"></div><button id="submit">Send confirmation email</button></form>
+<p class="fine">Your address is stored in Alok’s private subscriber list and used for blog updates. Confirm by email to join. Unsubscribe from any message.</p>
+<? } else { ?>
+<h1><?= action === 'confirm' ? 'One last step.' : 'Leave the list?' ?></h1><p><?= action === 'confirm' ? 'Confirm that you want to receive new writing and project updates from Alok Mishra.' : 'You can unsubscribe now. Your queued blog updates will be cancelled.' ?></p>
+<button id="action"><?= action === 'confirm' ? 'Confirm my subscription' : 'Unsubscribe me' ?></button>
+<? } ?>
+<p id="result" role="status" hidden></p><p><a href="<?= site ?>">Back to the notebook ↗</a></p>
+</main><script>
+const action = <?!= JSON.stringify(action) ?>;
+const token = <?!= JSON.stringify(token) ?>;
+const result=document.getElementById('result');
+function request(button,invoke){button.disabled=true;result.hidden=false;result.textContent='Working…';const runner=google.script.run.withSuccessHandler(message=>{result.textContent=message;button.hidden=true;}).withFailureHandler(error=>{result.textContent=error.message||'Please try again.';button.disabled=false;});invoke(runner);}
+if(action==='signup')document.getElementById('signup').addEventListener('submit',event=>{event.preventDefault();request(document.getElementById('submit'),runner=>runner.subscribe(document.getElementById('email').value,document.getElementById('website').value));});
+else document.getElementById('action').addEventListener('click',()=>request(document.getElementById('action'),runner=>action==='confirm'?runner.confirmSubscription(token):runner.unsubscribe(token)));
+</script></body></html>

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'framer-motion'
 
 /* ═══ APPLE-STYLE SCROLL ANIMATIONS ═══ */
 
@@ -7,13 +7,14 @@ const ease = [0.22, 1, 0.36, 1]
 
 // Basic fade + slide up (default reveal)
 export function Reveal({ children, delay = 0, className = '' }) {
+  const reduced = useReducedMotion()
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
+      initial={reduced ? false : { opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 1.0, delay, ease }}
+      transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : Math.min(delay, 0.15), ease }}
     >
       {children}
     </motion.div>

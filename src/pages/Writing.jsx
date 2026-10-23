@@ -1,193 +1,66 @@
-import { useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
-import { Reveal, StaggerContainer, StaggerItem } from '../components/ScrollReveal'
-import GlassCard from '../components/GlassCard'
-import GenerativeCover from '../components/GenerativeCover'
-import ArticleAudioPlayer from '../components/ArticleAudioPlayer'
-import ArticleTOC from '../components/ArticleTOC'
-import ReadingProgress from '../components/ReadingProgress'
-import CopyCodeBlocks from '../components/CopyCodeBlocks'
-import RelatedArticles from '../components/RelatedArticles'
-import Subscribe from '../components/Subscribe'
-import { ARTICLES } from '../data/content'
-
-const CATEGORIES = ['All', 'Featured', 'New', 'AI Systems', 'Architecture', 'Reflection', 'Leadership']
-const TWO_WEEKS = 14 * 24 * 60 * 60 * 1000
-const isNew = (dateStr) => (Date.now() - new Date(dateStr).getTime()) < TWO_WEEKS
+import { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
+import { searchPassage } from '../lib/article-content'
+import { ARTICLES } from '../data/index'
+import ArticleCard from '../components/ArticleCard'
+import { TOPICS, findArticles } from '../lib/articles'
 
 export default function Writing() {
-  const [filter, setFilter] = useState('Featured')
-  const [showCount, setShowCount] = useState(100)
-
-  const filtered = filter === 'All' ? ARTICLES
-    : filter === 'Featured' ? ARTICLES.filter(a => a.featured)
-    : filter === 'New' ? ARTICLES.filter(a => isNew(a.date))
-    : ARTICLES.filter(a => a.category === filter)
-
-  // Sort: featured first, then new, then rest
-  const sorted = [...filtered].sort((a, b) => {
-    const aScore = (a.featured ? 2 : 0) + (isNew(a.date) ? 1 : 0)
-    const bScore = (b.featured ? 2 : 0) + (isNew(b.date) ? 1 : 0)
-    return bScore - aScore
-  })
-  const visible = sorted.slice(0, showCount)
-
-  return (
-    <>
-      <section className="page-hero">
-        <div className="container">
-          <Reveal>
-            <Link to="/" className="back-link">← Back to Home</Link>
-            <div className="section-eyebrow">Writing</div>
-            <h2 className="section-title">Notes from the <span className="gradient-text">field</span></h2>
-            <p className="page-lead">Long-form thinking on AI systems, architecture decisions, engineering leadership, and the craft of building software that endures.</p>
-          </Reveal>
-        </div>
-      </section>
-
-      <section style={{ paddingTop: 0 }}>
-        <div className="container">
-          <Reveal>
-            <div className="filters">
-              {CATEGORIES.map(c => (
-                <button
-                  key={c}
-                  className={`filter-btn ${filter === c ? 'active' : ''}`}
-                  onClick={() => { setFilter(c); setShowCount(100) }}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </Reveal>
-
-          <StaggerContainer key={filter} className="writing-grid">
-            {visible.map((article, idx) => {
-              const isHero = article.featured && idx === 0
-              return (
-              <StaggerItem key={article.slug} className={`writing-card${isHero ? ' writing-card--featured' : ''}${article.featured && !isHero ? ' writing-card--accent' : ''}${isNew(article.date) ? ' writing-card--new' : ''}`}>
-                <Link to={`/writing/${article.slug}`}>
-                  <GlassCard>
-                    <GenerativeCover slug={article.slug} category={article.category} height={isHero ? 120 : 100} className="wc-cover" />
-                    {(article.featured || isNew(article.date)) && (
-                      <div className="wc-spotlight">
-                        {article.featured && <span className="wc-spotlight-label">★ Featured</span>}
-                        {isNew(article.date) && <span className="wc-spotlight-label wc-spotlight-new">New</span>}
-                      </div>
-                    )}
-                    <div className="wc-meta">
-                      <span className="wc-tag">{article.category}</span>
-                      {article.tags?.filter(t => t !== article.category).map(tag => (
-                        <span key={tag} className="wc-tag wc-tag--secondary">{tag}</span>
-                      ))}
-                      <span className="wc-date">{article.dateDisplay}</span>
-                    </div>
-                    <h3>{article.title}</h3>
-                    <p className="excerpt">{article.excerpt}</p>
-                    <div className="wc-foot">
-                      <span>{article.readTime}</span>
-                      <span className="wc-arrow">→</span>
-                    </div>
-                  </GlassCard>
-                </Link>
-              </StaggerItem>
-              )
-            })}
-          </StaggerContainer>
-
-          {showCount < filtered.length && (
-            <Reveal>
-              <button className="load-more-btn" onClick={() => setShowCount(s => s + 6)}>
-                Load more writing
-              </button>
-            </Reveal>
-          )}
-        </div>
-      </section>
-    </>
-  )
-}
-
-export function ArticlePage() {
-  const { slug } = useParams()
-  const navigate = useNavigate()
-  const article = ARTICLES.find(a => a.slug === slug)
-
-  if (!article) {
-    return (
-      <div className="container article-page">
-        <p>Article not found.</p>
-        <Link to="/writing" className="article-back">← Back to writing</Link>
-      </div>
-    )
+  const [params, setParams] = useSearchParams()
+  const [bodies, setBodies] = useState({})
+  const [searchState, setSearchState] = useState('idle')
+  const [retry, setRetry] = useState(0)
+  const requestedTopic = params.get('topic') || 'All'
+  const topic = TOPICS.some(t => t.name === requestedTopic) ? requestedTopic : 'All'
+  const query = params.get('q') || ''
+  const view = params.get('view') === 'list' ? 'list' : 'grid'
+  const sort = params.get('sort') === 'oldest' ? 'oldest' : 'newest'
+  const maxMinutes = ['5','10','15'].includes(params.get('minutes')) ? Number(params.get('minutes')) : 0
+  const formats = ['Concept','Deep dive','Implementation','Perspective']
+  const format = formats.includes(params.get('format')) ? params.get('format') : 'All'
+  useEffect(() => {
+    if (!query.trim() || Object.keys(bodies).length) return
+    let cancelled = false
+    setSearchState('loading')
+    import('../data/search-index.json').then(module => { if (!cancelled) { setBodies(module.default); setSearchState('ready') } }).catch(() => { if (!cancelled) setSearchState('error') })
+    return () => { cancelled = true }
+  }, [query, retry, bodies])
+  const filtered = findArticles(ARTICLES, { topic, query, sort, maxMinutes, format, bodies })
+  const page = Math.max(1, Math.min(Math.ceil(filtered.length / 9) || 1, Number.parseInt(params.get('page'), 10) || 1))
+  const visible = filtered.slice(0, page * 9)
+  function update(key, value) {
+    setParams(previous => {
+      const next = new URLSearchParams(previous)
+      if (value && value !== 'All') next.set(key, value); else next.delete(key)
+      if (key !== 'page' && key !== 'view') next.delete('page')
+      return next
+    }, { replace: key === 'q' })
   }
-
   return (
-    <article className="article-page">
-      <div className="article-page-inner">
-        <Reveal>
-          <Link to="/writing" className="article-back">← Back to writing</Link>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <GenerativeCover slug={article.slug} category={article.category} height={360} className="article-cover" />
-        </Reveal>
-        <Reveal delay={0.15}>
-          <div className="article-meta-bar">
-            <span className="wc-tag">{article.category}</span>
-            {article.tags?.filter(t => t !== article.category).map(tag => (
-              <span key={tag} className="wc-tag wc-tag--secondary">{tag}</span>
-            ))}
-            <span>{article.dateDisplay}</span>
-            <span>{article.readTime}</span>
-          </div>
-          <h1>{article.title}</h1>
-        </Reveal>
-
-        {/* TL;DR Summary Block */}
-        {(article.theme || article.excerpt) && (
-          <Reveal delay={0.18}>
-            <div className="article-tldr">
-              <div className="article-tldr-label">TL;DR</div>
-              <p className="article-tldr-text">{article.theme || article.excerpt}</p>
-            </div>
-          </Reveal>
-        )}
-
-        {/* Audio Player */}
-        <Reveal delay={0.19}>
-          <ArticleAudioPlayer articleBody={article.body} title={article.title} />
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <div className="article-body" dangerouslySetInnerHTML={{ __html: article.body }} />
-        </Reveal>
-
-        <Reveal delay={0.21}>
-          <div className="article-footer-nav">
-            <Link to="/writing" className="article-back">← Back to all writing</Link>
-          </div>
-        </Reveal>
+    <div className="journal-library journal-container">
+      <header className="journal-library-heading">
+        <Link to="/" className="journal-breadcrumb">Home <span aria-hidden="true">/</span> The writing</Link>
+        <span className="journal-kicker">The collected notes / {ARTICLES.length} essays</span>
+        <h1>A little deeper.<br /><em>A little clearer.</em></h1>
+        <p>Ideas, patterns, and hard-earned lessons on building intelligent systems. Pick a thread. Follow your curiosity.</p>
+      </header>
+      <div className="library-controls">
+        <div className="library-topics" role="group" aria-label="Filter by topic">
+          {['All', ...TOPICS.map(t => t.name)].map(name => <button key={name} aria-pressed={topic === name} onClick={() => update('topic', name)}>{name === 'All' ? 'All writing' : name}<span>{name === 'All' ? ARTICLES.length : ARTICLES.filter(a => a.category === name).length}</span></button>)}
+        </div>
+        <div className="library-tools">
+          <label className="library-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 5 5" /></svg><span className="sr-only">Search articles</span><input type="search" value={query} onChange={event => update('q', event.target.value)} placeholder="Search an idea, topic, or title…" /></label>
+          <label className="library-sort"><span className="sr-only">Sort articles</span><select value={sort} onChange={event => update('sort', event.target.value)}><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label>
+          <div className="library-view" role="group" aria-label="Article layout"><button aria-pressed={view === 'grid'} onClick={() => update('view', 'grid')}><span aria-hidden="true">▦</span> Gallery</button><button aria-pressed={view === 'list'} onClick={() => update('view', 'list')}><span aria-hidden="true">☰</span> List</button></div>
+        </div>
       </div>
-
-      {/* ─── Post-article section (outside reading column) ─── */}
-      <div className="article-footer-section">
-        <Reveal delay={0.22}>
-          <RelatedArticles currentSlug={article.slug} category={article.category} />
-        </Reveal>
-
-        <Reveal delay={0.23}>
-          <Subscribe />
-        </Reveal>
-      </div>
-
-      {/* Table of Contents — fixed sidebar, always visible */}
-      <ArticleTOC articleBody={article.body} />
-
-      {/* Floating: Reading Progress */}
-      <ReadingProgress readTime={article.readTime} />
-
-      {/* Inject copy buttons on code blocks */}
-      <CopyCodeBlocks />
-    </article>
+      <div className="library-extra-filters"><label>Time available<select value={maxMinutes} onChange={e=>update('minutes', e.target.value==='0'?'':e.target.value)}><option value="0">Any length</option><option value="5">Up to 5 minutes</option><option value="10">Up to 10 minutes</option><option value="15">Up to 15 minutes</option></select></label><label>Kind of reading<select value={format} onChange={e=>update('format',e.target.value)}><option>All</option>{formats.map(f=><option key={f}>{f}</option>)}</select></label><RouterLink className="journal-text-link" to="/saved">Your saved essays ↗</RouterLink></div>
+      {query && searchState==='loading' && <p role="status" className="feature-note">Searching inside the essays…</p>}
+      {query && searchState==='error' && <p role="status" className="feature-note">Showing title and summary matches. Full-text search couldn’t load. <button onClick={()=>setRetry(v=>v+1)}>Retry</button></p>}
+      <div className="library-results-line" aria-live="polite"><span>{filtered.length} {filtered.length === 1 ? 'essay' : 'essays'}{topic !== 'All' ? ` on ${topic}` : ' to explore'}{query ? ` matching “${query}”` : ''}</span><span>Take your time. Good ideas reward it.</span></div>
+      {filtered.length ? <div className={`journal-grid ${view === 'list' ? 'journal-list' : ''}`}>{visible.map((article, index) => <ArticleCard key={article.slug} article={article} number={index + 1} passage={query ? searchPassage(bodies[article.slug] || "", query) : undefined} />)}</div> : <div className="library-empty"><span aria-hidden="true">⌕</span><h2>No essays found.</h2><p>Try a broader phrase or explore a different topic.</p><button className="journal-button" onClick={() => setParams({})}>Show all writing →</button></div>}
+      {visible.length < filtered.length && <div className="library-load-more"><button className="journal-button journal-button-outline" onClick={() => update('page', String(page + 1))}>More from the notebook <span aria-hidden="true">↓</span></button><p>Showing {visible.length} of {filtered.length} essays</p></div>}
+    </div>
   )
 }

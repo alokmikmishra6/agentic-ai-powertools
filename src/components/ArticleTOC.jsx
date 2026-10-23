@@ -9,9 +9,10 @@ import { createPortal } from 'react-dom'
 export default function ArticleTOC({ articleBody }) {
   const [headings, setHeadings] = useState([])
   const [activeId, setActiveId] = useState('')
-  const [collapsed, setCollapsed] = useState(() => window.innerWidth <= 1200)
+  const [collapsed, setCollapsed] = useState(() => typeof window === 'undefined' || window.innerWidth <= 1200)
   const [visible, setVisible] = useState(false)
   const observerRef = useRef(null)
+  const [shareStatus, setShareStatus] = useState('')
 
   // Parse headings from the rendered article body
   useEffect(() => {
@@ -82,21 +83,24 @@ export default function ArticleTOC({ articleBody }) {
         </button>
         <div className="toc-list">
           {headings.map(h => (
-            <a
-              key={h.id}
+            <div className="toc-row" key={h.id}><a
               href={`#${h.id}`}
               className={`toc-item ${h.level === 4 ? 'toc-sub' : ''} ${h.level === 2 ? 'toc-h2' : ''} ${activeId === h.id ? 'active' : ''}`}
               onClick={(e) => {
                 e.preventDefault()
-                document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                document.getElementById(h.id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
                 setActiveId(h.id)
                 if (window.innerWidth <= 1200) setCollapsed(true)
               }}
             >
               {h.text}
-            </a>
+            </a><button className="toc-share" aria-label={`Copy link to ${h.text}`} onClick={async () => {
+              try { await navigator.clipboard.writeText(window.location.origin + window.location.pathname + '#' + encodeURIComponent(h.id)); setShareStatus('Section link copied') }
+              catch { setShareStatus('Copy the section address from your browser.'); window.history.replaceState(null, '', '#' + encodeURIComponent(h.id)) }
+            }}>↗</button></div>
           ))}
         </div>
+        {shareStatus && <span className="toc-share-status" role="status">{shareStatus}</span>}
       </nav>
     </>,
     document.body

@@ -1,16 +1,24 @@
+import { useState } from 'react'
+
 export default function CodeBlock({ code, lang = 'python' }) {
-  const highlighted = highlightPython(code)
+  const [status, setStatus] = useState('')
+  const highlighted = lang === 'python' ? highlightPython(code) : esc(code)
+  async function copy() {
+    try { await navigator.clipboard.writeText(code); setStatus('Copied') }
+    catch { setStatus('Select the code to copy') }
+  }
   return (
     <div className="sc-code-block">
       <div className="sc-code-header">
-        <span className="sc-dot" />
-        <span className="sc-dot" />
-        <span className="sc-dot" />
+        <span className="code-language">{lang}</span>
+        <button className="project-copy-code" onClick={copy}>Copy code</button>
+        <span className="code-copy-status" role="status">{status}</span>
       </div>
-      <div
+      <pre
         className="sc-code-body"
-        dangerouslySetInnerHTML={{ __html: highlighted }}
-      />
+        tabIndex={0}
+        aria-label={`${lang} code`}
+      ><code dangerouslySetInnerHTML={{ __html: highlighted }} /></pre>
     </div>
   )
 }
