@@ -13,7 +13,7 @@ export default function ArticleCard({ article, number, passage }) {
         <div className="journal-card-art">
           <GenerativeCover slug={article.slug} category={article.category} height={190} />
           <span className="journal-card-number" aria-hidden="true">{String(number).padStart(2, '0')}</span>
-          <span className="journal-card-open" aria-hidden="true">↗</span>
+          <span className="journal-card-open" aria-hidden="true">→</span>
         </div>
         <div className="journal-card-content">
           <div className="journal-meta"><span>{article.category}</span>{isRecent(article.date) && <span className="journal-new">New</span>}</div>

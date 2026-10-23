@@ -24,7 +24,7 @@ export default function ReadingControls() {
   }
   return <div className="reader-toolbar" role="group" aria-label="Reading preferences">
     <span>Make yourself comfortable</span>
-    <div><button aria-pressed={large} onClick={() => setLarge(!large)} aria-label="Larger reading text">Aa <span>{large ? 'Larger' : 'Default'}</span></button><button aria-pressed={paper} onClick={() => setPaper(!paper)}>{paper ? '☾ Dark' : '☀ Paper'}</button><button onClick={copyLink}>Share ↗</button></div>
+    <div><button aria-pressed={large} onClick={() => setLarge(!large)} aria-label="Larger reading text">Aa <span>{large ? 'Larger' : 'Default'}</span></button><button aria-pressed={paper} onClick={() => setPaper(!paper)}>{paper ? '☾ Dark' : '☀ Paper'}</button><button onClick={copyLink}>Copy link</button></div>
     {copyStatus && <span className="reader-copy-status" role="status">{copyStatus}</span>}
   </div>
 }

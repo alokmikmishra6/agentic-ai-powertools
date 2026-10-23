@@ -48,7 +48,7 @@ export default function App() {
           <Route path="/showcase" element={<Showcase />} />
           <Route path="/thinking" element={<Thinking />} />
           <Route path="/about" element={<About />} />
-          <Route path="*" element={<div className="journal-container journal-not-found"><span className="journal-kicker">404 / Off the beaten path</span><h1>This page is unwritten.</h1><p>Find your next idea in the notebook.</p><Link className="journal-button" to="/writing">Explore the writing ↗</Link></div>} />
+          <Route path="*" element={<div className="journal-container journal-not-found"><span className="journal-kicker">404 / Off the beaten path</span><h1>This page is unwritten.</h1><p>Find your next idea in the notebook.</p><Link className="journal-button" to="/writing">Explore the writing →</Link></div>} />
         </Routes>
       </Suspense>
     </main>

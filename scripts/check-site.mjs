@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { createServer } from 'vite'
 import { ARTICLES, SHOWCASE, THINKING, DOMAINS, PILLARS } from '../src/data/content.js'
 import { JOURNEYS } from '../src/data/journeys.js'
+import narrations from '../src/data/narration.json' with { type: 'json' }
 
 const vite = await createServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' })
 const escape = text => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#x27;')
@@ -75,8 +76,22 @@ try {
     assert.ok(html.includes(escape(article.title)), article.slug + ' did not render')
     assert.equal((html.match(/<h1/g) || []).length, 1, article.slug + ' heading structure')
     assert.match(html, /class="article-body"/)
+    const recording = narrations[article.slug]?.recordings.find(r => r.kind === 'full' && r.voice === 'af_heart')
+    if (recording) {
+      assert.match(html, /aria-label="Article narration"/)
+      assert.match(html, /preload="none"/)
+      assert.ok(html.includes('/agentic-ai-powertools/' + recording.src), article.slug + ' narration URL')
+      assert.equal((html.match(/<audio /g) || []).length, 1)
+      assert.doesNotMatch(html, /autoplay=|Compare narrator voices|Michael · American English/)
+    }
     assert.ok(html.indexOf('<h1') < html.indexOf('class="generative-cover article-cover"'))
   }
+  const narrated = render(Article, '/writing/agents-need-stop-rules', '/writing/:slug')
+  assert.match(narrated, /aria-label="Article narration"/)
+  assert.match(narrated, /preload="none"/)
+  assert.doesNotMatch(narrated, /Compare narrator voices/)
+  assert.doesNotMatch(narrated, /Heart · American English|Kokoro · AI narration|Generated from the article|Use device voice|Listening position saved on this browser/)
+  assert.doesNotMatch(narrated, /Michael · American English/)
   assert.match(render(Article, '/writing/not-an-article', '/writing/:slug'), /Essay not found/)
   for (const project of PROJECTS) {
     const html = render(Showcase, '/showcase?project=' + encodeURIComponent(project.slug))

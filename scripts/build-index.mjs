@@ -4,6 +4,7 @@ import { ARTICLES, DOMAINS, PILLARS, THINKING } from '../src/data/content.js'
 import { FORMATS } from '../src/data/editorial.js'
 import { plainText } from '../src/lib/article-content.js'
 import { PROJECTS } from '../src/lib/showcase.js'
+import { validNarrations } from './lib/narration.mjs'
 
 const articles = ARTICLES.map(({ body, ...metadata }) => ({ ...metadata, format: FORMATS[metadata.slug] || "Deep dive" }))
 const projects = PROJECTS.map(({ slug, title, tag, problem }) => ({ slug, title, tag, problem }))
@@ -20,3 +21,11 @@ console.log(`Content index ready: ${articles.length} essays, ${projects.length} 
 const searchSource = JSON.stringify(Object.fromEntries(ARTICLES.map(a => [a.slug, plainText(a.body)])))
 const searchOutput = new URL('../src/data/search-index.json', import.meta.url)
 if (!existsSync(searchOutput) || readFileSync(searchOutput, 'utf8') !== searchSource) writeFileSync(searchOutput, searchSource)
+
+// Only publish narration that still matches the current essay and has a real audio file.
+const manifestPath = new URL('../public/audio/manifest.json', import.meta.url)
+const narration = validNarrations(existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {}, ARTICLES,
+  path => existsSync(new URL('../public/' + path, import.meta.url)))
+const narrationPath = new URL('../src/data/narration.json', import.meta.url)
+const narrationSource = JSON.stringify(narration, null, 2) + '\n'
+if (!existsSync(narrationPath) || readFileSync(narrationPath, 'utf8') !== narrationSource) writeFileSync(narrationPath, narrationSource)

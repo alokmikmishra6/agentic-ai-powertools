@@ -8,3 +8,5 @@ dist/
 .github/prompts/ui-ux-pro-max/
 
 newsletter/settings.local.json
+
+public/audio/*.tmp*

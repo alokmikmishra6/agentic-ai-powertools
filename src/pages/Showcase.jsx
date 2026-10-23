@@ -28,7 +28,7 @@ export default function Showcase() {
       <aside className="project-index">
         <span className="journal-kicker">Inside the workshop</span>
         <label className="project-mobile-select"><span>Choose a project</span><select value={item.slug} onChange={e => selectProject(e.target.value)}>{PROJECTS.map(project => <option key={project.slug} value={project.slug}>{project.title}</option>)}</select></label>
-        <div className="project-index-list" role="group" aria-label="Choose a project">{PROJECTS.map((s, i) => <button key={s.slug} aria-pressed={item.slug === s.slug} onClick={() => selectProject(s.slug)}><span>{String(i + 1).padStart(2, '0')}</span><span>{s.title}<small>{s.featured ? 'Featured · ' : ''}{s.tag}</small></span><span aria-hidden="true">↗</span></button>)}</div>
+        <div className="project-index-list" role="group" aria-label="Choose a project">{PROJECTS.map((s, i) => <button key={s.slug} aria-pressed={item.slug === s.slug} onClick={() => selectProject(s.slug)}><span>{String(i + 1).padStart(2, '0')}</span><span>{s.title}<small>{s.featured ? 'Featured · ' : ''}{s.tag}</small></span><span aria-hidden="true">→</span></button>)}</div>
       </aside>
       <article className="project-detail" key={item.slug}>
         <header className="showcase-header"><span className="journal-kicker">{item.featured ? 'Featured / ' : ''}{item.tag}</span>{item.date && <time className="project-date" dateTime={item.date}>{new Date(item.date + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</time>}<h2 className="showcase-title" ref={titleRef} tabIndex={-1}>{item.title}</h2></header>
@@ -42,7 +42,7 @@ export default function Showcase() {
           {!!item.lessons.length && <div className="showcase-block"><h3 className="showcase-block-label">Lessons learned</h3><ul className="showcase-list showcase-list--lessons">{item.lessons.map((l, i) => <li key={i}>{l}</li>)}</ul></div>}
         </div>
         <ProjectResources project={item} />
-        <Link className="journal-text-link" to={item.relatedWriting ? '/writing/' + item.relatedWriting : '/writing'}>Explore the thinking behind the work <span aria-hidden="true">↗</span></Link>
+        <Link className="journal-text-link" to={item.relatedWriting ? '/writing/' + item.relatedWriting : '/writing'}>Explore the thinking behind the work <span aria-hidden="true">→</span></Link>
       </article>
     </div>
   </div>

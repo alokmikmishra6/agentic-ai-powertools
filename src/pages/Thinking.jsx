@@ -12,7 +12,7 @@ export default function Thinking() {
   const [params, setParams] = useSearchParams()
   const focus = selectInquiry(inquiries, params.get('idea'))
   const isArchived = focus?.status === 'archived'
-  const buttons = items => items.map((item, index) => <button key={item.slug} aria-pressed={focus?.slug === item.slug} onClick={() => setParams({ idea: item.slug })}><span>{String(index + 1).padStart(2, '0')}</span><span>{item.sidebarText}</span><span aria-hidden="true">↗</span></button>)
+  const buttons = items => items.map((item, index) => <button key={item.slug} aria-pressed={focus?.slug === item.slug} onClick={() => setParams({ idea: item.slug })}><span>{String(index + 1).padStart(2, '0')}</span><span>{item.sidebarText}</span><span aria-hidden="true">→</span></button>)
   return <div className="journal-thinking journal-container">
     <header className="editorial-heading">
       <Link to="/" className="journal-breadcrumb">Home / Thinking</Link>
@@ -27,12 +27,12 @@ export default function Thinking() {
       <article className="inquiry-card" key={focus.slug}>
         <div className="inquiry-card-top"><span className="journal-kicker">{focus.tag}</span><span>{isArchived ? 'ARCHIVED' : focus.featured ? 'FEATURED INQUIRY' : 'OPEN INQUIRY'}</span></div>
         {focus.date && <time className="inquiry-date" dateTime={focus.date}>{dateLabel(focus.date)}</time>}
-        <span className="inquiry-mark" aria-hidden="true">{isArchived ? '↗' : '?'}</span>
+        <span className="inquiry-mark" aria-hidden="true">{isArchived ? '→' : '?'}</span>
         <h2>{focus.title}</h2>{focus.body.split(/\n\s*\n/).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
         {isArchived && <p className="inquiry-archive-note">{focus.archiveNote || 'This entry has moved out of the active notebook.'}</p>}
-        <div className="inquiry-card-footer"><span>{isArchived ? 'From the earlier notebook.' : 'Still exploring.'}</span><Link className="journal-text-link" to={focus.relatedWriting ? '/writing/' + focus.relatedWriting : '/writing?topic=' + encodeURIComponent(topics[focus.tagClass] || 'Architecture')}>{isArchived ? 'Continue in the writing' : 'Related writing'} <span aria-hidden="true">↗</span></Link></div>
+        <div className="inquiry-card-footer"><span>{isArchived ? 'From the earlier notebook.' : 'Still exploring.'}</span><Link className="journal-text-link" to={focus.relatedWriting ? '/writing/' + focus.relatedWriting : '/writing?topic=' + encodeURIComponent(topics[focus.tagClass] || 'Architecture')}>{isArchived ? 'Continue in the writing' : 'Related writing'} <span aria-hidden="true">→</span></Link></div>
       </article>
     </section>}
-    <div className="thinking-invitation"><span className="journal-kicker">Thinking is better together</span><p>What are you seeing differently?</p><a className="journal-text-link" href="https://www.linkedin.com/in/alokmishra6/" target="_blank" rel="noopener noreferrer">Let’s compare notes <span aria-hidden="true">↗</span></a></div>
+    <div className="thinking-invitation"><span className="journal-kicker">Thinking is better together</span><p>What are you seeing differently?</p><a className="journal-text-link" href="https://www.linkedin.com/in/alokmishra6/" target="_blank" rel="noopener noreferrer">Let’s compare notes <span aria-hidden="true">→</span></a></div>
   </div>
 }

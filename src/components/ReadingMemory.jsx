@@ -30,7 +30,7 @@ export default function ReadingMemory({ slug }) {
     target?.setAttribute('tabindex', '-1'); target?.focus({ preventScroll: true }); setResume(null)
   }
   return <div className="reading-memory">
-    {resume && resume.progress > .03 && !resume.completed && <button className="journal-text-link" onClick={continueReading}>Continue where you left off · {Math.round(resume.progress * 100)}% <span aria-hidden="true">↗</span></button>}
+    {resume && resume.progress > .03 && !resume.completed && <button className="journal-text-link" onClick={continueReading}>Continue where you left off · {Math.round(resume.progress * 100)}% <span aria-hidden="true">→</span></button>}
     <button className="reading-complete" aria-pressed={completed} onClick={() => readerAction({ type: 'progress', slug, entry: { completed: !completed } })}>{completed ? '✓ Read — mark unread' : 'Mark as read'}</button>
     <span>Saved on this browser</span>
   </div>

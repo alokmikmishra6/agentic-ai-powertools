@@ -36,7 +36,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .journal-button-outline:hover { color: #172017; }
 .journal-text-link { display: inline-flex; align-items: center; gap: 22px; font-size: .82rem; font-weight: 500; color: var(--text); padding-block: 10px; }
 .journal-text-link span { color: var(--gold); transition: transform .2s; font-size: 1.2rem; }
-.journal-text-link:hover span { transform: translate(3px, -2px); }
+.journal-text-link:hover span { transform: translateX(3px); }
 .journal-text-link:hover { color: var(--gold); }
 .gold-period { color: var(--gold); }
 .generative-cover { height: var(--cover-height, 180px); }

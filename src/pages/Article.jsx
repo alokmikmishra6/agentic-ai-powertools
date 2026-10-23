@@ -29,7 +29,7 @@ export default function ArticlePage() {
     document.title = `${article.title} — Alok Mishra`
     return () => { document.title = original }
   }, [article])
-  if (!article) return <div className="journal-container journal-not-found"><span className="journal-kicker">A missing page in the notebook</span><h1>Essay not found.</h1><p>This link may have changed. There’s more to explore in the library.</p><Link className="journal-button" to="/writing">Browse the writing ↗</Link></div>
+  if (!article) return <div className="journal-container journal-not-found"><span className="journal-kicker">A missing page in the notebook</span><h1>Essay not found.</h1><p>This link may have changed. There’s more to explore in the library.</p><Link className="journal-button" to="/writing">Browse the writing →</Link></div>
 
   return (
     <article className="article-page journal-article">
@@ -43,14 +43,14 @@ export default function ArticlePage() {
         </header>
         {(article.theme || article.excerpt) && <div className="article-tldr"><div className="article-tldr-label">The idea in brief</div><p className="article-tldr-text">{article.theme || article.excerpt}</p></div>}
         <GenerativeCover slug={article.slug} category={article.category} height={280} className="article-cover" />
-        <div className="article-save"><SaveButton slug={slug} title={article.title}/><Link to="/saved">Your reading corner ↗</Link></div>
+        <div className="article-save"><SaveButton slug={slug} title={article.title}/><Link to="/saved">Your reading corner →</Link></div>
         <ReadingControls key={slug} />
         <ReadingMemory key={slug} slug={slug} />
-        <ArticleAudioPlayer key={slug} articleBody={body} title={article.title} />
+        <ArticleAudioPlayer key={slug} slug={slug} articleBody={body} title={article.title} />
         {lab && <SystemLab key={slug} kind={lab} />}
         <div className="article-body" dangerouslySetInnerHTML={{ __html: body }} />
-        {trail && <aside className="article-trail-next"><span className="journal-kicker">{trail.next ? 'Next along this thread' : 'You’ve reached the end of this reading path'}</span><h2>{trail.next?.title || 'Keep following your curiosity.'}</h2><Link className="journal-text-link" to={trail.next ? `/writing/${trail.next.slug}?trail=${trail.journey.id}` : '/writing'}>{trail.next ? `Continue · ${trail.next.readTime}` : 'Explore more essays'} <span aria-hidden="true">↗</span></Link></aside>}
-        <div className="article-footer-nav"><span className="journal-kicker">Thanks for reading.</span><Link to="/writing" className="journal-text-link">Back to the notebook <span aria-hidden="true">↗</span></Link></div>
+        {trail && <aside className="article-trail-next"><span className="journal-kicker">{trail.next ? 'Next along this thread' : 'You’ve reached the end of this reading path'}</span><h2>{trail.next?.title || 'Keep following your curiosity.'}</h2><Link className="journal-text-link" to={trail.next ? `/writing/${trail.next.slug}?trail=${trail.journey.id}` : '/writing'}>{trail.next ? `Continue · ${trail.next.readTime}` : 'Explore more essays'} <span aria-hidden="true">→</span></Link></aside>}
+        <div className="article-footer-nav"><span className="journal-kicker">Thanks for reading.</span><Link to="/writing" className="journal-text-link">Back to the notebook <span aria-hidden="true">→</span></Link></div>
       </div>
       <div className="article-footer-section"><RelatedArticles currentSlug={article.slug} category={article.category} /><Subscribe source="article" /></div>
       <ArticleTOC key={slug} articleBody={body} />

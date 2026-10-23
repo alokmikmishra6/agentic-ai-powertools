@@ -23,7 +23,7 @@ export default function TopicAtlas() {
     <div className="atlas-field-footer"><span>Four perspectives. One connected practice.</span><button className="atlas-motion-toggle" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? 'Play motion' : 'Pause motion'} <span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span></button></div>
     <div className="atlas-detail" id="atlas-topic-detail" aria-live="polite">
       <div><span className="journal-kicker">{topic.number} / {topic.name}</span><p>{topic.short}</p></div>
-      <Link to={topicPath(topic.name)} aria-label={`Read ${count} essays on ${topic.name}`}>{count} essays <span aria-hidden="true">↗</span></Link>
+      <Link to={topicPath(topic.name)} aria-label={`Read ${count} essays on ${topic.name}`}>{count} essays <span aria-hidden="true">→</span></Link>
     </div>
   </div>
 }

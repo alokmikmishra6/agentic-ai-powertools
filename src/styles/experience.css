@@ -37,7 +37,7 @@
 .journey-steps a > div > span:last-child { font-size: .64rem; color: #405347; }
 .journey-step-arrow { margin-left: auto; font-size: 1.4rem; transition: transform .2s; }
 .journey-steps a:hover h4 { text-decoration: underline; text-underline-offset: 4px; }
-.journey-steps a:hover .journey-step-arrow { transform: translate(3px, -3px); }
+.journey-steps a:hover .journey-step-arrow { transform: translateX(3px); }
 .journey-panel a:focus-visible { outline-color: #365c43; }
 
 /* Shared page openings */

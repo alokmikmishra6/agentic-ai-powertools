@@ -1,0 +1,1428 @@
+{
+  "agents-need-stop-rules": {
+    "sourceHash": "37310cbbbde9a04a649e8c2857838eb684a174dd715c6aea6f8107921dc4c70b",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/agents-need-stop-rules-af-heart-full-37310cbbbd.m4a",
+        "duration": 299.19,
+        "chapters": [
+          {
+            "title": "Before giving an agent more tools, give it a stopping rule",
+            "start": 0
+          },
+          {
+            "title": "Name the reasons to stop",
+            "start": 50.7
+          },
+          {
+            "title": "Count progress outside the model",
+            "start": 107.325
+          },
+          {
+            "title": "Budgets need more than a token counter",
+            "start": 161.53
+          },
+          {
+            "title": "Make the handoff worth reading",
+            "start": 202.52
+          },
+          {
+            "title": "Test a graceful stop",
+            "start": 249.705
+          }
+        ]
+      }
+    ]
+  },
+  "review-is-the-new-bottleneck": {
+    "sourceHash": "6211c4288761d099a75fbf806137d3c281f5eef145ea8c381ec10e5703c9d21f",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/review-is-the-new-bottleneck-af-heart-full-6211c42887.m4a",
+        "duration": 268.26,
+        "chapters": [
+          {
+            "title": "When writing code gets faster, review becomes the work",
+            "start": 0
+          },
+          {
+            "title": "Measure the whole change",
+            "start": 36.635
+          },
+          {
+            "title": "Be careful with the productivity headline",
+            "start": 87.815
+          },
+          {
+            "title": "Make a change easier to inspect",
+            "start": 142.495
+          },
+          {
+            "title": "Limit work before adding reviewers",
+            "start": 183.485
+          },
+          {
+            "title": "Watch the quiet costs",
+            "start": 231.365
+          }
+        ]
+      }
+    ]
+  },
+  "developer-identity-ai-era": {
+    "sourceHash": "4eed286537d4684f9a878edf19488719acac817da6f8ec4041e658c98eaafcc5",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/developer-identity-ai-era-af-heart-full-4eed286537.m4a",
+        "duration": 738.34,
+        "chapters": [
+          {
+            "title": "The developer is dead. Long live the developer.",
+            "start": 0
+          },
+          {
+            "title": "The T-Shaped Developer: A New Architectural Identity",
+            "start": 56.27
+          },
+          {
+            "title": "From Prompt Writer to Systems Orchestrator",
+            "start": 135.235
+          },
+          {
+            "title": "Five Habits That Separate Orchestrators from Operators",
+            "start": 223.92
+          },
+          {
+            "title": "1. They connect engineering to business outcomes",
+            "start": 240.455
+          },
+          {
+            "title": "2. They specify intent before touching code",
+            "start": 274.625
+          },
+          {
+            "title": "3. They build systems, not prompts",
+            "start": 313.115
+          },
+          {
+            "title": "4. They work in small, adaptive teams",
+            "start": 345.66
+          },
+          {
+            "title": "5. They experiment relentlessly",
+            "start": 377.11
+          },
+          {
+            "title": "The Skill Set Evolution",
+            "start": 404.45
+          },
+          {
+            "title": "Practical Disciplines for the Transition",
+            "start": 502.48
+          },
+          {
+            "title": "What This Means for Engineering Leadership",
+            "start": 592.72
+          },
+          {
+            "title": "The Identity Question",
+            "start": 668.72
+          }
+        ]
+      }
+    ]
+  },
+  "agentic-ai-harness-engineering": {
+    "sourceHash": "f49cb0cc97693ebf73ba971c9a6aa1558230afc2d6294df54007aa10d7d8f465",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/agentic-ai-harness-engineering-af-heart-full-f49cb0cc97.m4a",
+        "duration": 854.37,
+        "chapters": [
+          {
+            "title": "Agentic AI Harness Engineering: Building the Control Plane for Autonomous Systems",
+            "start": 0
+          },
+          {
+            "title": "What Is an Agent Harness?",
+            "start": 73.505
+          },
+          {
+            "title": "The Six Pillars of Harness Engineering",
+            "start": 120.48
+          },
+          {
+            "title": "Pillar 1: State Management — The Agent's Memory Architecture",
+            "start": 141.09
+          },
+          {
+            "title": "Pillar 2: Execution Policy — Budgets, Bounds, and Backpressure",
+            "start": 230.475
+          },
+          {
+            "title": "Pillar 3: Recovery Engine — Designing for Failure",
+            "start": 309.315
+          },
+          {
+            "title": "Pillar 4: Tool Governance — The Agent's API Contract",
+            "start": 416.525
+          },
+          {
+            "title": "Pillar 5: Evaluation Layer — Continuous Quality Assurance",
+            "start": 526.94
+          },
+          {
+            "title": "Pillar 6: Observability — The Nervous System",
+            "start": 606.635
+          },
+          {
+            "title": "Harness Patterns for Multi-Agent Systems",
+            "start": 667.41
+          },
+          {
+            "title": "The Anti-Patterns",
+            "start": 741.895
+          },
+          {
+            "title": "Framework Comparison: Where Existing Tools Fall Short",
+            "start": 751.61
+          },
+          {
+            "title": "Key Takeaways",
+            "start": 823.195
+          }
+        ]
+      }
+    ]
+  },
+  "ai-second-brain-living-knowledge": {
+    "sourceHash": "034a691529873a505caef67209c5bcff915652b77acc4ed657854cd48e1280f8",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/ai-second-brain-living-knowledge-af-heart-full-034a691529.m4a",
+        "duration": 857.99,
+        "chapters": [
+          {
+            "title": "The AI Second Brain as a Living System",
+            "start": 0
+          },
+          {
+            "title": "The Knowledge Is Already Scattered and Already Wrong",
+            "start": 74.545
+          },
+          {
+            "title": "Storage Is the Easy Part",
+            "start": 180.56
+          },
+          {
+            "title": "Claims Are the Right Unit",
+            "start": 234.335
+          },
+          {
+            "title": "Ingestion Is Extraction, Not Copying",
+            "start": 329.44
+          },
+          {
+            "title": "The Update Is a Reconciliation, Never an Overwrite",
+            "start": 428.725
+          },
+          {
+            "title": "Resolving Conflicts Is a Policy, Not a Guess",
+            "start": 494.575
+          },
+          {
+            "title": "Forgetting Is a Feature",
+            "start": 636.245
+          },
+          {
+            "title": "Serving From the Reconciled State",
+            "start": 719.58
+          },
+          {
+            "title": "The Broader Point",
+            "start": 791.125
+          }
+        ]
+      }
+    ]
+  },
+  "security-principles-agentic-ai": {
+    "sourceHash": "781ac217a7fd5ef1d8a28a2d981ea5d7c8d94ed653ea964c5a515dce63e9cd7f",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/security-principles-agentic-ai-af-heart-full-781ac217a7.m4a",
+        "duration": 1023.475,
+        "chapters": [
+          {
+            "title": "Security Principles for Agentic AI Systems: From Trust Boundaries to Earned Autonomy",
+            "start": 0
+          },
+          {
+            "title": "The Fundamental Vulnerability: Content as Instructions",
+            "start": 100.355
+          },
+          {
+            "title": "The Lethal Trifecta",
+            "start": 179.225
+          },
+          {
+            "title": "Principle 1: Deterministic External Controls — The Security Box",
+            "start": 234.335
+          },
+          {
+            "title": "Principle 2: Least Privilege with Agent-Specific Identity",
+            "start": 343.04
+          },
+          {
+            "title": "Principle 3: Task Decomposition as Security Architecture",
+            "start": 427.865
+          },
+          {
+            "title": "Principle 4: Earned Autonomy Through Continuous Evaluation",
+            "start": 539.86
+          },
+          {
+            "title": "Principle 5: Observability as Security Infrastructure",
+            "start": 628.865
+          },
+          {
+            "title": "Principle 6: Compute Isolation and Sandboxing",
+            "start": 712.415
+          },
+          {
+            "title": "The Ownership Problem",
+            "start": 826.07
+          },
+          {
+            "title": "Practical Implementation Checklist",
+            "start": 897.8
+          },
+          {
+            "title": "The Path Forward",
+            "start": 909.965
+          }
+        ]
+      }
+    ]
+  },
+  "fourteen-years-software": {
+    "sourceHash": "52835e19b609af682ca9870022e500f3bd778e83a5099ad862997c253030ba4d",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/fourteen-years-software-af-heart-full-52835e19b6.m4a",
+        "duration": 444.36,
+        "chapters": [
+          {
+            "title": "Close to two decades in software: what I wish I had understood earlier",
+            "start": 0
+          },
+          {
+            "title": "The compounding effect of small decisions",
+            "start": 39.1
+          },
+          {
+            "title": "Communication is not a soft skill",
+            "start": 99.415
+          },
+          {
+            "title": "The systems you do not build matter more",
+            "start": 161.64
+          },
+          {
+            "title": "Judgment is calibrated pessimism",
+            "start": 215.975
+          },
+          {
+            "title": "Speed and quality are not trade-offs",
+            "start": 273.305
+          },
+          {
+            "title": "People rotate; systems persist",
+            "start": 318.61
+          },
+          {
+            "title": "What it actually means to be good at this",
+            "start": 372.935
+          }
+        ]
+      }
+    ]
+  },
+  "learning-loop-architecture": {
+    "sourceHash": "1c07393f843601f32b3f1e4237e10962880ab9b911c9c5a228b710f5f35b8c39",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/learning-loop-architecture-af-heart-full-1c07393f84.m4a",
+        "duration": 629.36,
+        "chapters": [
+          {
+            "title": "The Learning Loop Architecture",
+            "start": 0
+          },
+          {
+            "title": "The Two Loops",
+            "start": 37.955
+          },
+          {
+            "title": "The Human Capital Loop",
+            "start": 50.465
+          },
+          {
+            "title": "The Token Capital Loop",
+            "start": 95.09
+          },
+          {
+            "title": "Why Both Loops Must Run in Parallel",
+            "start": 147.015
+          },
+          {
+            "title": "Architectural Patterns for the Learning Loop",
+            "start": 226.005
+          },
+          {
+            "title": "Pattern 1: The Instrumented Apprenticeship",
+            "start": 229.525
+          },
+          {
+            "title": "Pattern 2: Rotation Through the Evaluation Layer",
+            "start": 281.285
+          },
+          {
+            "title": "Pattern 3: The Shared Knowledge Graph",
+            "start": 325.73
+          },
+          {
+            "title": "Pattern 4: The Compounding Flywheel Review",
+            "start": 369.15
+          },
+          {
+            "title": "The Compounding Math",
+            "start": 406.795
+          },
+          {
+            "title": "Anti-Patterns to Watch For",
+            "start": 470.79
+          },
+          {
+            "title": "The Automation Trap",
+            "start": 473.685
+          },
+          {
+            "title": "The Metrics Mirage",
+            "start": 491.77
+          },
+          {
+            "title": "The Solo Genius",
+            "start": 520.77
+          },
+          {
+            "title": "Implementation Checklist",
+            "start": 545.065
+          },
+          {
+            "title": "The Longer View",
+            "start": 586.295
+          }
+        ]
+      }
+    ]
+  },
+  "token-economy-agentic-systems": {
+    "sourceHash": "aba819e2356fbdecf4d9217b3c4d526b715032c06b94f7c1ad28804f8fe2d5be",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/token-economy-agentic-systems-af-heart-full-aba819e235.m4a",
+        "duration": 753.59,
+        "chapters": [
+          {
+            "title": "The Token Economy: Architectural Patterns for Cost-Efficient Agentic Systems",
+            "start": 0
+          },
+          {
+            "title": "The Token Budget Mental Model",
+            "start": 81.65
+          },
+          {
+            "title": "Pattern 1: Context Window Tiering",
+            "start": 111.665
+          },
+          {
+            "title": "Pattern 2: Lazy Tool Loading",
+            "start": 182.97
+          },
+          {
+            "title": "Pattern 3: Model Cascading",
+            "start": 253.995
+          },
+          {
+            "title": "Pattern 4: Prompt Caching and Prefix Sharing",
+            "start": 337.29
+          },
+          {
+            "title": "Pattern 5: Semantic Deduplication",
+            "start": 409.965
+          },
+          {
+            "title": "Pattern 6: Subagent Delegation with Minimal Context",
+            "start": 486.05
+          },
+          {
+            "title": "The Compound Effect",
+            "start": 545.6
+          },
+          {
+            "title": "The Tradeoffs You Must Accept",
+            "start": 572.315
+          },
+          {
+            "title": "Implementation Priorities",
+            "start": 642.625
+          },
+          {
+            "title": "The Deeper Point",
+            "start": 707.455
+          }
+        ]
+      }
+    ]
+  },
+  "agents-survive-failure-checkpointing": {
+    "sourceHash": "b3dfe4caa3e0e81ce3e4aac24a2125421e055bc585e77cf018b14708aab24188",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/agents-survive-failure-checkpointing-af-heart-full-b3dfe4caa3.m4a",
+        "duration": 713.605,
+        "chapters": [
+          {
+            "title": "Agents That Survive Failure",
+            "start": 0
+          },
+          {
+            "title": "Why Agents Are Stateless by Default",
+            "start": 84.08
+          },
+          {
+            "title": "What Agent State Actually Contains",
+            "start": 172.3
+          },
+          {
+            "title": "State Capsules",
+            "start": 225
+          },
+          {
+            "title": "When to Checkpoint",
+            "start": 328.52
+          },
+          {
+            "title": "The Resumption Decision",
+            "start": 378.465
+          },
+          {
+            "title": "Before and After",
+            "start": 418.64
+          },
+          {
+            "title": "Implementation Patterns",
+            "start": 452.415
+          },
+          {
+            "title": "The Checkpoint Decorator",
+            "start": 455.16
+          },
+          {
+            "title": "The Idempotency Key",
+            "start": 492.985
+          },
+          {
+            "title": "The Capsule Store Interface",
+            "start": 525.695
+          },
+          {
+            "title": "What Good Observability Looks Like",
+            "start": 558.645
+          },
+          {
+            "title": "The Broader Point",
+            "start": 619.005
+          }
+        ]
+      }
+    ]
+  },
+  "invisible-architecture-agentic-workflow": {
+    "sourceHash": "cc51ddbddfab31e392acc37bfc3de68a5d62bbd4200a881d5c6776706409f3e4",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/invisible-architecture-agentic-workflow-af-heart-full-cc51ddbddf.m4a",
+        "duration": 383.675,
+        "chapters": [
+          {
+            "title": "The Invisible Architecture of an Agentic Workflow",
+            "start": 0
+          },
+          {
+            "title": "Why the scaffolding matters more than the model",
+            "start": 30.88
+          },
+          {
+            "title": "The three things I always design first",
+            "start": 101.165
+          },
+          {
+            "title": "Trust is a spectrum, not a binary",
+            "start": 195.08
+          },
+          {
+            "title": "The state management problem nobody talks about",
+            "start": 274.645
+          },
+          {
+            "title": "The operational maturity ladder",
+            "start": 325.87
+          }
+        ]
+      }
+    ]
+  },
+  "staff-level-engineering": {
+    "sourceHash": "749bc83dcfd2a4c38969c6a12e06624d70381da6c54062eee2593bc6ca87574f",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/staff-level-engineering-af-heart-full-749bc83dcf.m4a",
+        "duration": 401.87,
+        "chapters": [
+          {
+            "title": "What staff-level engineering actually looks like in practice",
+            "start": 0
+          },
+          {
+            "title": "The unit of work changes",
+            "start": 29.725
+          },
+          {
+            "title": "The leverage question",
+            "start": 79.535
+          },
+          {
+            "title": "The craft of influence without authority",
+            "start": 173.72
+          },
+          {
+            "title": "What staff engineers actually do all day",
+            "start": 265.34
+          },
+          {
+            "title": "The identity transition",
+            "start": 343.485
+          }
+        ]
+      }
+    ]
+  },
+  "architecture-reviews-useful": {
+    "sourceHash": "515545c56e4a64ba028e9d5944ce2ed32b6e1cdbf64a712c33cf12f146ed866c",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/architecture-reviews-useful-af-heart-full-515545c56e.m4a",
+        "duration": 410.025,
+        "chapters": [
+          {
+            "title": "How I run architecture reviews that engineers actually find useful",
+            "start": 0
+          },
+          {
+            "title": "The format I have settled on",
+            "start": 37.595
+          },
+          {
+            "title": "Understanding phase (40% of the time)",
+            "start": 57.05
+          },
+          {
+            "title": "Trade-offs phase (30% of the time)",
+            "start": 127.91
+          },
+          {
+            "title": "Risk phase (30% of the time)",
+            "start": 193.47
+          },
+          {
+            "title": "What I never do",
+            "start": 253.955
+          },
+          {
+            "title": "The output",
+            "start": 308.45
+          },
+          {
+            "title": "Why this matters",
+            "start": 375.28
+          }
+        ]
+      }
+    ]
+  },
+  "rag-knowledge-architecture": {
+    "sourceHash": "94b84b7e38036c3c7a49e127bb24ee1ab9b41b28522279e77544465478933b20",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/rag-knowledge-architecture-af-heart-full-94b84b7e38.m4a",
+        "duration": 423.82,
+        "chapters": [
+          {
+            "title": "RAG is not retrieval — it is a knowledge architecture question",
+            "start": 0
+          },
+          {
+            "title": "The knowledge modelling problem",
+            "start": 31.38
+          },
+          {
+            "title": "What knowledge modelling actually involves",
+            "start": 86.86
+          },
+          {
+            "title": "The three-layer retrieval architecture",
+            "start": 181.315
+          },
+          {
+            "title": "Layer 1: Document-level understanding",
+            "start": 192.73
+          },
+          {
+            "title": "Layer 2: Semantic chunking with overlap",
+            "start": 213.715
+          },
+          {
+            "title": "Layer 3: Multi-strategy retrieval",
+            "start": 241.72
+          },
+          {
+            "title": "The reranking imperative",
+            "start": 273.475
+          },
+          {
+            "title": "Where most RAG pipelines fail",
+            "start": 307.25
+          },
+          {
+            "title": "The evaluation gap in RAG",
+            "start": 386.355
+          }
+        ]
+      }
+    ]
+  },
+  "complexity-budgets": {
+    "sourceHash": "fe7cdc1cd5d299f77d76d06ff8866f96dcb61c1d9bf745c7a3460c1480352090",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/complexity-budgets-af-heart-full-fe7cdc1cd5.m4a",
+        "duration": 431.695,
+        "chapters": [
+          {
+            "title": "Complexity budgets: treating cognitive load as a first-class constraint",
+            "start": 0
+          },
+          {
+            "title": "The budget metaphor",
+            "start": 28.155
+          },
+          {
+            "title": "Where complexity budgets are most often overspent",
+            "start": 92.58
+          },
+          {
+            "title": "1. Distributed transaction management",
+            "start": 102.745
+          },
+          {
+            "title": "2. Configuration surfaces",
+            "start": 142.045
+          },
+          {
+            "title": "3. Error handling and recovery",
+            "start": 180.91
+          },
+          {
+            "title": "How to assess your current spend",
+            "start": 218.935
+          },
+          {
+            "title": "Spending wisely",
+            "start": 296.29
+          },
+          {
+            "title": "The architectural responsibility",
+            "start": 392.98
+          }
+        ]
+      }
+    ]
+  },
+  "five-questions-system-design": {
+    "sourceHash": "79a935467919db65484581779f9fb03da6f7ac9882468cfe9b3793b6e99edf10",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/five-questions-system-design-af-heart-full-79a9354679.m4a",
+        "duration": 454.03,
+        "chapters": [
+          {
+            "title": "The five questions I ask before signing off on any system design",
+            "start": 0
+          },
+          {
+            "title": "1. What is the failure model?",
+            "start": 33.33
+          },
+          {
+            "title": "2. What happens at 10x load?",
+            "start": 105.845
+          },
+          {
+            "title": "3. How do you know it is working?",
+            "start": 188.96
+          },
+          {
+            "title": "4. What does rollback look like?",
+            "start": 261.44
+          },
+          {
+            "title": "5. Who needs to change their behaviour?",
+            "start": 341.425
+          },
+          {
+            "title": "Using these questions in practice",
+            "start": 409.645
+          }
+        ]
+      }
+    ]
+  },
+  "ai-integrations-fail": {
+    "sourceHash": "b87f55bd9c6f0a2a99afb86c9df0a7dc96274f03859e939823f8f127459caf24",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/ai-integrations-fail-af-heart-full-b87f55bd9c.m4a",
+        "duration": 480.2,
+        "chapters": [
+          {
+            "title": "Why most AI integrations fail — and it is not the model",
+            "start": 0
+          },
+          {
+            "title": "The three architectural failure patterns",
+            "start": 35.165
+          },
+          {
+            "title": "1. Weak data contracts",
+            "start": 38.81
+          },
+          {
+            "title": "2. No evaluation framework",
+            "start": 127.82
+          },
+          {
+            "title": "3. Integration patterns designed for determinism",
+            "start": 218.26
+          },
+          {
+            "title": "The upstream diagnosis framework",
+            "start": 331.875
+          },
+          {
+            "title": "The organisational pattern",
+            "start": 427.26
+          }
+        ]
+      }
+    ]
+  },
+  "llm-pipelines-production": {
+    "sourceHash": "45069fa57af50c783a94f37ddbd3ed1df8db0fca8a005d992f949fcc9ef5bf53",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/llm-pipelines-production-af-heart-full-45069fa57a.m4a",
+        "duration": 482.235,
+        "chapters": [
+          {
+            "title": "Building LLM pipelines that do not collapse under production load",
+            "start": 0
+          },
+          {
+            "title": "The non-determinism problem",
+            "start": 33.5
+          },
+          {
+            "title": "The latency architecture",
+            "start": 139.865
+          },
+          {
+            "title": "The cost architecture",
+            "start": 255.585
+          },
+          {
+            "title": "Evaluation is infrastructure",
+            "start": 335.785
+          },
+          {
+            "title": "The observability layer",
+            "start": 418.035
+          }
+        ]
+      }
+    ]
+  },
+  "agent-memory-needs-delete-path": {
+    "sourceHash": "ab7e9386135f2995625b9d87bf6dcbac14de813ee0ba773be6e27fdd9dedbf8f",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/agent-memory-needs-delete-path-af-heart-full-ab7e938613.m4a",
+        "duration": 267.005,
+        "chapters": [
+          {
+            "title": "Agent memory needs a delete path",
+            "start": 0
+          },
+          {
+            "title": "A memory is a claim with an owner",
+            "start": 36.015
+          },
+          {
+            "title": "Expiry is a retrieval decision",
+            "start": 80.175
+          },
+          {
+            "title": "Deletion has descendants",
+            "start": 134.875
+          },
+          {
+            "title": "Test correction, not just recall",
+            "start": 201.99
+          }
+        ]
+      }
+    ]
+  },
+  "evaluate-the-state-not-the-story": {
+    "sourceHash": "8819170f9a10f5d9a9579d7fe70e40c7600bb3db26442de75c3839bd0baf2c4f",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/evaluate-the-state-not-the-story-af-heart-full-8819170f9a.m4a",
+        "duration": 277.9,
+        "chapters": [
+          {
+            "title": "The agent said it was done. Check the state.",
+            "start": 0
+          },
+          {
+            "title": "Write the postcondition first",
+            "start": 46.575
+          },
+          {
+            "title": "Give the grader independent evidence",
+            "start": 90.15
+          },
+          {
+            "title": "A clean fixture prevents a misleading pass",
+            "start": 143.36
+          },
+          {
+            "title": "Keep policy failures visible",
+            "start": 192.46
+          },
+          {
+            "title": "Save the failures you can explain",
+            "start": 245.16
+          }
+        ]
+      }
+    ]
+  },
+  "context-is-a-budget": {
+    "sourceHash": "6fcf0a848c20fc59e4343ff3e7ce261c7578e58fd976d3f72f25d2526f78bfa1",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/context-is-a-budget-af-heart-full-6fcf0a848c.m4a",
+        "duration": 266.13,
+        "chapters": [
+          {
+            "title": "What belongs in an agent’s context?",
+            "start": 0
+          },
+          {
+            "title": "Start with the next decision",
+            "start": 55.775
+          },
+          {
+            "title": "Separate what must fit from what would be useful",
+            "start": 106
+          },
+          {
+            "title": "A summary can lose the exception",
+            "start": 165.17
+          },
+          {
+            "title": "Test the pack before testing the answer",
+            "start": 214.35
+          }
+        ]
+      }
+    ]
+  },
+  "design-drift-not-technical-debt": {
+    "sourceHash": "b281da955d0c7e35b7daba6d0b69227209a71f4238f292bed20634bb1cf3e781",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/design-drift-not-technical-debt-af-heart-full-b281da955d.m4a",
+        "duration": 326.64,
+        "chapters": [
+          {
+            "title": "Why I stopped calling it technical debt and started calling it design drift",
+            "start": 0
+          },
+          {
+            "title": "Drift is a more accurate mental model",
+            "start": 25.905
+          },
+          {
+            "title": "The three types of drift I see most often",
+            "start": 79.575
+          },
+          {
+            "title": "1. Conceptual drift",
+            "start": 83.095
+          },
+          {
+            "title": "2. Boundary drift",
+            "start": 113.44
+          },
+          {
+            "title": "3. Convention drift",
+            "start": 143.785
+          },
+          {
+            "title": "Why the debt metaphor is actively harmful",
+            "start": 171.76
+          },
+          {
+            "title": "What I do instead: Architecture alignment sessions",
+            "start": 218
+          },
+          {
+            "title": "Preventing drift in the first place",
+            "start": 290.42
+          }
+        ]
+      }
+    ]
+  },
+  "knowing-vs-understanding-system": {
+    "sourceHash": "ce334eaa4ee96c9dabe75841e31d32d3f6464a34eb55476bbf677c5d29901e65",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/knowing-vs-understanding-system-af-heart-full-ce334eaa4e.m4a",
+        "duration": 352.49,
+        "chapters": [
+          {
+            "title": "On the difference between knowing a system and understanding it",
+            "start": 0
+          },
+          {
+            "title": "Familiarity is not a model",
+            "start": 28.9
+          },
+          {
+            "title": "How understanding is built",
+            "start": 99.715
+          },
+          {
+            "title": "Why this matters for architecture",
+            "start": 202.965
+          },
+          {
+            "title": "The organisational dimension",
+            "start": 254.055
+          },
+          {
+            "title": "Understanding as a practice",
+            "start": 317.945
+          }
+        ]
+      }
+    ]
+  },
+  "approval-is-a-versioned-decision": {
+    "sourceHash": "358340fc7d86c94e4520105943f82569d5ee4d27157477f759928314bd4fa89f",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/approval-is-a-versioned-decision-af-heart-full-358340fc7d.m4a",
+        "duration": 270.155,
+        "chapters": [
+          {
+            "title": "What exactly did the human approve?",
+            "start": 0
+          },
+          {
+            "title": "Store the decision, not just the click",
+            "start": 41.725
+          },
+          {
+            "title": "Show the part that can hurt",
+            "start": 100.045
+          },
+          {
+            "title": "Recheck the world at execution time",
+            "start": 148.165
+          },
+          {
+            "title": "Retries should preserve the receipt",
+            "start": 203.51
+          }
+        ]
+      }
+    ]
+  },
+  "ai-token-cost-optimization": {
+    "sourceHash": "ed3cfb626dbe54718ab9cb147b04c4523dfafe97cfacb87f6f31294d666f5d17",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/ai-token-cost-optimization-af-heart-full-ed3cfb626d.m4a",
+        "duration": 280.29,
+        "chapters": [
+          {
+            "title": "The real cost of AI tokens — and how organisations can stop bleeding money",
+            "start": 0
+          },
+          {
+            "title": "Why token costs spiral out of control",
+            "start": 28.035
+          },
+          {
+            "title": "A framework for token cost optimisation",
+            "start": 95.535
+          },
+          {
+            "title": "Layer 1: Measure before you optimise",
+            "start": 104.925
+          },
+          {
+            "title": "Layer 2: Route intelligently",
+            "start": 126.83
+          },
+          {
+            "title": "Layer 3: Cache aggressively",
+            "start": 150.41
+          },
+          {
+            "title": "Layer 4: Compress and prune context",
+            "start": 174.565
+          },
+          {
+            "title": "The organisational dimension",
+            "start": 200.15
+          },
+          {
+            "title": "What I have seen work in practice",
+            "start": 241.045
+          }
+        ]
+      }
+    ]
+  },
+  "event-driven-architecture-cultural": {
+    "sourceHash": "91289e0d1ccf09aa61eabc0ab364dba11dacc5bfed4421fff2d5513f1955607e",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/event-driven-architecture-cultural-af-heart-full-91289e0d1c.m4a",
+        "duration": 363.865,
+        "chapters": [
+          {
+            "title": "Event-driven architecture is a cultural choice, not a technical one",
+            "start": 0
+          },
+          {
+            "title": "The mental model shift",
+            "start": 31.68
+          },
+          {
+            "title": "Why this is a cultural choice",
+            "start": 97.62
+          },
+          {
+            "title": "The debugging problem",
+            "start": 174
+          },
+          {
+            "title": "The eventual consistency contract",
+            "start": 265.28
+          },
+          {
+            "title": "When not to go event-driven",
+            "start": 310.165
+          }
+        ]
+      }
+    ]
+  },
+  "ai-evaluation-production-systems": {
+    "sourceHash": "3baab5709b4c67ca45e517012684a68f130587e1aea44a3dedc249cdd115eb44",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/ai-evaluation-production-systems-af-heart-full-3baab5709b.m4a",
+        "duration": 184.625,
+        "chapters": [
+          {
+            "title": "Why AI evaluation is the hardest unsolved infrastructure problem",
+            "start": 0
+          },
+          {
+            "title": "The evaluation gap",
+            "start": 26.28
+          },
+          {
+            "title": "The three evaluation layers",
+            "start": 70.93
+          },
+          {
+            "title": "Layer 1: Automated metrics (the floor)",
+            "start": 73.75
+          },
+          {
+            "title": "Layer 2: LLM-as-judge (the middle)",
+            "start": 94.13
+          },
+          {
+            "title": "Layer 3: Human evaluation (the ceiling)",
+            "start": 116.51
+          },
+          {
+            "title": "Drift detection is the real problem",
+            "start": 132.895
+          },
+          {
+            "title": "What I build into every AI system",
+            "start": 159.77
+          }
+        ]
+      }
+    ]
+  },
+  "eventual-consistency-hidden-costs": {
+    "sourceHash": "714c3d79720c157cbbd98895de4785125f259228e0971138ece839407f4b70f0",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/eventual-consistency-hidden-costs-af-heart-full-714c3d7972.m4a",
+        "duration": 145.105,
+        "chapters": [
+          {
+            "title": "The hidden costs of eventual consistency — and when to pay them",
+            "start": 0
+          },
+          {
+            "title": "What eventual consistency actually means to users",
+            "start": 21.36
+          },
+          {
+            "title": "When to accept the tradeoff and when to resist it",
+            "start": 88.69
+          }
+        ]
+      }
+    ]
+  },
+  "model-context-protocol-infrastructure": {
+    "sourceHash": "86d391f246973066071bcd0bb8a78f2fbdb8309f21c4456c8b6d6657804e4eaf",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/model-context-protocol-infrastructure-af-heart-full-86d391f246.m4a",
+        "duration": 263.43,
+        "chapters": [
+          {
+            "title": "MCP is not a protocol — it is the missing infrastructure layer for AI agents",
+            "start": 0
+          },
+          {
+            "title": "What MCP actually solves",
+            "start": 29.055
+          },
+          {
+            "title": "Why this matters architecturally",
+            "start": 86.245
+          },
+          {
+            "title": "The production patterns emerging",
+            "start": 159.835
+          },
+          {
+            "title": "Pattern 1: Gateway MCP servers",
+            "start": 167.6
+          },
+          {
+            "title": "Pattern 2: Capability registries",
+            "start": 186.135
+          },
+          {
+            "title": "Pattern 3: Sandboxed execution environments",
+            "start": 203.17
+          },
+          {
+            "title": "What I am building with MCP",
+            "start": 220.21
+          }
+        ]
+      }
+    ]
+  },
+  "mcp-stateless-business-state": {
+    "sourceHash": "ac971ff632ab2354ce1cafce25991dbccdf40dfef64882ce330f92de1630e911",
+    "model": "Kokoro-82M-v1.0",
+    "recordings": [
+      {
+        "kind": "full",
+        "voice": "af_heart",
+        "label": "Heart · American English",
+        "src": "audio/mcp-stateless-business-state-af-heart-full-ac971ff632.m4a",
+        "duration": 260.64,
+        "chapters": [
+          {
+            "title": "MCP went stateless. Your workflow did not.",
+            "start": 0
+          },
+          {
+            "title": "Put state where it can be recovered",
+            "start": 54.94
+          },
+          {
+            "title": "The uncertain state is worth keeping",
+            "start": 108.515
+          },
+          {
+            "title": "Handles need owners and expiry",
+            "start": 174.835
+          },
+          {
+            "title": "Migrate with a failure matrix",
+            "start": 213.625
+          }
+        ]
+      }
+    ]
+  }
+}

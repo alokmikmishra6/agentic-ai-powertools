@@ -69,8 +69,8 @@ export default function CommandPalette() {
         if (e.key === 'Enter' && results[selected]) { e.preventDefault(); openResult(results[selected]) }
       }} aria-describedby="search-selection" /></div>
       <span id="search-selection" className="sr-only" aria-live="polite">{results.length ? `${results.length} results. Selected: ${results[selected]?.title || results[0].title}` : 'No results'}</span>
-      <div className="cmd-results">{!results.length && <div className="cmd-empty">No matches. Try a broader topic, like architecture or agents.</div>}{results.map((item, i) => <button id={`search-result-${i}`} key={item.path} className={`cmd-result ${selected === i ? 'active' : ''}`} onClick={() => openResult(item)} onMouseEnter={() => setSelected(i)}><span className="cmd-result-text"><span className="cmd-result-title">{item.title}</span><span className="cmd-result-sub">{item.subtitle}</span></span><span className="cmd-result-type">{item.type} ↗</span></button>)}</div>
-      <Link className="search-full-link" to={`/writing?q=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}>Search inside all essays ↗</Link>
+      <div className="cmd-results">{!results.length && <div className="cmd-empty">No matches. Try a broader topic, like architecture or agents.</div>}{results.map((item, i) => <button id={`search-result-${i}`} key={item.path} className={`cmd-result ${selected === i ? 'active' : ''}`} onClick={() => openResult(item)} onMouseEnter={() => setSelected(i)}><span className="cmd-result-text"><span className="cmd-result-title">{item.title}</span><span className="cmd-result-sub">{item.subtitle}</span></span><span className="cmd-result-type">{item.type} →</span></button>)}</div>
+      <Link className="search-full-link" to={`/writing?q=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}>Search inside all essays →</Link>
       <div className="cmd-footer"><span>↑ ↓ to explore</span><span>Enter to read</span><span>Esc to close</span></div>
     </div>
   </div>
