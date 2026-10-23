@@ -49,8 +49,8 @@ try {
   const urls=[...pages.filter(([p])=>p!=='/saved').map(([p])=>BASE+(p==='/'?'/':p+'/')),...ARTICLES.map(a=>BASE+`/writing/${a.slug}/`)]
   writeFileSync('dist/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls.map(url=>`<url><loc>${url}</loc></url>`).join('')+'</urlset>')
   const revision = item => createHash('sha256').update(JSON.stringify(item)).digest('hex').slice(0,20)
-  const inquiries=THINKING.filter((t,i,all)=>all.findIndex(a=>a.title===t.title&&a.body===t.body)===i)
-  const updates=[...ARTICLES.map(a=>({id:'writing:'+a.slug,title:a.title,summary:a.excerpt,url:BASE+`/writing/${a.slug}/`,revision:revision(a)})),...PROJECTS.map(p=>({id:'showcase:'+p.slug,title:p.title,summary:p.problem,url:BASE+`/showcase/?project=${p.slug}`,revision:revision(p)})),...inquiries.map((t,i)=>({id:'thinking:'+createHash('sha256').update(t.title).digest('hex').slice(0,16),title:t.title,summary:t.body,url:BASE+`/thinking/?idea=${i+1}`,revision:revision(t)}))]
+  const inquiries=THINKING.filter(t=>t.status!=='archived')
+  const updates=[...ARTICLES.map(a=>({id:'writing:'+a.slug,title:a.title,summary:a.excerpt,url:BASE+`/writing/${a.slug}/`,revision:revision(a)})),...PROJECTS.map(p=>({id:'showcase:'+p.slug,title:p.title,summary:p.problem,url:BASE+`/showcase/?project=${p.slug}`,revision:revision(p)})),...inquiries.map(t=>({id:'thinking:'+createHash('sha256').update(t.title).digest('hex').slice(0,16),title:t.title,summary:t.body,url:BASE+`/thinking/?idea=${encodeURIComponent(t.slug)}`,revision:revision(t)}))]
   writeFileSync('dist/updates.json',JSON.stringify({version:1,items:updates},null,2))
   // A generic fallback preserves deep links for future routes; known pages have static HTML.
   writeFileSync('dist/404.html',template)

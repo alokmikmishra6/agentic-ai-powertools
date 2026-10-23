@@ -14,4 +14,4 @@ export function normalizeShowcase(item) {
   }
 }
 
-export const PROJECTS = SHOWCASE.map(normalizeShowcase)
+export const PROJECTS = SHOWCASE.map(normalizeShowcase).sort((a, b) => (b.date || '').localeCompare(a.date || ''))

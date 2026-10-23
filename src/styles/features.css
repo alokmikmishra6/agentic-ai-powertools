@@ -135,3 +135,11 @@
   .library-extra-filters label { width: 100%; justify-content: space-between; }
   .library-extra-filters select { width: 60%; }
 }
+
+/* Dated notebook entries and the quieter archive. */
+.inquiry-archive { margin-top: 2rem; border-top: 1px solid #394735; padding-top: 1rem; }
+.inquiry-archive summary { cursor: pointer; color: #a6b2a8; font-size: .85rem; }
+.inquiry-archive-note { border-left: 2px solid #d7b98a; padding-left: 1rem; }
+.inquiry-date, .project-date { display: block; margin-top: .75rem; color: #a6b2a8; font-size: .8rem; }
+
+.inquiry-card > p + p { margin-top: 1rem; }

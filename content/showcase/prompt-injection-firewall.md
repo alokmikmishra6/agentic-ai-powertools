@@ -3,7 +3,7 @@ title: "Prompt Injection Firewall for Multi-Agent Systems"
 slug: prompt-injection-firewall
 tag: "AI Security"
 tagClass: ai
-featured: true
+featured: false
 date: "2026-05-20"
 lang: python
 ---

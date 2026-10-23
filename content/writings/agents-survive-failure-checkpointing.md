@@ -5,7 +5,7 @@ category: AI Systems
 tags: ["AI Systems", "Architecture"]
 date: "2026-06-20"
 readTime: "19 min read"
-featured: true
+featured: false
 excerpt: "Most agentic systems are stateless by accident. When they fail mid-execution — and they will — everything is lost. Checkpointing, state capsules, and resumability are the engineering disciplines that change this. Here is how to build agents that survive failure."
 theme: "An agent that cannot survive failure is not a production system — it is an expensive demo. State capsules and resumability transforms agents from fragile one-shot executors into durable, fault-tolerant workers that resume from exactly where they fell."
 ---

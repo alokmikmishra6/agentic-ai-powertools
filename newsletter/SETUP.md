@@ -2,7 +2,7 @@
 
 This implementation uses a free Google account, Apps Script, and a private Google Sheet. It does not require a paid newsletter provider, billing account, or paid API.
 
-Readers confirm their address before joining. The owner receives an email after each confirmed subscription. New subscribers receive a welcome message with three essays. An hourly trigger reads the site's published `updates.json`, queues new or revised content, and emails confirmed subscribers. Every update contains an unsubscribe link.
+Readers confirm their address before joining. Signup attempts to send the confirmation email immediately. Confirming attempts to send the owner notification and a welcome message with three essays immediately. Mail is persisted in the queue first; failed or quota-limited sends retry on the hourly trigger. Inbox arrival still depends on the mail provider and spam filtering. The same hourly trigger reads the site's published `updates.json`, queues new or revised content, and emails confirmed subscribers. Every update contains an unsubscribe link.
 
 ## One-time activation
 
@@ -17,11 +17,35 @@ Readers confirm their address before joining. The owner receives an email after 
 
 5. Choose Deploy → New deployment → Web app. Execute as **yourself**; allow access to **Anyone**. Authorize your own script. If your organization's Google account forbids anonymous web apps, use a personal Google account.
 6. Copy the deployment URL ending in `/exec`. Add it as the Script Property `WEB_APP_URL`.
-7. Run **setupNewsletter_** once from the editor. It creates the private subscriber Sheet, records existing content as a baseline (no historical blast), and installs an hourly trigger. Leave the Sheet private. The generated `SPREADSHEET_ID` is saved in Script Properties.
+7. Run **setupNewsletter_** once using the temporary editor wrapper below (underscore-suffixed functions are hidden from the editor's Run dropdown). It creates the private subscriber Sheet, records existing content as a baseline (no historical blast), and installs an hourly trigger. Leave the Sheet private. The generated `SPREADSHEET_ID` is saved in Script Properties.
 8. In this GitHub repository, Settings → Secrets and variables → Actions → Variables, add **NEWSLETTER_URL** with the `/exec` URL. Redeploy the site. For local preview, set `VITE_NEWSLETTER_URL` in `.env.local`, then restart Vite.
-9. Subscribe with an address you control. Wait for the hourly trigger, or run **newsletterTick_** manually. Open the confirmation link and explicitly confirm. Run the trigger again to check the welcome email and owner notification. Then test unsubscribe.
+9. Subscribe with an address you control. The confirmation email is sent during signup when quota is available. Open its link and explicitly confirm; the welcome email and owner notification are then sent during confirmation. Check Spam as well as Inbox. If a message is queued because sending failed or quota ran out, wait for the hourly trigger or run **newsletterTick_** using the temporary wrapper technique below. Then test unsubscribe.
 
 The code is prepared, but no account, Google deployment, or mail trigger is activated by merely committing these files.
+
+## Update an existing deployment for immediate signup emails
+
+Replace the Apps Script project's `Code.gs` with this repository's updated `newsletter/Code.gs` and save. Keep your existing Script Properties, subscriber Sheet, and trigger. Remove any temporary editor wrappers before deploying.
+
+Choose **Deploy → Manage deployments**, select the existing web app, click the pencil icon, choose **New version**, and click **Deploy**. Updating the existing deployment retains its `/exec` URL, so `NEWSLETTER_URL` in GitHub does not need to change. Saving source alone does not update the versioned public web app. No setup rerun is needed.
+
+New signups and confirmations attempt immediate delivery after this update. Messages already waiting in the queue will be picked up by the next hourly run, or a manual mail check. Published blog updates still use the hourly check; this change removes the scheduled wait for signup, welcome, and owner-notification emails.
+
+## Run setup from the editor
+
+After deploying the web app and setting `WEB_APP_URL`, temporarily add this at the bottom of `Code.gs`, outside all other functions:
+
+```javascript
+function runNewsletterSetup() {
+  setupNewsletter_();
+}
+```
+
+Save, select **runNewsletterSetup** from the dropdown beside Run / Debug, then click **Run**. Review permissions if prompted. The execution log should say **Ready. Existing content was baselined…** and show the subscriber Sheet ID.
+
+Delete the temporary wrapper and save after setup succeeds. **Do not deploy a version containing this wrapper**: functions without a trailing underscore can be invoked by the web client. Your existing versioned `/exec` deployment remains unchanged while you run the temporary editor code. Keep the original `setupNewsletter_` function and its underscore intact.
+
+For a manual mail check in step 9, use the same technique with a temporary `runNewsletterCheck` function that calls `newsletterTick_()`. Running it processes the real queue and can send emails. Remove that wrapper and save before any deployment as well. The installed hourly trigger calls `newsletterTick_` directly and needs no wrapper.
 
 ## Free sending limits
 

@@ -3,7 +3,7 @@ title: "QMD: Query Markup Documents"
 slug: qmd-query-documents
 tag: "AI Infrastructure"
 tagClass: ai
-featured: true
+featured: false
 date: "2026-05-10"
 lang: python
 ---

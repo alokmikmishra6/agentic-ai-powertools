@@ -72,9 +72,11 @@ function subscribe(email, website) {
     const token=token_(),unsubscribe=old?old[5]:token_();
     const row=[email,'pending',hash_(token),now,'',unsubscribe];
     if(index>=0)sheet.getRange(index+2,1,1,6).setValues([row]);else sheet.appendRow(row);
-    queue_('confirm:'+hash_(email)+':'+now,email,'confirm','Confirm your subscription to Alok’s Field Notes',
+    const confirmationId='confirm:'+hash_(email)+':'+now;
+    queue_(confirmationId,email,'confirm','Confirm your subscription to Alok’s Field Notes',
       'You requested new essays and project updates from Alok Mishra.\n\nConfirm your address within 24 hours:\n'+config.WEB_APP_URL+'?action=confirm&token='+token+'\n\nIf you did not request this, ignore this email. You will not be subscribed.');
-    return 'Check your inbox for a confirmation link. Delivery may take up to an hour; if the daily quota is full, please try again tomorrow.';
+    const sent=sendQueuedNow_([confirmationId]);
+    return sent ? 'Your confirmation email has been sent. Check your inbox and spam folder; delivery may take a few minutes.' : 'Your confirmation email is queued. We’ll retry automatically; delivery may be delayed by the daily sending limit. If it does not arrive within 24 hours, subscribe again for a fresh link.';
   });
 }
 function confirmSubscription(token) {
@@ -95,7 +97,8 @@ function confirmSubscription(token) {
       'On knowing a system and understanding it\n'+config.SITE_URL+'/writing/knowing-vs-understanding-system/\n\n'+
       'You will receive a digest when new or revised writing and projects are published.\n\nUnsubscribe: '+config.WEB_APP_URL+'?action=unsubscribe&token='+row[5]);
     row[1]='confirmed';row[4]=Date.now();sheet.getRange(index+2,1,1,6).setValues([row]);
-    return 'You’re subscribed. Your welcome note will arrive shortly. You can unsubscribe from any email.';
+    sendQueuedNow_(['owner:'+hash_(row[0])+':'+stamp,'welcome:'+hash_(row[0])+':'+stamp]);
+    return 'You’re subscribed. We’re sending your welcome note; delivery may be delayed if the sending limit is reached. You can unsubscribe from any email.';
   });
 }
 function unsubscribe(token) {
@@ -130,12 +133,19 @@ function tick_() {
     drainQueue_();
   });
 }
-function drainQueue_() {
+// Called while holding the script lock. Only process this action's jobs so a
+// signup never waits for a backlog of unrelated newsletter messages.
+function sendQueuedNow_(jobIds) {
+  try { return drainQueue_(jobIds); }
+  catch(error) { console.warn('Immediate delivery deferred; queued messages will retry on the scheduled run.');return 0; }
+}
+function drainQueue_(jobIds) {
   const sheet=sheet_('Queue',QUEUE_HEADERS),rows=rows_(sheet),subscribers=rows_(sheet_('Subscribers',SUB_HEADERS));
   let sent=0;
   // Always reserve five recipients for other uses of this Google account.
   for(let i=0;i<rows.length && sent<25;i++){
     const row=rows[i];
+    if(jobIds && !jobIds.includes(row[0]))continue;
     if(row[5]!=='queued' || Number(row[7])>=5)continue;
     const subscriber=subscribers.find(sub=>sub[0]===row[1]);
     const eligible = row[2]==='owner' || (row[2]==='confirm'
@@ -149,6 +159,7 @@ function drainQueue_() {
     } catch(error) { row[7]=Number(row[7])+1;if(row[7]>=5)row[5]='failed'; }
     sheet.getRange(i+2,1,1,8).setValues([row]);
   }
+  return sent;
 }
 function doGet(e) {
   const template=HtmlService.createTemplateFromFile('Signup');

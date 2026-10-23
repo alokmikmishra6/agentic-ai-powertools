@@ -3,7 +3,7 @@ title: "A2A Protocol Gateway"
 slug: a2a-protocol-gateway
 tag: "Agentic AI"
 tagClass: ai
-featured: true
+featured: false
 date: "2026-05-18"
 lang: python
 ---

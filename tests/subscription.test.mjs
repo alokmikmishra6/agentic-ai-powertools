@@ -27,7 +27,7 @@ test('RSS links use the actual site and routes understood by this app', () => {
     const url = new URL(item.link)
     assert.equal(url.origin, 'https://alokmikmishra6.github.io')
     if (item.category === 'Showcase') assert.match(url.pathname + url.search, /\/showcase\/\?project=/)
-    if (item.category === 'Thinking') assert.match(url.pathname + url.search, /\/thinking\/\?idea=\d+$/)
+    if (item.category === 'Thinking') assert.match(url.pathname + url.search, /\/thinking\/\?idea=[a-z0-9-]+$/)
   }
 })
 test('RSS escapes XML content and omits fabricated or invalid publication dates', () => {

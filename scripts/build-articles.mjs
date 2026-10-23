@@ -189,6 +189,8 @@ function build() {
           tagClass: fm.tagClass,
           featured: fm.featured || false,
           date: fm.date || '',
+          runnable: fm.runnable === true,
+          relatedWriting: fm.relatedWriting || '',
           problem,
           approach,
           architecture: archHtml,
@@ -221,6 +223,11 @@ function build() {
         const raw = readFileSync(resolve(thinkingDir, f), 'utf8')
         const { data: fm, content } = matter(raw)
         thinkingItems.push({
+          slug: fm.slug || f.replace('.md', ''),
+          date: fm.date || '',
+          status: fm.status || 'open',
+          archiveNote: fm.archiveNote || '',
+          relatedWriting: fm.relatedWriting || '',
           title: fm.title,
           tag: fm.tag,
           tagClass: fm.tagClass,
@@ -236,7 +243,9 @@ function build() {
     const thinkingJsonFiles = readdirSync(thinkingDir).filter(f => f.endsWith('.json'))
     for (const f of thinkingJsonFiles) {
       try {
-        thinkingItems.push(JSON.parse(readFileSync(resolve(thinkingDir, f), 'utf8')))
+        const item = JSON.parse(readFileSync(resolve(thinkingDir, f), 'utf8'))
+        const slug = item.slug || basename(f, '.json')
+        if (!thinkingItems.some(existing => existing.slug === slug)) thinkingItems.push({ ...item, slug })
       } catch {}
     }
   }

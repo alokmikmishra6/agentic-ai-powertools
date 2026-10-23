@@ -5,7 +5,7 @@ category: AI Systems
 tags: ["AI Systems", "Architecture"]
 date: "2026-07-18"
 readTime: "20 min read"
-featured: true
+featured: false
 excerpt: "A second brain that only stores is a graveyard. The hard engineering is in the verbs — how it ingests, how it updates, and how it resolves the moment two remembered facts disagree. This is the architecture of knowledge that stays alive."
 theme: "Every team already runs a broken second brain — knowledge scattered across Jira, Confluence, READMEs, and Slack threads that all disagree. Dumping it into a vector store does not fix this; it just makes the disagreement retrievable. A real second brain treats knowledge as state to be reconciled, not documents to be searched: it extracts atomic claims, supersedes rather than overwrites, resolves conflicts by an explicit authority-and-recency policy, and lets stale facts decay. The intelligence was never in the recall. It was always in the reconciliation."
 ---

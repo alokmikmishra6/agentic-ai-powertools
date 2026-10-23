@@ -1,5 +1,9 @@
 // Editorial labels and relationships, maintained alongside the writing.
 export const FORMATS = {
+  'context-is-a-budget': 'Implementation', 'mcp-stateless-business-state': 'Deep dive',
+  'approval-is-a-versioned-decision': 'Implementation', 'evaluate-the-state-not-the-story': 'Implementation',
+  'agent-memory-needs-delete-path': 'Deep dive', 'review-is-the-new-bottleneck': 'Perspective',
+  'agents-need-stop-rules': 'Implementation',
   'ai-second-brain-living-knowledge': 'Deep dive', 'agents-survive-failure-checkpointing': 'Implementation',
   'learning-loop-architecture': 'Concept', 'agentic-ai-harness-engineering': 'Implementation',
   'security-principles-agentic-ai': 'Deep dive', 'token-economy-agentic-systems': 'Implementation',
@@ -14,6 +18,13 @@ export const FORMATS = {
   'eventual-consistency-hidden-costs': 'Deep dive',
 }
 export const CONNECTIONS = [
+  { from: 'model-context-protocol-infrastructure', to: 'mcp-stateless-business-state', label: 'Revisits recovery after the July protocol revision' },
+  { from: 'security-principles-agentic-ai', to: 'approval-is-a-versioned-decision', label: 'Binds human approval to the exact proposed action' },
+  { from: 'ai-second-brain-living-knowledge', to: 'agent-memory-needs-delete-path', label: 'Adds correction, expiry, and removal to persistent memory' },
+  { from: 'agent-memory-needs-delete-path', to: 'context-is-a-budget', label: 'Decides which valid evidence enters the next context pack' },
+  { from: 'agentic-ai-harness-engineering', to: 'agents-need-stop-rules', label: 'Defines when the runner should return control' },
+  { from: 'agents-need-stop-rules', to: 'evaluate-the-state-not-the-story', label: 'Checks that stopping and completion leave the correct state' },
+  { from: 'staff-level-engineering', to: 'review-is-the-new-bottleneck', label: 'Examines how assisted coding changes review capacity' },
   { from: 'invisible-architecture-agentic-workflow', to: 'agentic-ai-harness-engineering', label: 'Turns the architecture into a control plane' },
   { from: 'agentic-ai-harness-engineering', to: 'agents-survive-failure-checkpointing', label: 'Extends the harness with durable recovery' },
   { from: 'security-principles-agentic-ai', to: 'agentic-ai-harness-engineering', label: 'Applies trust boundaries to execution' },

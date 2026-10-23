@@ -14,7 +14,7 @@ export function feedItems() {
   return [
     ...ARTICLES.map(a => ({ title: a.title, description: a.excerpt, category: a.category, date: a.date, link: `${SITE_URL}/writing/${encodeURIComponent(a.slug)}` })),
     ...PROJECTS.map(p => ({ title: p.title, description: p.problem, category: 'Showcase', date: p.date, link: `${SITE_URL}/showcase/?project=${encodeURIComponent(p.slug)}` })),
-    ...inquiries.map((t, index) => ({ title: t.title, description: t.body, category: 'Thinking', date: t.date, link: `${SITE_URL}/thinking/?idea=${index + 1}` })),
+    ...inquiries.filter(t => t.status !== 'archived').map(t => ({ title: t.title, description: t.body, category: 'Thinking', date: t.date, link: `${SITE_URL}/thinking/?idea=${encodeURIComponent(t.slug)}` })),
   ].sort((a, b) => timestamp(b.date) - timestamp(a.date))
 }
 

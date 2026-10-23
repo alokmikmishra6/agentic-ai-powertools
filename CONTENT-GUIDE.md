@@ -31,8 +31,8 @@ Markdown takes precedence over a legacy JSON article with the same slug. Edit so
 - `src/data/editorial.js`: add an essay's format (Concept, Deep dive, Implementation, or Perspective) to `FORMATS`. Add meaningful connections between real article slugs to `CONNECTIONS`, with a short explanation of why the next essay is useful.
 - `src/data/journeys.js`: curate ordered reading paths with real article slugs. Completion is stored in each reader's browser.
 - `src/components/labs/SystemLab.jsx` and `src/lib/labs.js`: the three interactive demos and their calculations. Essay-to-lab links are in `src/pages/Article.jsx`.
-- `content/showcase/`: Markdown or legacy JSON project sources. Use the existing Markdown sections: Problem, Approach, Architecture, Code, Run, Outcomes, and Lessons. Download buttons use the actual code and run instructions; reference snippets should clearly state their prerequisites.
-- `content/thinking/`: short inquiries in Markdown with frontmatter. Avoid duplicate Markdown and JSON versions of the same inquiry.
+- `content/showcase/`: Markdown or legacy JSON project sources. Use the existing Markdown sections: Problem, Approach, Architecture, Code, Run, Outcomes, and Lessons. Download buttons use the actual code and run instructions; reference snippets should clearly state their prerequisites. Set `runnable: true` only for standalone examples with executable checks, and use `relatedWriting` to link a companion essay. Projects appear newest first.
+- `content/thinking/`: dated inquiries in Markdown with a stable `slug`, `status: open` or `archived`, `relatedWriting` essay slug, and optional `archiveNote`. Current questions appear newest first; archived entries keep their links. Markdown takes precedence over legacy JSON with the same slug.
 
 Bookmarks, reading position, preferences, and completion stay in the reader's browser. There is no account or cross-device sync. Readers can clear their reading data on the Saved page.
 

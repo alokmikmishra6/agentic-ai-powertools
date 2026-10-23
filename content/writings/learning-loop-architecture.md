@@ -4,7 +4,7 @@ slug: learning-loop-architecture
 category: AI Systems
 date: "2026-06-14"
 readTime: "14 min read"
-featured: true
+featured: false
 excerpt: "Modern AI deployments create two compounding feedback loops running in parallel — the Human Capital Loop and the Token Capital Loop. Understanding how they interact is the key architectural insight of our era."
 theme: "Modern AI deployments create two compounding feedback loops running in parallel — the Human Capital Loop (engineers learning from system behaviour, improving judgment over weeks) and the Token Capital Loop (eval data feeding back into model tuning, improving outputs over hours). Most teams over-invest in the measurable Token Loop while the Human Loop atrophies. The organisations that couple both loops deliberately see multiplicative — not additive — returns, building seemingly insurmountable advantages within 18 months."
 ---

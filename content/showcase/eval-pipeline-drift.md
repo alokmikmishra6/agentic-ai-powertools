@@ -3,7 +3,7 @@ title: "AI Evaluation Pipeline with Drift Detection"
 slug: eval-pipeline-drift
 tag: "AI Safety"
 tagClass: ai
-featured: true
+featured: false
 date: "2026-05-15"
 lang: python
 ---

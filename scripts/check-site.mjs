@@ -56,8 +56,8 @@ try {
   for (const entry of [...DOMAINS, ...PILLARS]) assert.ok(about.includes(escape(entry.title)))
   const inquiries = THINKING.filter((item, index, all) => all.findIndex(other => other.title === item.title && other.body === item.body) === index)
   for (const [index, inquiry] of inquiries.entries()) {
-    const html = render(Thinking, '/thinking?idea=' + (index + 1))
-    assert.ok(html.includes(escape(inquiry.body)))
+    const html = render(Thinking, '/thinking?idea=' + inquiry.slug)
+    for (const paragraph of inquiry.body.split(/\n\s*\n/)) assert.ok(html.includes(escape(paragraph)))
     assert.equal((html.match(/<h2/g) || []).length, 1)
     assert.equal((html.match(/aria-pressed=/g) || []).length, inquiries.length)
   }

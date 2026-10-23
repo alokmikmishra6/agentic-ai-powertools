@@ -3,7 +3,7 @@ title: "Production Agent Harness with Circuit Breakers and Fallback Chains"
 slug: agent-harness-framework
 tag: "AI Infrastructure"
 tagClass: ai
-featured: true
+featured: false
 date: "2026-06-05"
 lang: python
 ---
